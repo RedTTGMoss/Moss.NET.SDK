@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moss.NET.Sdk", "Moss.NET.Sdk\Moss.NET.Sdk.csproj", "{B28A21C0-80E0-43DB-A4BA-387F84323F54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SamplePlugin", "SamplePlugin\SamplePlugin.csproj", "{595374CC-F881-409C-AD8C-59DA6DA798BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B28A21C0-80E0-43DB-A4BA-387F84323F54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B28A21C0-80E0-43DB-A4BA-387F84323F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B28A21C0-80E0-43DB-A4BA-387F84323F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B28A21C0-80E0-43DB-A4BA-387F84323F54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{595374CC-F881-409C-AD8C-59DA6DA798BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{595374CC-F881-409C-AD8C-59DA6DA798BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{595374CC-F881-409C-AD8C-59DA6DA798BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{595374CC-F881-409C-AD8C-59DA6DA798BC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

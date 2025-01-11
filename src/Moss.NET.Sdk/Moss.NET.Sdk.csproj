@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Extism.Pdk" Version="1.0.3" />
+    <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1" />
+    <PackageReference Include="Extism.runtime.all" Version="1.9.1" />
+  </ItemGroup>
+
+</Project>
