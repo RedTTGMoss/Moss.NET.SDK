@@ -5,12 +5,17 @@
     <RuntimeIdentifier>wasi-wasm</RuntimeIdentifier>
     <OutputType>Exe</OutputType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Moss.NET.Sdk\Moss.NET.Sdk.csproj" />
     <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1" />
     <PackageReference Include="Extism.Pdk" Version="1.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="bin\Debug\net9.0\wasi-wasm\AppBundle\SamplePlugin.wasm" />
   </ItemGroup>
 
 </Project>

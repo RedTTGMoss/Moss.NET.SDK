@@ -25,4 +25,8 @@ public class MossExtension
     {
 
     }
+    public virtual void ExtensionLoop(MossState state)
+    {
+
+    }
 }
