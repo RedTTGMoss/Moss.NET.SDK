@@ -2,4 +2,4 @@
 
 namespace Moss.NET.Sdk;
 
-public record ExtensionInfo(List<string> files);
+public record ExtensionInfo(List<File> files);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Extism;
 using Moss.NET.Sdk;
 
@@ -6,10 +7,16 @@ namespace SamplePlugin;
 
 public class SampleExtension : MossExtension
 {
+    [UnmanagedCallersOnly(EntryPoint = "moss_extension_register")]
+    public static ulong Register()
+    {
+        Init<SampleExtension>();
+
+        return 0;
+    }
+
     public static void Main()
     {
-        Load<SampleExtension>();
-        Pdk.Log(LogLevel.Info, "main sample extension");
     }
 
     public override ExtensionInfo Register(MossState state)
