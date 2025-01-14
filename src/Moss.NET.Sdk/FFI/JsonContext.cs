@@ -11,4 +11,8 @@ namespace Moss.NET.Sdk;
 [JsonSerializable(typeof(Text))]
 [JsonSerializable(typeof(MossState))]
 [JsonSerializable(typeof(ExtensionInfo))]
-public partial class JsonContext : JsonSerializerContext {}
+[JsonSerializable(typeof(ConfigSet))]
+[JsonSerializable(typeof(ConfigGet))]
+public partial class JsonContext : JsonSerializerContext
+{
+}

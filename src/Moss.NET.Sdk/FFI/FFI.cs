@@ -2,7 +2,7 @@
 
 namespace Moss.NET.Sdk;
 
-public static class FFI
+internal static class FFI
 {
     [DllImport("extism", EntryPoint = "moss_gui_register_context_menu")]
     public static extern void RegisterMenu(ulong ptr);
