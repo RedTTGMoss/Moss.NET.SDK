@@ -55,14 +55,14 @@ public abstract class Theme
 
     private static void SetDefaultColor(ColorKey key, Color color)
     {
-        FFI.Functions.SetDefaultColor(Pdk.Allocate(key.ToString()).Offset, color.r, color.g, color.b, color.a);
+        FFI.Functions.SetDefaultColor(Pdk.Allocate(key.ToString()).Offset, color.R, color.G, color.B, color.A);
     }
 
     private static void SetDefaultTextColor(TextColorKey key, Color foreground, Color background)
     {
         FFI.Functions.SetDefaultTextColor(Pdk.Allocate(key.ToString()).Offset,
-            foreground.r, foreground.g, foreground.b,
-            background.r, background.g, background.b
+            foreground.R, foreground.G, foreground.B,
+            background.R, background.G, background.B
         );
     }
 }

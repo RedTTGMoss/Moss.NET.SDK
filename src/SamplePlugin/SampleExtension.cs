@@ -25,6 +25,8 @@ public class SampleExtension : MossExtension
 
         Theme.Apply(new DarkTheme());
 
+        Config.Set("theme", "dark");
+
         return new ExtensionInfo([]);
     }
 
