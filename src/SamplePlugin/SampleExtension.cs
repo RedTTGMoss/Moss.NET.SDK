@@ -22,6 +22,10 @@ public class SampleExtension : MossExtension
     public override ExtensionInfo Register(MossState state)
     {
         Pdk.Log(LogLevel.Info, "registered sample extension");
+
+        Config.SetDefaultColor(ColorKey.BACKGROUND, Color.Red);
+        Config.SetDefaultColor(ColorKey.SELECTED, Color.Green);
+
         return new ExtensionInfo([]);
     }
 

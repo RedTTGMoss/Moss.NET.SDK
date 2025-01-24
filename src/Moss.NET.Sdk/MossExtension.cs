@@ -9,7 +9,7 @@ public class MossExtension
 
     public virtual ExtensionInfo Register(MossState state)
     {
-        return null;
+        return new ExtensionInfo([]);
     }
 
     public virtual void Unregister()

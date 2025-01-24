@@ -1,4 +1,6 @@
-﻿namespace Moss.NET.Sdk;
+﻿using Extism;
+
+namespace Moss.NET.Sdk;
 
 public static class Config
 {
@@ -11,5 +13,10 @@ public static class Config
     {
         var ptr = FFI.GetConfig(Utils.Serialize(new ConfigGet(key), JsonContext.Default.ConfigGet));
         return (T)Utils.Deserialize(ptr, JsonContext.Default.ConfigGet).value;
+    }
+
+    public static void SetDefaultColor(ColorKey key, Color color)
+    {
+        FFI.SetDefaultColor(Pdk.Allocate(key.ToString()).Offset, color.r, color.g, color.b, color.a);
     }
 }
