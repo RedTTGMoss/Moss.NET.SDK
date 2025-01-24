@@ -1,6 +1,6 @@
 ﻿namespace Moss.NET.Sdk;
 
-public enum TextColorKey
+internal enum TextColorKey
 {
     TEXT_COLOR,
     DOCUMENT_TITLE_COLOR,

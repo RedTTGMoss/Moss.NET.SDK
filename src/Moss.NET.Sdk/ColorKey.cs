@@ -1,6 +1,6 @@
 ﻿namespace Moss.NET.Sdk;
 
-public enum ColorKey
+internal enum ColorKey
 {
     BACKGROUND,
     SELECTED,

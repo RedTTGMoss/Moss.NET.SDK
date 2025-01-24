@@ -2,7 +2,7 @@
 
 namespace Moss.NET.Sdk.FFI;
 
-internal static class FFI
+internal static class Functions
 {
     [DllImport("extism", EntryPoint = "moss_gui_register_context_menu")]
     public static extern void RegisterMenu(ulong ptr);
@@ -17,5 +17,5 @@ internal static class FFI
     public static extern void SetDefaultColor(ulong keyPtr, ulong r, ulong g, ulong b, ulong a);
 
     [DllImport("extism", EntryPoint = "moss_defaults_set_text_color")]
-    public static extern void SetDefaultTextColor(ulong keyPtr, ulong r, ulong g, ulong b, ulong a);
+    public static extern void SetDefaultTextColor(ulong keyPtr, ulong fr, ulong fg, ulong fb, ulong br, ulong bg, ulong bb);
 }

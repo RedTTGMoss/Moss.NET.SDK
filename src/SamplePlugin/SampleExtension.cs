@@ -23,10 +23,7 @@ public class SampleExtension : MossExtension
     {
         Pdk.Log(LogLevel.Info, "registered sample extension");
 
-        Config.SetDefaultColor(ColorKey.BACKGROUND, Color.Red);
-        Config.SetDefaultColor(ColorKey.SELECTED, Color.Green);
-
-        Config.SetDefaultTextColor(TextColorKey.TEXT_COLOR, Color.Green);
+        Theme.Apply(new DarkTheme());
 
         return new ExtensionInfo([]);
     }
