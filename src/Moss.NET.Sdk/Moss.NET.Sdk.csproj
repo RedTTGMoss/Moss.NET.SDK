@@ -3,6 +3,11 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>Moss.NET.Sdk</Title>
+        <Authors>furesoft</Authors>
+        <Description>A sdk to build Moss extensions easily</Description>
+        <PackageProjectUrl>https://github.com/furesoft/Moss.NET.SDK</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>
