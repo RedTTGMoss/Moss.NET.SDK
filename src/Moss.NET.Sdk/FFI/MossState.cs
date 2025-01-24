@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Moss.NET.Sdk;
+namespace Moss.NET.Sdk.FFI;
 
 public record MossState(
     int width,

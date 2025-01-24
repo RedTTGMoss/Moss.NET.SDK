@@ -1,5 +1,6 @@
 ﻿using System;
 using Extism;
+using Moss.NET.Sdk.FFI;
 
 namespace Moss.NET.Sdk;
 
@@ -22,8 +23,8 @@ public class MossExtension
 
     private static void SetExtensionInfo()
     {
-        var input = Pdk.GetInputJson(JsonContext.Default.MossState);
-        Pdk.SetOutputJson(Instance.Register(input), JsonContext.Default.ExtensionInfo);
+        var input = Pdk.GetInputJson(FFI.JsonContext.Default.MossState);
+        Pdk.SetOutputJson(Instance.Register(input), FFI.JsonContext.Default.ExtensionInfo);
     }
 
     public static void Init<T>() where T : MossExtension, new()

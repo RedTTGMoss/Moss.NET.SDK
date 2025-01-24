@@ -1,7 +1,7 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Extism;
 using Moss.NET.Sdk;
+using Moss.NET.Sdk.FFI;
 
 namespace SamplePlugin;
 
@@ -25,6 +25,8 @@ public class SampleExtension : MossExtension
 
         Config.SetDefaultColor(ColorKey.BACKGROUND, Color.Red);
         Config.SetDefaultColor(ColorKey.SELECTED, Color.Green);
+
+        Config.SetDefaultTextColor(TextColorKey.TEXT_COLOR, Color.Green);
 
         return new ExtensionInfo([]);
     }

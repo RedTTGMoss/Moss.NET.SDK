@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Moss.NET.Sdk;
+namespace Moss.NET.Sdk.FFI;
 
 [JsonSerializable(typeof(Color))]
 [JsonSerializable(typeof(ContextButton))]

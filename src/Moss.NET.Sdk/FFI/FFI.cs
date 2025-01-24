@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Moss.NET.Sdk;
+namespace Moss.NET.Sdk.FFI;
 
 internal static class FFI
 {
@@ -15,4 +15,7 @@ internal static class FFI
 
     [DllImport("extism", EntryPoint = "moss_defaults_set_color")]
     public static extern void SetDefaultColor(ulong keyPtr, ulong r, ulong g, ulong b, ulong a);
+
+    [DllImport("extism", EntryPoint = "moss_defaults_set_text_color")]
+    public static extern void SetDefaultTextColor(ulong keyPtr, ulong r, ulong g, ulong b, ulong a);
 }

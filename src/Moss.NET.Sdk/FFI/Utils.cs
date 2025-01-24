@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization.Metadata;
 using Extism;
 
-namespace Moss.NET.Sdk;
+namespace Moss.NET.Sdk.FFI;
 
 internal static class Utils
 {

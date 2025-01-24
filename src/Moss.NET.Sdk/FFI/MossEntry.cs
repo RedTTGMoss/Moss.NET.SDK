@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Extism;
 
-namespace Moss.NET.Sdk;
+namespace Moss.NET.Sdk.FFI;
 
 public static class MossEntry
 {
