@@ -7,7 +7,8 @@
         <Title>Moss.NET.Sdk</Title>
         <Authors>furesoft</Authors>
         <Description>A sdk to build Moss extensions easily</Description>
-        <PackageProjectUrl>https://github.com/furesoft/Moss.NET.SDK</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/RedTTGMoss/Moss.NET.SDK</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/RedTTGMoss/Moss.NET.SDK</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
