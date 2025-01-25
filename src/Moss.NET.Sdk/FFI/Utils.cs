@@ -8,7 +8,10 @@ internal static class Utils
 {
     public static ulong Serialize<T>(T value, JsonTypeInfo<T> typeInfo)
     {
-        return Pdk.Allocate(JsonSerializer.Serialize(value, typeInfo)).Offset;
+        var data = JsonSerializer.Serialize(value, typeInfo);
+        Pdk.Log(LogLevel.Info, data);
+
+        return Pdk.Allocate(data).Offset;
     }
 
     public static T Deserialize<T>(ulong ptr, JsonTypeInfo<T> typeInfo)

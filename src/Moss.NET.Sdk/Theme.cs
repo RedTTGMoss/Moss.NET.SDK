@@ -1,5 +1,5 @@
-﻿using System;
-using Extism;
+﻿using Extism;
+using Moss.NET.Sdk.FFI;
 
 namespace Moss.NET.Sdk;
 
@@ -47,9 +47,12 @@ public abstract class Theme
         SetDefaultColor(ColorKey.OUTLINE_COLOR, theme.OutlineColor);
 
         SetDefaultTextColor(TextColorKey.TEXT_COLOR, theme.TextForeground, theme.TextBackground);
-        SetDefaultTextColor(TextColorKey.DOCUMENT_TITLE_COLOR, theme.DocumentTitleForeground, theme.DocumentTitleBackground);
-        SetDefaultTextColor(TextColorKey.DOCUMENT_TITLE_COLOR_INVERTED, theme.DocumentTitleInvertedForeground, theme.DocumentTitleInvertedBackground);
-        SetDefaultTextColor(TextColorKey.DOCUMENT_SUBTITLE_COLOR, theme.DocumentSubtitleForeground, theme.DocumentSubtitleBackground);
+        SetDefaultTextColor(TextColorKey.DOCUMENT_TITLE_COLOR, theme.DocumentTitleForeground,
+            theme.DocumentTitleBackground);
+        SetDefaultTextColor(TextColorKey.DOCUMENT_TITLE_COLOR_INVERTED, theme.DocumentTitleInvertedForeground,
+            theme.DocumentTitleInvertedBackground);
+        SetDefaultTextColor(TextColorKey.DOCUMENT_SUBTITLE_COLOR, theme.DocumentSubtitleForeground,
+            theme.DocumentSubtitleBackground);
         SetDefaultTextColor(TextColorKey.TEXT_COLOR_T, theme.TextTForeground, theme.TextTBackground);
         SetDefaultTextColor(TextColorKey.TEXT_COLOR_H, theme.TextHForeground, theme.TextHBackground);
     }
@@ -57,15 +60,19 @@ public abstract class Theme
     private static void SetDefaultColor(ColorKey key, Color color)
     {
         Pdk.Log(LogLevel.Info, "try to set color " + key);
-        FFI.Functions.SetDefaultColor(Pdk.Allocate(key.ToString()).Offset, color.R, color.G, color.B, color.A);
+        var keyPtr = Pdk.Allocate(key.ToString()).Offset;
+
+        Functions.SetDefaultColor(keyPtr, Utils.Serialize(color, JsonContext.Default.Color));
     }
 
     private static void SetDefaultTextColor(TextColorKey key, Color foreground, Color background)
     {
-        Pdk.Log(LogLevel.Info, "try to set text color " + key);
-        FFI.Functions.SetDefaultTextColor(Pdk.Allocate(key.ToString()).Offset,
-            foreground.R, foreground.G, foreground.B,
-            background.R, background.G, background.B
-        );
+        Pdk.Log(LogLevel.Info, "try to set text color " + key + " to foreground=" + foreground + " background=" + background);
+
+        var keyPtr = Pdk.Allocate(key.ToString()).Offset;
+        var textColor = new TextColor(foreground, background);
+        var textColorPtr = Utils.Serialize(textColor, JsonContext.Default.TextColor);
+
+        Functions.SetDefaultTextColor(keyPtr, textColorPtr);
     }
 }

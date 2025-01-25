@@ -1,5 +1,4 @@
-﻿using Extism;
-using Moss.NET.Sdk.FFI;
+﻿using Moss.NET.Sdk.FFI;
 
 namespace Moss.NET.Sdk;
 

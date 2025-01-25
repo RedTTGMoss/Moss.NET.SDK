@@ -16,8 +16,8 @@ internal static class Functions
     public static extern void SetConfig(ulong ptr);
 
     [DllImport(DLL, EntryPoint = "moss_defaults_set_color")]
-    public static extern void SetDefaultColor(ulong keyPtr, long r, long g, long b, long a);
+    public static extern void SetDefaultColor(ulong keyPtr, ulong colorPtr);
 
     [DllImport(DLL, EntryPoint = "moss_defaults_set_text_color")]
-    public static extern void SetDefaultTextColor(ulong keyPtr, long fr, long fg, long fb, long br, long bg, long bb);
+    public static extern void SetDefaultTextColor(ulong keyPtr, ulong textColorPtr);
 }

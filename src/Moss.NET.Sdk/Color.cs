@@ -1,8 +1,8 @@
 ﻿namespace Moss.NET.Sdk;
 
-public record Color(long R, long G, long B, long A = 255)
+public record Color(long r, long g, long b, long a = 255)
 {
- public static Color AliceBlue => new(240, 248, 255);
+    public static Color AliceBlue => new(240, 248, 255);
     public static Color AntiqueWhite => new(250, 235, 215);
     public static Color Aqua => new(0, 255, 255);
     public static Color Aquamarine => new(127, 255, 212);
