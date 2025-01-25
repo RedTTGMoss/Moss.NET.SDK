@@ -9,7 +9,7 @@
         <Description>A sdk to build Moss extensions easily</Description>
         <PackageProjectUrl>https://github.com/RedTTGMoss/Moss.NET.SDK</PackageProjectUrl>
         <RepositoryUrl>https://github.com/RedTTGMoss/Moss.NET.SDK</RepositoryUrl>
-        <Version>1.0</Version>
+        <Version>1.0-pre</Version>
     </PropertyGroup>
 
     <ItemGroup>
