@@ -1,4 +1,5 @@
-﻿using Extism;
+﻿using System;
+using Extism;
 
 namespace Moss.NET.Sdk;
 
@@ -55,11 +56,13 @@ public abstract class Theme
 
     private static void SetDefaultColor(ColorKey key, Color color)
     {
+        Pdk.Log(LogLevel.Info, "try to set color " + key);
         FFI.Functions.SetDefaultColor(Pdk.Allocate(key.ToString()).Offset, color.R, color.G, color.B, color.A);
     }
 
     private static void SetDefaultTextColor(TextColorKey key, Color foreground, Color background)
     {
+        Pdk.Log(LogLevel.Info, "try to set text color " + key);
         FFI.Functions.SetDefaultTextColor(Pdk.Allocate(key.ToString()).Offset,
             foreground.R, foreground.G, foreground.B,
             background.R, background.G, background.B

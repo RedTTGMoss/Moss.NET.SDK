@@ -4,7 +4,7 @@ namespace SamplePlugin;
 
 public class DarkTheme : Theme
 {
-    public override Color Background => new(18, 18, 18);
+    public override Color Background => Color.White;
     public override Color Selected => new(38, 79, 120);
     public override Color LineGray => new(40, 40, 40);
     public override Color LineGrayLight => new(60, 60, 60);
@@ -15,8 +15,8 @@ public class DarkTheme : Theme
     public override Color ButtonDisabledColor => new(100, 100, 100);
     public override Color ButtonDisabledLightColor => new(120, 120, 120);
     public override Color OutlineColor => new(61, 61, 61);
-    public override Color TextForeground => new(255, 255, 255);
 
+    public override Color TextForeground => new(255, 255, 255);
     public override Color TextBackground => Background;
     public override Color DocumentTitleForeground => new(230, 230, 230);
     public override Color DocumentTitleBackground => Background;
