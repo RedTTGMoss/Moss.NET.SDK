@@ -26,17 +26,7 @@ public class SampleExtension : MossExtension
         Pdk.Log(LogLevel.Info, "registered sample extension");
 
         Config.Set("theme", "dark");
-        Pdk.Log(LogLevel.Info, "before applying theme");
-        try
-        {
-            Theme.Apply(new DarkTheme());
-        }
-        catch (Exception ex)
-        {
-            Pdk.Log(LogLevel.Error, ex.Message);
-        }
-
-        Pdk.Log(LogLevel.Info, "after applying theme");
+        Theme.Apply(new DarkTheme());
 
         return new ExtensionInfo([]);
     }

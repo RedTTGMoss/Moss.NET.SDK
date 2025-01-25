@@ -142,4 +142,15 @@ public record Color(long r, long g, long b, long a = 255)
     public static Color WhiteSmoke => new(245, 245, 245);
     public static Color Yellow => new(255, 255, 0);
     public static Color YellowGreen => new(154, 205, 50);
+
+    public static Color FromHex(string hex)
+    {
+        hex = hex.Replace("#", string.Empty);
+
+        var r = byte.Parse(hex[..2], System.Globalization.NumberStyles.HexNumber);
+        var g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+        var b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+
+        return new Color(r, g, b);
+    }
 }
