@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "furesoft",
+  "classifications": ["moss-plugin"],
+  "name": "Moss Plugin",
+  "description": "Creates a new Moss Plugin project.",
+  "groupIdentity": "Microsoft.Common.Console",
+  "identity": "Moss.Templates.Plugin",
+  "shortName": "console",
+  "sourceName": "Moss",
+  "defaultName": "ConsoleApp1",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "csharp",
+    "type": "project"
+  }
+}

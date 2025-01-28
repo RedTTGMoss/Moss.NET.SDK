@@ -14,6 +14,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PROJECTS: |
         src/Moss.NET.Sdk/Moss.NET.Sdk.csproj
+        src/Moss.Net.Sdk.Templates/Moss.Net.Sdk.Templates.csproj
 
     steps:
       - name: Checkout code
