@@ -28,7 +28,14 @@ public class SampleExtension : MossExtension
         Config.Set("theme", "dark");
         Theme.Apply(new DarkTheme());
 
+        ScreenManager.Register<SampleScreen>();
+
         return new ExtensionInfo([]);
+    }
+
+    public override void ExtensionLoop(MossState state)
+    {
+        ScreenManager.OpenScreen(SampleScreen.Name, []);
     }
 
     public override void Unregister()

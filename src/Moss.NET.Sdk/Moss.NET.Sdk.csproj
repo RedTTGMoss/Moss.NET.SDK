@@ -10,6 +10,7 @@
         <PackageProjectUrl>https://github.com/RedTTGMoss/Moss.NET.SDK</PackageProjectUrl>
         <RepositoryUrl>https://github.com/RedTTGMoss/Moss.NET.SDK</RepositoryUrl>
         <Version>1.1-pre</Version>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

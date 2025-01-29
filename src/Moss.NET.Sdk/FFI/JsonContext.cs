@@ -14,6 +14,11 @@ namespace Moss.NET.Sdk.FFI;
 [JsonSerializable(typeof(ExtensionInfo))]
 [JsonSerializable(typeof(ConfigSet))]
 [JsonSerializable(typeof(ConfigGet))]
+[JsonSerializable(typeof(PygameExtraRect))]
+[JsonSerializable(typeof(PygameExtraRectEdgeRounding))]
+[JsonSerializable(typeof(Rect))]
+[JsonSerializable(typeof(Screen))]
+[JsonSerializable(typeof(Dictionary<string, object>))]
 public partial class JsonContext : JsonSerializerContext
 {
 }
