@@ -18,21 +18,18 @@ public class SampleExtension : MossExtension
 
     public static void Main()
     {
-         Pdk.Log(LogLevel.Info, "extension started");
+         
     }
 
     public override ExtensionInfo Register(MossState state)
     {
-        Pdk.Log(LogLevel.Info, "registered sample extension");
-
-        Config.Set("theme", "dark");
-        Theme.Apply(new DarkTheme());
+        Pdk.Log(LogLevel.Info, "Hello world form sample plugin");
 
         return new ExtensionInfo([]);
     }
 
     public override void Unregister()
     {
-        Pdk.Log(LogLevel.Info, "unregistered sample extension");
+        
     }
 }
