@@ -1,7 +1,4 @@
-﻿using Extism;
-using Moss.NET.Sdk.FFI;
-
-namespace Moss.NET.Sdk;
+﻿namespace Moss.NET.Sdk;
 
 public abstract class Theme
 {
@@ -32,44 +29,29 @@ public abstract class Theme
 
     public static void Apply(Theme theme)
     {
-        SetDefaultColor("BACKGROUND", theme.Background);
-        SetDefaultColor("SELECTED", theme.Selected);
-        SetDefaultColor("LINE_GRAY", theme.LineGray);
-        SetDefaultColor("LINE_GRAY_LIGHT", theme.LineGrayLight);
-        SetDefaultColor("DOCUMENT_GRAY", theme.DocumentGray);
-        SetDefaultColor("DOCUMENT_BACKGROUND", theme.DocumentBackground);
+        Defaults.SetDefaultColor("BACKGROUND", theme.Background);
+        Defaults.SetDefaultColor("SELECTED", theme.Selected);
+        Defaults.SetDefaultColor("LINE_GRAY", theme.LineGray);
+        Defaults.SetDefaultColor("LINE_GRAY_LIGHT", theme.LineGrayLight);
+        Defaults.SetDefaultColor("DOCUMENT_GRAY", theme.DocumentGray);
+        Defaults.SetDefaultColor("DOCUMENT_BACKGROUND", theme.DocumentBackground);
 
-        SetDefaultColor("BUTTON_ACTIVE_COLOR", theme.ButtonActiveColor);
-        SetDefaultColor("BUTTON_ACTIVE_COLOR_INVERTED", theme.ButtonActiveColorInverted);
-        SetDefaultColor("BUTTON_DISABLED_COLOR", theme.ButtonDisabledColor);
-        SetDefaultColor("BUTTON_DISABLED_LIGHT_COLOR", theme.ButtonDisabledLightColor);
+        Defaults.SetDefaultColor("BUTTON_ACTIVE_COLOR_INVERTED", theme.ButtonActiveColorInverted);
+        Defaults.SetDefaultColor("BUTTON_DISABLED_COLOR", theme.ButtonDisabledColor);
+        Defaults.SetDefaultColor("BUTTON_DISABLED_LIGHT_COLOR", theme.ButtonDisabledLightColor);
+        Defaults.SetDefaultColor("BUTTON_ACTIVE_COLOR", theme.ButtonActiveColor);
 
-        SetDefaultColor("OUTLINE_COLOR", theme.OutlineColor);
+        Defaults.SetDefaultColor("OUTLINE_COLOR", theme.OutlineColor);
 
-        SetDefaultTextColor("TEXT_COLOR", theme.TextForeground, theme.TextBackground);
-        SetDefaultTextColor("DOCUMENT_TITLE_COLOR", theme.DocumentTitleForeground,
+        Defaults.SetDefaultTextColor("TEXT_COLOR", theme.TextForeground, theme.TextBackground);
+        Defaults.SetDefaultTextColor("DOCUMENT_TITLE_COLOR", theme.DocumentTitleForeground,
             theme.DocumentTitleBackground);
-        SetDefaultTextColor("DOCUMENT_TITLE_COLOR_INVERTED", theme.DocumentTitleInvertedForeground,
+        Defaults.SetDefaultTextColor("DOCUMENT_TITLE_COLOR_INVERTED", theme.DocumentTitleInvertedForeground,
             theme.DocumentTitleInvertedBackground);
-        SetDefaultTextColor("DOCUMENT_SUBTITLE_COLOR", theme.DocumentSubtitleForeground,
+        Defaults.SetDefaultTextColor("DOCUMENT_SUBTITLE_COLOR", theme.DocumentSubtitleForeground,
             theme.DocumentSubtitleBackground);
-        SetDefaultTextColor("TEXT_COLOR_T", theme.TextTForeground, theme.TextTBackground);
-        SetDefaultTextColor("TEXT_COLOR_H", theme.TextHForeground, theme.TextHBackground);
+        Defaults.SetDefaultTextColor("TEXT_COLOR_T", theme.TextTForeground, theme.TextTBackground);
+        Defaults.SetDefaultTextColor("TEXT_COLOR_H", theme.TextHForeground, theme.TextHBackground);
     }
 
-    private static void SetDefaultColor(string key, Color color)
-    {
-        var keyPtr = Pdk.Allocate(key).Offset;
-
-        Functions.SetDefaultColor(keyPtr, Utils.Serialize(color, JsonContext.Default.Color));
-    }
-
-    private static void SetDefaultTextColor(string key, Color foreground, Color background)
-    {
-        var keyPtr = Pdk.Allocate(key).Offset;
-        var textColor = new TextColor(foreground, background);
-        var textColorPtr = Utils.Serialize(textColor, JsonContext.Default.TextColor);
-
-        Functions.SetDefaultTextColor(keyPtr, textColorPtr);
-    }
 }

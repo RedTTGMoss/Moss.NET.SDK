@@ -1,3 +1,3 @@
 ﻿namespace Moss.NET.Sdk.FFI;
 
-public record ConfigSet(string key, object value);
+internal record ConfigSet(string key, object value);

@@ -9,4 +9,4 @@ Screen & ChildScreen: - These are considered UI rendering objects and will have 
 */
 namespace Moss.NET.Sdk.FFI;
 
-public record Screen(string key, string screen_loop, string? screen_pre_loop = null, string? screen_post_loop = null, string? event_hook = null);
+internal record Screen(string key, string screen_loop, string? screen_pre_loop = null, string? screen_post_loop = null, string? event_hook = null);

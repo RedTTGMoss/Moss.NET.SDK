@@ -19,7 +19,7 @@ public static class Dispatcher
 
     public static void Dispatch(MossEvent ev, params object[] args)
     {
-        if (!_events.TryGetValue(ev, out List<Delegate> value))
+        if (!_events.TryGetValue(ev, out var value))
         {
             return;
         }

@@ -19,6 +19,6 @@ namespace Moss.NET.Sdk.FFI;
 [JsonSerializable(typeof(Rect))]
 [JsonSerializable(typeof(Screen))]
 [JsonSerializable(typeof(Dictionary<string, object>))]
-public partial class JsonContext : JsonSerializerContext
+internal partial class JsonContext : JsonSerializerContext
 {
 }

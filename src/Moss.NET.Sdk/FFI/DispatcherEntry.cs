@@ -1,9 +1,8 @@
 using System.Runtime.InteropServices;
-using Extism;
 
 namespace Moss.NET.Sdk.FFI;
 
-public static class DispatcherEntry
+internal static class DispatcherEntry
 {
     [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_preloop")]
     public static ulong DispatcherPreLoopEntry()

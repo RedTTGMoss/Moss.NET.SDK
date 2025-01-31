@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using Extism;
 
@@ -22,18 +19,6 @@ internal static class Utils
         var memory = MemoryBlock.Find(ptr);
         var output = memory.ReadString();
 
-        return JsonSerializer.Deserialize(output, typeInfo);
-    }
-
-    public static string GetExportName(Action action)
-    {
-        var attr = action.Method.GetCustomAttribute<UnmanagedCallersOnlyAttribute>();
-
-        if (attr is null)
-        {
-            throw new InvalidOperationException("The UnmanagedCallersOnlyAttribute is mandatory.");
-        }
-
-        return attr.EntryPoint;
+        return JsonSerializer.Deserialize(output, typeInfo)!;
     }
 }

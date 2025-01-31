@@ -6,7 +6,7 @@ namespace Moss.NET.Sdk;
 
 public class MossExtension
 {
-    internal static MossExtension Instance;
+    internal static MossExtension? Instance;
 
     public virtual ExtensionInfo Register(MossState state)
     {
@@ -24,7 +24,7 @@ public class MossExtension
     private static void SetExtensionInfo()
     {
         var input = Pdk.GetInputJson(JsonContext.Default.MossState);
-        Pdk.SetOutputJson(Instance.Register(input), JsonContext.Default.ExtensionInfo);
+        Pdk.SetOutputJson(Instance!.Register(input!), JsonContext.Default.ExtensionInfo);
     }
 
     public static void Init<T>() where T : MossExtension, new()
