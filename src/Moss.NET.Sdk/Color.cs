@@ -3,27 +3,19 @@ using System.Text.Json.Serialization;
 
 namespace Moss.NET.Sdk;
 
-public struct Color
+public readonly struct Color(long r, long g, long b, long a = 255)
 {
     [JsonPropertyName("r")]
-    public long R { get; init; }
+    public long R { get; init; } = r;
 
     [JsonPropertyName("g")]
-    public long G { get; init; }
+    public long G { get; init; } = g;
 
     [JsonPropertyName("b")]
-    public long B { get; init; }
+    public long B { get; init; } = b;
 
     [JsonPropertyName("a")]
-    public long A { get; init; }
-
-    public Color(long r, long g, long b, long a = 255)
-    {
-        R = r;
-        G = g;
-        B = b;
-        A = a;
-    }
+    public long A { get; init; } = a;
 
     public static Color AliceBlue => new(240, 248, 255);
     public static Color AntiqueWhite => new(250, 235, 215);

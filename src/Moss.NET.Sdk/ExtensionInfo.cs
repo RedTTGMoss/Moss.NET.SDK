@@ -1,5 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Moss.NET.Sdk;
 
-public record ExtensionInfo(List<File> files);
+public readonly struct ExtensionInfo(List<File> files)
+{
+    [JsonPropertyName("files")]
+    public List<File> Files { get; } = files;
+}

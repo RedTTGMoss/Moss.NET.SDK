@@ -23,7 +23,7 @@ public static class ScreenManager
     public static void Register<T>()
         where T : IScreen
     {
-        var screen = new Screen(T.Name, "ext_event_screen_loop");
+        var screen = new Screen(T.Name, "ext_event_screen_loop", "ext_event_screen_pre_loop", "ext_event_screen_post_loop");
         var screenPtr = Utils.Serialize(screen, JsonContext.Default.Screen);
         Dispatcher.Register(MossEvent.ScreenLoop, T.Loop);
 
