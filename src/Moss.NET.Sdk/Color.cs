@@ -1,7 +1,30 @@
-﻿namespace Moss.NET.Sdk;
+﻿using System;
+using System.Text.Json.Serialization;
 
-public record Color(long r, long g, long b, long a = 255)
+namespace Moss.NET.Sdk;
+
+public struct Color
 {
+    [JsonPropertyName("r")]
+    public long R { get; init; }
+
+    [JsonPropertyName("g")]
+    public long G { get; init; }
+
+    [JsonPropertyName("b")]
+    public long B { get; init; }
+
+    [JsonPropertyName("a")]
+    public long A { get; init; }
+
+    public Color(long r, long g, long b, long a = 255)
+    {
+        R = r;
+        G = g;
+        B = b;
+        A = a;
+    }
+
     public static Color AliceBlue => new(240, 248, 255);
     public static Color AntiqueWhite => new(250, 235, 215);
     public static Color Aqua => new(0, 255, 255);
@@ -152,5 +175,84 @@ public record Color(long r, long g, long b, long a = 255)
         var b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
 
         return new Color(r, g, b);
+    }
+
+    public static Color FromHLS(double hue, double lighting, double saturation, long alpha = 255)
+    {
+        double r = 0, g = 0, b = 0;
+
+        if (saturation == 0)
+        {
+            r = g = b = lighting; // achromatic
+        }
+        else
+        {
+            double q = lighting < 0.5 ? lighting * (1 + saturation) : lighting + saturation - lighting * saturation;
+            double p = 2 * lighting - q;
+
+            r = HueToRGB(p, q, hue + 1.0 / 3.0);
+            g = HueToRGB(p, q, hue);
+            b = HueToRGB(p, q, hue - 1.0 / 3.0);
+        }
+
+        return new Color((long)(r * 255), (long)(g * 255), (long)(b * 255), alpha);
+    }
+
+    private static double HueToRGB(double p, double q, double t)
+    {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1.0 / 6.0) return p + (q - p) * 6 * t;
+        if (t < 1.0 / 2.0) return q;
+        if (t < 2.0 / 3.0) return p + (q - p) * (2.0 / 3.0 - t) * 6;
+
+        return p;
+    }
+
+    public static Color Blend(Color color1, Color color2, double ratio)
+    {
+        if (ratio < 0 || ratio > 1)
+            throw new ArgumentOutOfRangeException(nameof(ratio), "Ratio must be between 0 and 1");
+
+        long r = (long)(color1.R * ratio + color2.R * (1 - ratio));
+        long g = (long)(color1.G * ratio + color2.G * (1 - ratio));
+        long b = (long)(color1.B * ratio + color2.B * (1 - ratio));
+        long a = (long)(color1.A * ratio + color2.A * (1 - ratio));
+
+        return new Color(r, g, b, a);
+    }
+
+    public readonly Color Invert()
+    {
+        return new Color(255 - R, 255 - G, 255 - B, A);
+    }
+
+    public static Color operator -(Color color)
+    {
+        return color.Invert();
+    }
+
+    public readonly Color ToGrayscale()
+    {
+        long gray = (long)(R * 0.3 + G * 0.59 + B * 0.11);
+        return new Color(gray, gray, gray, A);
+    }
+
+    public readonly Color AdjustAlpha(long newAlpha)
+    {
+        return new Color(R, G, B, newAlpha);
+    }
+
+    public readonly Color AdjustBrightness(double factor)
+    {
+        long r = (long)(R * factor);
+        long g = (long)(G * factor);
+        long b = (long)(B * factor);
+
+        r = Math.Clamp(r, 0, 255);
+        g = Math.Clamp(g, 0, 255);
+        b = Math.Clamp(b, 0, 255);
+
+        return new Color(r, g, b, A);
     }
 }
