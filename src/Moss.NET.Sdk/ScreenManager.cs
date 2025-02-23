@@ -25,12 +25,12 @@ public static class ScreenManager
     internal static extern void CloseMossScreen();
 
     private static Dictionary<string, Screen> Screens = new();
-    private static Screen CurrentScreen { get; set; }
+    private static Stack<Screen> OpenedScreens { get; set; }
 
     [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_preloop")]
     public static ulong DispatcherPreLoopEntry()
     {
-        CurrentScreen.PreLoop();
+        OpenedScreens.Peek().PreLoop();
 
         return 0;
     }
@@ -38,7 +38,7 @@ public static class ScreenManager
     [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_postloop")]
     public static ulong DispatcherPostLoopEntry()
     {
-        CurrentScreen.PostLoop();
+        OpenedScreens.Peek().PostLoop();
 
         return 0;
     }
@@ -46,7 +46,7 @@ public static class ScreenManager
     [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_loop")]
     public static ulong DispatcherLoopEntry()
     {
-        CurrentScreen.Loop();
+        OpenedScreens.Peek().Loop();
 
         return 0;
     }
@@ -75,12 +75,18 @@ public static class ScreenManager
             Register<T>();
         }
 
-        CurrentScreen = Screens[instance.Name];
+        OpenedScreens.Push(Screens[instance.Name]);
         OpenScreen(namePtr, valuesPtr);
     }
 
     public static void CloseScreen()
     {
-        CurrentScreen.Close();
+        if (OpenedScreens.TryPop(out var screen))
+        {
+            screen.Close();
+            return;
+        }
+
+        CloseMossScreen();
     }
 }

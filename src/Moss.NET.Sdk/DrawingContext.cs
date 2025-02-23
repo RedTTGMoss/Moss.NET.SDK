@@ -14,8 +14,8 @@ public class DrawingContext
     [DllImport(Functions.DLL, EntryPoint = "moss_text_make")]
     private static extern ulong MakeText(ulong textPtr, ulong fontPtr, long font_size, ulong textColorsPtr); // -> ConfigGet<int>
 
-    //[DllImport(Functions.DLL, EntryPoint = "moss_text_set_text")]
-    private static extern void SetText(long text_id, ulong textPtr);
+    [DllImport(Functions.DLL, EntryPoint = "moss_text_set_text")]
+    private static extern ulong SetText(ulong text_id, ulong textPtr); //-> Rect
 
     //[DllImport(Functions.DLL, EntryPoint = "moss_text_set_font")]
     private static extern void SetFont(long text_id, ulong fontPtr, int font_size);
@@ -24,7 +24,7 @@ public class DrawingContext
     private static extern void SetTextRect(ulong text_id, ulong rectPtr);
 
     //[DllImport(Functions.DLL, EntryPoint = "moss_text_get_rect")]
-    private static extern ulong GetTextRect(long text_id, ulong rectPtr); // -> Rect
+    private static extern ulong GetTextRect(ulong text_id, ulong rectPtr); // -> Rect
 
     [DllImport(Functions.DLL, EntryPoint = "moss_text_display")]
     private static extern void MossDisplayText(ulong text_id);
@@ -40,7 +40,7 @@ public class DrawingContext
     public static ulong MakeText(string text, long fontSize, Color? foreground = null)
     {
         var textPtr = Pdk.Allocate(text).Offset;
-        var fontPtr = Pdk.Allocate(Defaults.GetDefaultValue<string>("CUSTOM_FONT")!).Offset;
+        var fontPtr = Pdk.Allocate(Defaults.GetDefaultValue<string>("CUSTOM_FONT")).Offset;
         var textColor = new TextColor(foreground ?? Color.Black);
 
         var resultPtr = MakeText(textPtr, fontPtr, fontSize, Utils.Serialize(textColor, JsonContext.Default.TextColor));
@@ -53,5 +53,10 @@ public class DrawingContext
     {
         SetTextRect(textID, Utils.Serialize(rect, JsonContext.Default.Rect));
         MossDisplayText(textID);
+    }
+
+    public static void SetText(ulong id, string text)
+    {
+        SetText(id, Pdk.Allocate(text).Offset);
     }
 }

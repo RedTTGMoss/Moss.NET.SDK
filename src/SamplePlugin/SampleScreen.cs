@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Extism;
+﻿using Extism;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.FFI;
 
@@ -13,6 +12,7 @@ public class SampleScreen : Screen
     public override void PreLoop()
     {
         helloID = DrawingContext.MakeText("Hello, World!", 12);
+        DrawingContext.SetText(helloID, "Edited");
     }
 
     public override void Loop()
