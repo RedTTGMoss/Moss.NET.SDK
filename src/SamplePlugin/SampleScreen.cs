@@ -20,6 +20,7 @@ public class SampleScreen : Screen
         Pdk.Log(LogLevel.Warn, "samplescreen loop calling");
 
         DrawingContext.DrawRect(Color.Red, 10, 10, 10, 10);
+        DrawingContext.SetFont(helloID, Defaults.GetDefaultValue<string>("CUSTOM_FONT"), 25);
         DrawingContext.DisplayText(helloID, new Rect(100, 100, 100, 100));
     }
 }

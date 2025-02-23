@@ -25,7 +25,7 @@ public static class ScreenManager
     internal static extern void CloseMossScreen();
 
     private static Dictionary<string, Screen> Screens = new();
-    private static Stack<Screen> OpenedScreens { get; set; }
+    private static Stack<Screen> OpenedScreens { get; set; } = new();
 
     [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_preloop")]
     public static ulong DispatcherPreLoopEntry()

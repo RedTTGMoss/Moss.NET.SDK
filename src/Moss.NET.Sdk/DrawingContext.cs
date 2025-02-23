@@ -17,8 +17,8 @@ public class DrawingContext
     [DllImport(Functions.DLL, EntryPoint = "moss_text_set_text")]
     private static extern ulong SetText(ulong text_id, ulong textPtr); //-> Rect
 
-    //[DllImport(Functions.DLL, EntryPoint = "moss_text_set_font")]
-    private static extern void SetFont(long text_id, ulong fontPtr, int font_size);
+    [DllImport(Functions.DLL, EntryPoint = "moss_text_set_font")]
+    private static extern ulong SetFont(ulong text_id, ulong fontPtr, ulong font_size);
 
     [DllImport(Functions.DLL, EntryPoint = "moss_text_set_rect")]
     private static extern void SetTextRect(ulong text_id, ulong rectPtr);
@@ -58,5 +58,10 @@ public class DrawingContext
     public static void SetText(ulong id, string text)
     {
         SetText(id, Pdk.Allocate(text).Offset);
+    }
+
+    public static void SetFont(ulong id, string font, ulong fontSize)
+    {
+        SetFont(id, Pdk.Allocate(font).Offset, fontSize);
     }
 }
