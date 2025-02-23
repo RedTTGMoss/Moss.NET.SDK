@@ -9,6 +9,7 @@ internal static class MossEntry
     public static ulong Unregister()
     {
         MossExtension.Instance!.Unregister();
+        Pdk.Log(LogLevel.Info, "unregistered extension");
         return 0;
     }
 

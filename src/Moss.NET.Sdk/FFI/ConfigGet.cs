@@ -1,3 +1,6 @@
-﻿namespace Moss.NET.Sdk.FFI;
+﻿using System.Text.Json;
 
-internal record ConfigGet(object value);
+namespace Moss.NET.Sdk.FFI;
+
+internal record ConfigGetD(JsonElement value);
+internal record ConfigGetS(object value);

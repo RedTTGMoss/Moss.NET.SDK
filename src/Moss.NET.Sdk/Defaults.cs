@@ -1,4 +1,6 @@
 using System.Runtime.InteropServices;
+using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using Extism;
 using Moss.NET.Sdk.FFI;
 
@@ -15,6 +17,9 @@ public static class Defaults
 
     [DllImport(Functions.DLL, EntryPoint = "moss_defaults_get")]
     private static extern ulong GetDefaultValue(ulong keyPtr); //-> ConfigGet
+
+    [DllImport(Functions.DLL, EntryPoint = "moss_defaults_get_color")]
+    private static extern ulong MossGetDefaultColor(ulong keyPtr); // -> Color
 
     [DllImport(Functions.DLL, EntryPoint = "_moss_defaults_set")]
     private static extern void SetDefaultValue(ulong configSetPtr);
@@ -42,12 +47,20 @@ public static class Defaults
         SetDefaultValue(valuePtr);
     }
 
-    public static object GetDefaultValue(string key)
+    public static T GetDefaultValue<T>(string key)
     {
         var keyPtr = Pdk.Allocate(key).Offset;
         var valuePtr = GetDefaultValue(keyPtr);
 
-        return Utils.Deserialize(valuePtr, JsonContext.Default.ConfigGet).value;
+        return Utils.Deserialize(valuePtr, JsonContext.Default.ConfigGetD).value.Deserialize<T>((JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T)));
+    }
+
+    public static Color GetDefaultColor(string key)
+    {
+        var keyPtr = Pdk.Allocate(key).Offset;
+        var valuePtr = MossGetDefaultColor(keyPtr);
+
+        return Utils.Deserialize(valuePtr, JsonContext.Default.Color);
     }
 
     public static TextColor GetDefaultTextColor(string key)
@@ -56,13 +69,5 @@ public static class Defaults
         var textColorPtr = GetDefaultTextColor(keyPtr);
 
         return Utils.Deserialize(textColorPtr, JsonContext.Default.TextColor);
-    }
-
-    public static Color GetDefaultColor(string key)
-    {
-        var keyPtr = Pdk.Allocate(key).Offset;
-        var colorPtr = GetDefaultValue(keyPtr);
-
-        return Utils.Deserialize(colorPtr, JsonContext.Default.Color);
     }
 }

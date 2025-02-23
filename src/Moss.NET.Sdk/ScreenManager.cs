@@ -20,22 +20,67 @@ public static class ScreenManager
     [DllImport(Functions.DLL, EntryPoint = "_moss_pe_set_screen_value")]
     private static extern void SetScreenValue(ulong configSetPtr);
 
-    public static void Register<T>()
-        where T : IScreen
+    //pe_close_screen
+    [DllImport(Functions.DLL, EntryPoint = "moss_pe_close_screen")]
+    internal static extern void CloseMossScreen();
+
+    private static Dictionary<string, Screen> Screens = new();
+    private static Screen CurrentScreen { get; set; }
+
+    [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_preloop")]
+    public static ulong DispatcherPreLoopEntry()
     {
-        var screen = new Screen(T.Name, "ext_event_screen_loop", "ext_event_screen_pre_loop", "ext_event_screen_post_loop");
+        CurrentScreen.PreLoop();
+
+        return 0;
+    }
+
+    [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_postloop")]
+    public static ulong DispatcherPostLoopEntry()
+    {
+        CurrentScreen.PostLoop();
+
+        return 0;
+    }
+
+    [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_loop")]
+    public static ulong DispatcherLoopEntry()
+    {
+        CurrentScreen.Loop();
+
+        return 0;
+    }
+
+    public static void Register<T>()
+        where T : Screen, new()
+    {
+        var instance = Activator.CreateInstance<T>();
+        var screen = new FFI.Screen(instance.Name, "ext_event_screen_loop", "ext_event_screen_preloop", "ext_event_screen_postloop");
         var screenPtr = Utils.Serialize(screen, JsonContext.Default.Screen);
-        Dispatcher.Register(MossEvent.ScreenLoop, T.Loop);
+        Screens.TryAdd(instance.Name, instance);
 
         RegisterScreen(screenPtr);
     }
 
-    public static void OpenScreen(string name, Dictionary<string, object> values)
+    public static void OpenScreen<T>(Dictionary<string, object> values)
+        where T : Screen, new()
     {
-        var namePtr = Pdk.Allocate(name).Offset;
+        var instance = Activator.CreateInstance<T>();
+
+        var namePtr = Pdk.Allocate(instance.Name).Offset;
         var valuesPtr = Utils.Serialize(values, JsonContext.Default.DictionaryStringObject);
 
+        if (!Screens.ContainsKey(instance.Name))
+        {
+            Register<T>();
+        }
 
+        CurrentScreen = Screens[instance.Name];
         OpenScreen(namePtr, valuesPtr);
+    }
+
+    public static void CloseScreen()
+    {
+        CurrentScreen.Close();
     }
 }

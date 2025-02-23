@@ -1,24 +1,19 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Moss.NET.Sdk.FFI.New;
+namespace Moss.NET.Sdk.NEW;
 
 //refers to https://redttg.gitbook.io/moss/extensions/host-functions
-internal static class Functions
+public static class Functions
 {
-    internal const string DLL = "extism";
+    private const string DLL = "extism";
 
-    [DllImport(DLL, EntryPoint = "document_metadata_get")]
-    public static extern void GetDocumentMetadata(ulong keyPtr); // -> ConfigGet
+    [DllImport(DLL, EntryPoint = "moss_api_document_get")]
+    public static extern ulong GetApiDocument(ulong uuidPtr, ulong keyPtr); // -> ConfigGet
 
-    [DllImport(DLL, EntryPoint = "collection_metadata_get")]
-    public static extern void GetCollectionMetadata(ulong keyPtr); // -> ConfigGet
+    //moss_api_document_get_all(document_uuid: str) -> RM_Document
+    [DllImport(DLL, EntryPoint = "moss_api_document_get_all")]
+    public static extern ulong GetApiDocumentAll(ulong uuidPtr); // -> ConfigGet[RMDocument]
 
-    [DllImport(DLL, EntryPoint = "document_set_provision")]
-    public static extern void SetDocumentProvision(bool toggle);
+    //moss_em_export_statistical_data()
 
-    [DllImport(DLL, EntryPoint = "document_get_provision")]
-    public static extern bool GetDocumentProvision();
-
-    [DllImport(DLL, EntryPoint = "document_metadata_set")]
-    public static extern void SetDocumentMetadata(ulong configSetPTr);
 }

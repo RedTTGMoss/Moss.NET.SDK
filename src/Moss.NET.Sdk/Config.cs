@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Text.Json;
 using Moss.NET.Sdk.FFI;
 
 namespace Moss.NET.Sdk;
@@ -18,7 +19,7 @@ public static class Config
 
     public static T Get<T>(string key)
     {
-        var ptr = GetConfig(Utils.Serialize(new ConfigGet(key), JsonContext.Default.ConfigGet));
-        return (T)Utils.Deserialize(ptr, JsonContext.Default.ConfigGet).value;
+        var ptr = GetConfig(Utils.Serialize(new ConfigGetS(key), JsonContext.Default.ConfigGetS));
+        return Utils.Deserialize(ptr, JsonContext.Default.ConfigGetD).value.Deserialize<T>();
     }
 }

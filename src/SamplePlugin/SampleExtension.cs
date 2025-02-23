@@ -16,30 +16,34 @@ public class SampleExtension : MossExtension
         return 0;
     }
 
-    public static void Main()
-    {
-         Pdk.Log(LogLevel.Info, "extension started");
-    }
+    public static void Main() {}
 
     public override ExtensionInfo Register(MossState state)
     {
         Pdk.Log(LogLevel.Info, "registered sample extension");
 
         Config.Set("theme", "dark");
+        Defaults.SetDefaultValue("OUTLINE_COLOR", Color.Blue);
         Theme.Apply(new DarkTheme());
-
-        ScreenManager.Register<SampleScreen>();
 
         return new ExtensionInfo([]);
     }
 
     public override void ExtensionLoop(MossState state)
     {
-        ScreenManager.OpenScreen(SampleScreen.Name, []);
+        ScreenManager.OpenScreen<SampleScreen>([]);
+        Defaults.GetDefaultColor("BACKGROUND");
+        Defaults.GetDefaultTextColor("TEXT_COLOR");
+        Defaults.GetDefaultValue<string>("LOG_FILE");
+        Config.Get<string>("theme");
+        Moss.NET.Sdk.Moss.GetState();
+
+        InternalFunctions.ExportStatisticalData();
     }
 
     public override void Unregister()
     {
+        ScreenManager.CloseScreen();
         Pdk.Log(LogLevel.Info, "unregistered sample extension");
     }
 }
