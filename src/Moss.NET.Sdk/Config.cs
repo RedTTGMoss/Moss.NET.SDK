@@ -20,6 +20,6 @@ public static class Config
     public static T Get<T>(string key)
     {
         var ptr = GetConfig(Utils.Serialize(new ConfigGetS(key), JsonContext.Default.ConfigGetS));
-        return Utils.Deserialize(ptr, JsonContext.Default.ConfigGetD).value.Deserialize<T>();
+        return Utils.Deserialize(ptr, JsonContext.Default.ConfigGetD).value.GetValue<T>();
     }
 }

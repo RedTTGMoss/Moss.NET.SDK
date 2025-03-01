@@ -19,7 +19,10 @@ internal static class Utils
     {
         var memory = MemoryBlock.Find(ptr);
         var output = memory.ReadString();
+
+        #if DEBUG
         Pdk.Log(LogLevel.Info, $"{typeInfo.Type.Name}: {output}");
+        #endif
 
         try
         {

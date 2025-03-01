@@ -72,7 +72,7 @@ public partial class TextWidget : Widget
         var resultPtr = MakeText(textPtr, fontPtr, FontSize, Utils.Serialize(textColor, JsonContext.Default.TextColor));
         var value = Utils.Deserialize(resultPtr, JsonContext.Default.ConfigGetD).value;
 
-        return value.Deserialize<ulong>();
+        return value.GetUInt64();
     }
 
     protected override void OnRender()

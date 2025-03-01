@@ -100,6 +100,8 @@ public static class ScreenManager
     {
         var valuePtr = GetScreenValue(Pdk.Allocate(key).Offset);
 
-        return Utils.Deserialize(valuePtr, JsonContext.Default.ConfigGetD).value.Deserialize<T>();
+        var value = Utils.Deserialize(valuePtr, JsonContext.Default.ConfigGetD).value;
+
+        return value.GetValue<T>();
     }
 }
