@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Moss.NET.Sdk.NEW.Converters;
 
 namespace Moss.NET.Sdk.NEW;
 
@@ -6,7 +7,9 @@ public class Metadata
 {
     [JsonPropertyName("hash")] public string Hash { get; set; }
 
-    [JsonPropertyName("type")] public RMDocumentType Type { get; set; }
+    [JsonPropertyName("type")]
+    [JsonConverter(typeof(EnumTypeConverter<RMDocumentType>))]
+    public RMDocumentType Type { get; set; }
 
     [JsonPropertyName("parent")] public string Parent { get; set; }
 

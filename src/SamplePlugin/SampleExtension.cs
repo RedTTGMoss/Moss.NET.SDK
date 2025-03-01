@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using Extism;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.FFI;
+using Moss.NET.Sdk.NEW;
 
 namespace SamplePlugin;
 
@@ -43,8 +44,8 @@ public class SampleExtension : MossExtension
         Config.Get<string>("theme");
         Moss.NET.Sdk.Moss.GetState();
 
-        //var md = Storage.GetMetadata("0ba3df9c-8ca0-4347-8d7c-07471101baad");
-        //Pdk.Log(LogLevel.Info, $"Metadata: {md.VisibleName} with {md.Hash}");
+        var md = Storage.GetMetadata("0ba3df9c-8ca0-4347-8d7c-07471101baad");
+        Pdk.Log(LogLevel.Info, $"Metadata: {md.VisibleName} with {md.Hash}");
 
         InternalFunctions.ExportStatisticalData();
     }

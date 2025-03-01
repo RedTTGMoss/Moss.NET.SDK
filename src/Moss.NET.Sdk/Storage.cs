@@ -15,6 +15,6 @@ public static class Storage
         var uuidPtr = Pdk.Allocate(uuid).Offset;
         var resultPtr = GetMetadata(uuidPtr);
 
-        return Utils.Deserialize(resultPtr, ApiJsonContext.Default.Metadata);
+        return Utils.Deserialize(resultPtr, JsonContext.Default.Metadata);
     }
 }
