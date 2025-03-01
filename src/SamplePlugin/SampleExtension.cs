@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Extism;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.FFI;
@@ -15,7 +16,9 @@ public class SampleExtension : MossExtension
         return 0;
     }
 
-    public static void Main() {}
+    public static void Main()
+    {
+    }
 
     public override ExtensionInfo Register(MossState state)
     {
@@ -30,9 +33,9 @@ public class SampleExtension : MossExtension
 
     public override void ExtensionLoop(MossState state)
     {
-        ScreenManager.OpenScreen<SampleScreen>(new()
+        ScreenManager.OpenScreen<SampleScreen>(new Dictionary<string, object>()
         {
-            {"hello", true}
+            { "hello", true }
         });
         Defaults.GetDefaultColor("BACKGROUND");
         Defaults.GetDefaultTextColor("TEXT_COLOR");

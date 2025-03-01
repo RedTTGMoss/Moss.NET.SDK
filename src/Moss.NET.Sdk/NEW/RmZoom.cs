@@ -1,11 +1,10 @@
-namespace Moss.NET.Sdk.NEW;
-
 using System.Text.Json.Serialization;
+
+namespace Moss.NET.Sdk.NEW;
 
 public class RmZoom
 {
-    [JsonPropertyName("zoomMode")]
-    public RMZoomMode ZoomMode { get; set; }
+    [JsonPropertyName("zoomMode")] public RMZoomMode ZoomMode { get; set; }
 
     [JsonPropertyName("customZoomCenterX")]
     public long CustomZoomCenterX { get; set; }
@@ -19,6 +18,5 @@ public class RmZoom
     [JsonPropertyName("customZoomPageWidth")]
     public long CustomZoomPageWidth { get; set; }
 
-    [JsonPropertyName("customZoomScale")]
-    public long CustomZoomScale { get; set; }
+    [JsonPropertyName("customZoomScale")] public long CustomZoomScale { get; set; }
 }

@@ -4,5 +4,5 @@ public enum MossEvent
 {
     ScreenPreLoop,
     ScreenLoop,
-    ScreenPostLoop,
+    ScreenPostLoop
 }

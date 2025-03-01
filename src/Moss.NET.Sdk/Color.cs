@@ -1,21 +1,18 @@
 ﻿using System;
+using System.Globalization;
 using System.Text.Json.Serialization;
 
 namespace Moss.NET.Sdk;
 
 public readonly struct Color(long r, long g, long b, long? a = 255)
 {
-    [JsonPropertyName("r")]
-    public long R { get; init; } = r;
+    [JsonPropertyName("r")] public long R { get; init; } = r;
 
-    [JsonPropertyName("g")]
-    public long G { get; init; } = g;
+    [JsonPropertyName("g")] public long G { get; init; } = g;
 
-    [JsonPropertyName("b")]
-    public long B { get; init; } = b;
+    [JsonPropertyName("b")] public long B { get; init; } = b;
 
-    [JsonPropertyName("a")]
-    public long? A { get; init; } = a;
+    [JsonPropertyName("a")] public long? A { get; init; } = a;
 
     public static Color AliceBlue => new(240, 248, 255);
     public static Color AntiqueWhite => new(250, 235, 215);
@@ -162,9 +159,9 @@ public readonly struct Color(long r, long g, long b, long? a = 255)
     {
         hex = hex.Replace("#", string.Empty);
 
-        var r = byte.Parse(hex[..2], System.Globalization.NumberStyles.HexNumber);
-        var g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-        var b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+        var r = byte.Parse(hex[..2], NumberStyles.HexNumber);
+        var g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
+        var b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
 
         return new Color(r, g, b);
     }
@@ -179,8 +176,8 @@ public readonly struct Color(long r, long g, long b, long? a = 255)
         }
         else
         {
-            double q = lighting < 0.5 ? lighting * (1 + saturation) : lighting + saturation - lighting * saturation;
-            double p = 2 * lighting - q;
+            var q = lighting < 0.5 ? lighting * (1 + saturation) : lighting + saturation - lighting * saturation;
+            var p = 2 * lighting - q;
 
             r = HueToRGB(p, q, hue + 1.0 / 3.0);
             g = HueToRGB(p, q, hue);
@@ -206,10 +203,10 @@ public readonly struct Color(long r, long g, long b, long? a = 255)
         if (ratio < 0 || ratio > 1)
             throw new ArgumentOutOfRangeException(nameof(ratio), "Ratio must be between 0 and 1");
 
-        long r = (long)(color1.R * ratio + color2.R * (1 - ratio));
-        long g = (long)(color1.G * ratio + color2.G * (1 - ratio));
-        long b = (long)(color1.B * ratio + color2.B * (1 - ratio));
-        long a = (long)(color1.A * ratio + color2.A * (1 - ratio));
+        var r = (long)(color1.R * ratio + color2.R * (1 - ratio));
+        var g = (long)(color1.G * ratio + color2.G * (1 - ratio));
+        var b = (long)(color1.B * ratio + color2.B * (1 - ratio));
+        var a = (long)(color1.A * ratio + color2.A * (1 - ratio));
 
         return new Color(r, g, b, a);
     }
@@ -226,7 +223,7 @@ public readonly struct Color(long r, long g, long b, long? a = 255)
 
     public readonly Color ToGrayscale()
     {
-        long gray = (long)(R * 0.3 + G * 0.59 + B * 0.11);
+        var gray = (long)(R * 0.3 + G * 0.59 + B * 0.11);
         return new Color(gray, gray, gray, A);
     }
 
@@ -237,9 +234,9 @@ public readonly struct Color(long r, long g, long b, long? a = 255)
 
     public readonly Color AdjustBrightness(double factor)
     {
-        long r = (long)(R * factor);
-        long g = (long)(G * factor);
-        long b = (long)(B * factor);
+        var r = (long)(R * factor);
+        var g = (long)(G * factor);
+        var b = (long)(B * factor);
 
         r = Math.Clamp(r, 0, 255);
         g = Math.Clamp(g, 0, 255);

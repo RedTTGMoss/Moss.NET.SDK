@@ -11,8 +11,8 @@ public class SampleScreen : Screen
 
     public override void PreLoop()
     {
-        helloWidget = new TextWidget("Hello, World!", 12, 100,100,100,50);
-        rectWidget = new RectWidget(Color.Red, 10,10,10,10);
+        helloWidget = new TextWidget("Hello, World!", 12, 100, 100, 100, 50);
+        rectWidget = new RectWidget(Color.Red, 10, 10, 10, 10);
 
         helloWidget.FontSize = 12;
         helloWidget.Text = "Edited";

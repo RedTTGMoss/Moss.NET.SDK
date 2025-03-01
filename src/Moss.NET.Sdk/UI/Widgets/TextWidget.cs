@@ -5,12 +5,25 @@ using Moss.NET.Sdk.FFI;
 
 namespace Moss.NET.Sdk.UI;
 
-[SuppressMessage("Trimming", "IL2026:Members annotated with \'RequiresUnreferencedCodeAttribute\' require dynamic access otherwise can break functionality when trimming application code")]
+[SuppressMessage("Trimming",
+    "IL2026:Members annotated with \'RequiresUnreferencedCodeAttribute\' require dynamic access otherwise can break functionality when trimming application code")]
 public partial class TextWidget : Widget
 {
     private string _font;
     private ulong _fontSize;
     private string _text;
+
+    public TextWidget(string text, ulong fontSize, int x = 0, int y = 0, int width = 0, int height = 0)
+    {
+        _text = text;
+        _font = Defaults.GetDefaultValue<string>("CUSTOM_FONT");
+        _fontSize = fontSize;
+        Id = Init();
+
+        Bounds = new Rect(x, y, width, height);
+
+        SetRect(Bounds);
+    }
 
     public string Text
     {
@@ -46,18 +59,6 @@ public partial class TextWidget : Widget
     }
 
     public Rect Bounds { get; set; }
-
-    public TextWidget(string text, ulong fontSize, int x = 0, int y = 0, int width = 0, int height = 0)
-    {
-        _text = text;
-        _font = Defaults.GetDefaultValue<string>("CUSTOM_FONT");
-        _fontSize = fontSize;
-        Id = Init();
-
-        Bounds = new(x, y, width, height);
-
-        SetRect(Bounds);
-    }
 
     public Color Foreground { get; set; } = Color.Black;
     public Color? Background { get; set; }

@@ -9,11 +9,16 @@ namespace Moss.NET.Sdk;
 
 public static class ScreenManager
 {
+    private static readonly Dictionary<string, Screen> Screens = new();
+    private static Stack<Screen> OpenedScreens { get; } = new();
+
     [DllImport(Functions.DLL, EntryPoint = "moss_pe_register_screen")]
     private static extern void RegisterScreen(ulong keyPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "_moss_pe_open_screen")]
-    private static extern ulong OpenScreen(ulong keyPtr, ulong initial_valuesPtr); // initial_valuesPtr = dict of values, could be any object that is non primitive
+    private static extern ulong
+        OpenScreen(ulong keyPtr,
+            ulong initial_valuesPtr); // initial_valuesPtr = dict of values, could be any object that is non primitive
 
     [DllImport(Functions.DLL, EntryPoint = "moss_pe_get_screen_value")]
     private static extern ulong GetScreenValue(ulong keyPtr); //-> ConfigGet
@@ -24,9 +29,6 @@ public static class ScreenManager
     //pe_close_screen
     [DllImport(Functions.DLL, EntryPoint = "moss_pe_close_screen")]
     internal static extern void CloseMossScreen();
-
-    private static Dictionary<string, Screen> Screens = new();
-    private static Stack<Screen> OpenedScreens { get; set; } = new();
 
     [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_preloop")]
     public static ulong DispatcherPreLoopEntry()
@@ -56,7 +58,8 @@ public static class ScreenManager
         where T : Screen, new()
     {
         var instance = Activator.CreateInstance<T>();
-        var screen = new FFI.Screen(instance.Name, "ext_event_screen_loop", "ext_event_screen_preloop", "ext_event_screen_postloop");
+        var screen = new FFI.Screen(instance.Name, "ext_event_screen_loop", "ext_event_screen_preloop",
+            "ext_event_screen_postloop");
         var screenPtr = Utils.Serialize(screen, JsonContext.Default.Screen);
         Screens.TryAdd(instance.Name, instance);
 
@@ -71,10 +74,7 @@ public static class ScreenManager
         var namePtr = Pdk.Allocate(instance.Name).Offset;
         var valuesPtr = Utils.Serialize(values, JsonContext.Default.DictionaryStringObject);
 
-        if (!Screens.ContainsKey(instance.Name))
-        {
-            Register<T>();
-        }
+        if (!Screens.ContainsKey(instance.Name)) Register<T>();
 
         OpenedScreens.Push(Screens[instance.Name]);
         OpenScreen(namePtr, valuesPtr);

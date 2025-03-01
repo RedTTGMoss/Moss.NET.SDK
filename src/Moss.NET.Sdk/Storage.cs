@@ -17,5 +17,4 @@ public static class Storage
 
         return Utils.Deserialize(resultPtr, ApiJsonContext.Default.Metadata);
     }
-
 }

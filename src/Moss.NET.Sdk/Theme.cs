@@ -53,5 +53,4 @@ public abstract class Theme
         Defaults.SetDefaultTextColor("TEXT_COLOR_T", theme.TextTForeground, theme.TextTBackground);
         Defaults.SetDefaultTextColor("TEXT_COLOR_H", theme.TextHForeground, theme.TextHBackground);
     }
-
 }

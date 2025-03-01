@@ -17,5 +17,4 @@ internal static class Functions
 
     [DllImport(DLL, EntryPoint = "moss_gui_invert_icon")]
     public static extern void InvertIcon(ulong keyPtr, ulong resultKeyPtr);
-
 }

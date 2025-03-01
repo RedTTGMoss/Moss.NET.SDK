@@ -5,28 +5,19 @@ namespace Moss.NET.Sdk;
 
 public static class Dispatcher
 {
-    private static Dictionary<MossEvent, List<Delegate>> _events = new();
+    private static readonly Dictionary<MossEvent, List<Delegate>> _events = new();
 
     public static void Register(MossEvent ev, Delegate callback)
     {
-        if (!_events.ContainsKey(ev))
-        {
-            _events[ev] = [];
-        }
+        if (!_events.ContainsKey(ev)) _events[ev] = [];
 
         _events[ev].Add(callback);
     }
 
     public static void Dispatch(MossEvent ev, params object[] args)
     {
-        if (!_events.TryGetValue(ev, out var value))
-        {
-            return;
-        }
+        if (!_events.TryGetValue(ev, out var value)) return;
 
-        foreach (var callback in value)
-        {
-            callback.DynamicInvoke(args);
-        }
+        foreach (var callback in value) callback.DynamicInvoke(args);
     }
 }

@@ -10,8 +10,10 @@ public static class Defaults
 {
     [DllImport(Functions.DLL, EntryPoint = "moss_defaults_set_color")]
     private static extern void SetDefaultColor(ulong keyPtr, ulong colorPtr);
+
     [DllImport(Functions.DLL, EntryPoint = "moss_defaults_get_text_color")]
     private static extern ulong GetDefaultTextColor(ulong keyPtr); // -> TextColors
+
     [DllImport(Functions.DLL, EntryPoint = "moss_defaults_set_text_color")]
     private static extern void SetDefaultTextColor(ulong keyPtr, ulong textColorPtr);
 
@@ -52,7 +54,8 @@ public static class Defaults
         var keyPtr = Pdk.Allocate(key).Offset;
         var valuePtr = GetDefaultValue(keyPtr);
 
-        return Utils.Deserialize(valuePtr, JsonContext.Default.ConfigGetD).value.Deserialize<T>((JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T)));
+        return Utils.Deserialize(valuePtr, JsonContext.Default.ConfigGetD).value
+            .Deserialize<T>((JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T)));
     }
 
     public static Color GetDefaultColor(string key)

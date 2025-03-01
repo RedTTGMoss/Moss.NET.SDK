@@ -10,9 +10,6 @@ public abstract class Widget
 
     public void Render()
     {
-        if (IsVisible)
-        {
-            OnRender();
-        }
+        if (IsVisible) OnRender();
     }
 }

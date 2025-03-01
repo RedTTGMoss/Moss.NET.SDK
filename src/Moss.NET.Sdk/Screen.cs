@@ -10,8 +10,14 @@ public abstract class Screen
     public WidgetCollection Widgets { get; } = new();
 
     protected abstract void OnLoop();
-    public virtual void PreLoop(){}
-    public virtual void PostLoop(){}
+
+    public virtual void PreLoop()
+    {
+    }
+
+    public virtual void PostLoop()
+    {
+    }
 
     public void Close()
     {

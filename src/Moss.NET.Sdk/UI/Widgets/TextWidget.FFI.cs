@@ -7,7 +7,8 @@ namespace Moss.NET.Sdk.UI;
 public partial class TextWidget
 {
     [DllImport(Functions.DLL, EntryPoint = "moss_text_make")]
-    private static extern ulong MakeText(ulong textPtr, ulong fontPtr, ulong font_size, ulong textColorsPtr); // -> ConfigGet<int>
+    private static extern ulong
+        MakeText(ulong textPtr, ulong fontPtr, ulong font_size, ulong textColorsPtr); // -> ConfigGet<int>
 
     [DllImport(Functions.DLL, EntryPoint = "moss_text_set_text")]
     private static extern ulong SetText(ulong text_id, ulong textPtr); //-> Rect

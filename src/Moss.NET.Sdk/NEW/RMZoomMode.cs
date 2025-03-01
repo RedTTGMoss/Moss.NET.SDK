@@ -5,5 +5,5 @@ public enum RMZoomMode
     bestFit,
     customFit,
     fitToWidth,
-    fitToHeight,
+    fitToHeight
 }
