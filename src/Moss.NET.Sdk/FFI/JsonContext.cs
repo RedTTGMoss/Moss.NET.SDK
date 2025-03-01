@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Moss.NET.Sdk.API;
 using Moss.NET.Sdk.NEW;
 
 namespace Moss.NET.Sdk.FFI;

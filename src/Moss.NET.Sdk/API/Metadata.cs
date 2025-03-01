@@ -1,7 +1,8 @@
 ﻿using System.Text.Json.Serialization;
+using Moss.NET.Sdk.NEW;
 using Moss.NET.Sdk.NEW.Converters;
 
-namespace Moss.NET.Sdk.NEW;
+namespace Moss.NET.Sdk.API;
 
 public class Metadata
 {

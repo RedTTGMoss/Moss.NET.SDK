@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Moss.NET.Sdk.NEW;
 
-namespace Moss.NET.Sdk.FFI;
+namespace Moss.NET.Sdk.API;
 
 [JsonSerializable(typeof(RMFile))]
 [JsonSerializable(typeof(RmPage))]

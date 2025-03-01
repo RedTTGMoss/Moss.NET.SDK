@@ -1,4 +1,4 @@
-﻿namespace Moss.NET.Sdk.NEW;
+﻿namespace Moss.NET.Sdk.API;
 
 public enum RMDocumentType
 {
