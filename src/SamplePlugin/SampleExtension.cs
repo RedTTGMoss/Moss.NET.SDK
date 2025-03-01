@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Extism;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.FFI;
@@ -31,12 +30,18 @@ public class SampleExtension : MossExtension
 
     public override void ExtensionLoop(MossState state)
     {
-        ScreenManager.OpenScreen<SampleScreen>([]);
+        ScreenManager.OpenScreen<SampleScreen>(new()
+        {
+            {"hello", true}
+        });
         Defaults.GetDefaultColor("BACKGROUND");
         Defaults.GetDefaultTextColor("TEXT_COLOR");
         Defaults.GetDefaultValue<string>("LOG_FILE");
         Config.Get<string>("theme");
         Moss.NET.Sdk.Moss.GetState();
+
+        //var md = Storage.GetMetadata("0ba3df9c-8ca0-4347-8d7c-07471101baad");
+        //Pdk.Log(LogLevel.Info, $"Metadata: {md.VisibleName} with {md.Hash}");
 
         InternalFunctions.ExportStatisticalData();
     }

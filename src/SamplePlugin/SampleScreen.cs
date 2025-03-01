@@ -1,26 +1,30 @@
-﻿using Extism;
-using Moss.NET.Sdk;
-using Moss.NET.Sdk.FFI;
+﻿using Moss.NET.Sdk;
+using Moss.NET.Sdk.UI;
 
 namespace SamplePlugin;
 
 public class SampleScreen : Screen
 {
-    private ulong helloID;
+    private TextWidget helloWidget;
+    private RectWidget rectWidget;
     public override string Name => "SampleScreen";
 
     public override void PreLoop()
     {
-        helloID = DrawingContext.MakeText("Hello, World!", 12);
-        DrawingContext.SetText(helloID, "Edited");
+        helloWidget = new TextWidget("Hello, World!", 12, 100,100,100,50);
+        rectWidget = new RectWidget(Color.Red, 10,10,10,10);
+
+        helloWidget.FontSize = 12;
+        helloWidget.Text = "Edited";
+
+        AddWidget(helloWidget);
+        AddWidget(rectWidget);
+
+        ScreenManager.SetValue("hello", true);
     }
 
-    public override void Loop()
+    protected override void OnLoop()
     {
-        Pdk.Log(LogLevel.Warn, "samplescreen loop calling");
-
-        DrawingContext.DrawRect(Color.Red, 10, 10, 10, 10);
-        DrawingContext.SetFont(helloID, Defaults.GetDefaultValue<string>("CUSTOM_FONT"), 25);
-        DrawingContext.DisplayText(helloID, new Rect(100, 100, 100, 100));
+        ScreenManager.GetValue<bool>("hello");
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using Extism;
 using Moss.NET.Sdk.FFI;
 
@@ -12,7 +13,7 @@ public static class ScreenManager
     private static extern void RegisterScreen(ulong keyPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "_moss_pe_open_screen")]
-    private static extern void OpenScreen(ulong keyPtr, ulong initial_valuesPtr); // initial_valuesPtr = dict of values, could be any object that is non primitive
+    private static extern ulong OpenScreen(ulong keyPtr, ulong initial_valuesPtr); // initial_valuesPtr = dict of values, could be any object that is non primitive
 
     [DllImport(Functions.DLL, EntryPoint = "moss_pe_get_screen_value")]
     private static extern ulong GetScreenValue(ulong keyPtr); //-> ConfigGet
@@ -88,5 +89,17 @@ public static class ScreenManager
         }
 
         CloseMossScreen();
+    }
+
+    public static void SetValue(string key, object value)
+    {
+        SetScreenValue(Utils.Serialize(new ConfigSet(key, value), JsonContext.Default.ConfigSet));
+    }
+
+    public static T GetValue<T>(string key)
+    {
+        var valuePtr = GetScreenValue(Pdk.Allocate(key).Offset);
+
+        return Utils.Deserialize(valuePtr, JsonContext.Default.ConfigGetD).value.Deserialize<T>();
     }
 }

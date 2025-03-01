@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using Extism;
 
@@ -18,8 +19,16 @@ internal static class Utils
     {
         var memory = MemoryBlock.Find(ptr);
         var output = memory.ReadString();
-        //Pdk.Log(LogLevel.Info, $"{typeInfo.Type.Name}: {output}");
+        Pdk.Log(LogLevel.Info, $"{typeInfo.Type.Name}: {output}");
 
-        return JsonSerializer.Deserialize(output, typeInfo)!;
+        try
+        {
+            return JsonSerializer.Deserialize(output, typeInfo)!;
+        }
+        catch (Exception e)
+        {
+            Pdk.Log(LogLevel.Error, e.Message + ": " + output);
+            return default!;
+        }
     }
 }
