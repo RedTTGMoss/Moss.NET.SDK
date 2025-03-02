@@ -85,10 +85,12 @@ public static class ScreenManager
         if (OpenedScreens.TryPop(out var screen))
         {
             screen.Close();
-            return;
         }
 
-        CloseMossScreen();
+        if (OpenedScreens.Count == 0)
+        {
+            CloseMossScreen();
+        }
     }
 
     public static void SetValue(string key, object value)

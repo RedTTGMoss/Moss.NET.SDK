@@ -1,10 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Moss.NET.Sdk.FFI;
 
-public record MossState(
-    int width,
-    int height,
-    string current_screen,
-    List<string> opened_context_menus,
-    List<string> icons);
+public class MossState
+{
+    [JsonPropertyName("width")]
+    public int Width { get; set; }
+
+    [JsonPropertyName("height")]
+    public int Height { get; set; }
+
+    [JsonPropertyName("current_screen")]
+    public string CurrentScreen { get; set; }
+
+    [JsonPropertyName("opened_context_menus")]
+    public List<string> OpenedContextMenus { get; set; }
+
+    [JsonPropertyName("icons")]
+    public string[] Icons { get; set; }
+}

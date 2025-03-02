@@ -1,4 +1,7 @@
-﻿using Moss.NET.Sdk;
+﻿using System.Threading.Tasks;
+using Moss.NET.Sdk;
+using Moss.NET.Sdk.FFI;
+using Moss.NET.Sdk.NEW;
 using Moss.NET.Sdk.UI;
 
 namespace SamplePlugin;
@@ -21,10 +24,12 @@ public class SampleScreen : Screen
         AddWidget(rectWidget);
 
         ScreenManager.SetValue("hello", true);
+
+        ScreenManager.GetValue<bool>("hello");
     }
 
     protected override void OnLoop()
     {
-        ScreenManager.GetValue<bool>("hello");
+
     }
 }

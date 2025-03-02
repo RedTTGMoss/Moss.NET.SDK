@@ -10,7 +10,7 @@ public class EnumTypeConverter<T> : JsonConverter<T>
     public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var value = reader.GetString();
-        return Enum.Parse<T>(value, true);
+        return Enum.Parse<T>(value!, true);
     }
 
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)

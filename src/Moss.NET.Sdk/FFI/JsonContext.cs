@@ -24,9 +24,14 @@ namespace Moss.NET.Sdk.FFI;
 [JsonSerializable(typeof(Screen))]
 [JsonSerializable(typeof(Dictionary<string, object>))]
 
+[JsonSerializable(typeof(DocumentNewNotebook))]
+[JsonSerializable(typeof(DocumentNewPdf))]
+[JsonSerializable(typeof(DocumentNewEpub))]
+
 [JsonSerializable(typeof(RmPage))]
 [JsonSerializable(typeof(RMDocumentType))]
 [JsonSerializable(typeof(Metadata))]
 internal partial class JsonContext : JsonSerializerContext
 {
+
 }
