@@ -1,8 +1,6 @@
-﻿using System.Threading.Tasks;
-using Moss.NET.Sdk;
-using Moss.NET.Sdk.FFI;
-using Moss.NET.Sdk.NEW;
+﻿using Moss.NET.Sdk;
 using Moss.NET.Sdk.UI;
+using Moss.NET.Sdk.UI.Widgets;
 
 namespace SamplePlugin;
 

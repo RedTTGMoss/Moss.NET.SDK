@@ -3,6 +3,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using Extism;
 using Moss.NET.Sdk.FFI;
+using Moss.NET.Sdk.FFI.Dto;
+using Moss.NET.Sdk.UI;
 
 namespace Moss.NET.Sdk;
 

@@ -1,7 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 using Moss.NET.Sdk.FFI;
+using Moss.NET.Sdk.FFI.Dto;
 
-namespace Moss.NET.Sdk.UI;
+namespace Moss.NET.Sdk.UI.Widgets;
 
 public class RectWidget(Color color, int x, int y, int width, int height)
     : Widget

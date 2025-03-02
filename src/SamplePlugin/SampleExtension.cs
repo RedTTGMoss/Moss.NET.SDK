@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Extism;
 using Moss.NET.Sdk;
+using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
-using Moss.NET.Sdk.NEW;
+using Moss.NET.Sdk.UI;
 
 namespace SamplePlugin;
 
@@ -51,7 +51,7 @@ public class SampleExtension : MossExtension
 
     public override void ExtensionLoop(MossState state)
     {
-        ScreenManager.OpenScreen<SampleScreen>(new Dictionary<string, object>()
+        ScreenManager.Open<SampleScreen>(new Dictionary<string, object>()
         {
             { "hello", true }
         });
@@ -67,7 +67,7 @@ public class SampleExtension : MossExtension
 
     public override void Unregister()
     {
-        ScreenManager.CloseScreen();
+        ScreenManager.Close();
         Pdk.Log(LogLevel.Info, "unregistered sample extension");
     }
 }

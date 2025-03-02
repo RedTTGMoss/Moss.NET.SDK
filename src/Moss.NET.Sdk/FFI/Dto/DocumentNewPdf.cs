@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Moss.NET.Sdk.FFI;
+namespace Moss.NET.Sdk.FFI.Dto;
 
-internal class DocumentNewEpub
+internal class DocumentNewPdf
 {
     [JsonPropertyName("name")]
     public string Name { get; set; } = null!;
@@ -13,9 +13,9 @@ internal class DocumentNewEpub
     [JsonPropertyName("document_uuid")]
     public string? DocumentUuid { get; set; }
 
-    [JsonPropertyName("epub_data")]
-    public byte[]? EpubData { get; set; }
+    [JsonPropertyName("pdf_data")]
+    public byte[]? PdfData { get; set; }
 
-    [JsonPropertyName("epub_file")]
-    public string? EpubFile { get; set; }
+    [JsonPropertyName("pdf_file")]
+    public string? PdfFile { get; set; }
 }

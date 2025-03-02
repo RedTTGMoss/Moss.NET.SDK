@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
-using System.Text.Json;
+using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
+using Moss.NET.Sdk.FFI.Dto;
 
 namespace Moss.NET.Sdk;
 

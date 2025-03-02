@@ -1,4 +1,4 @@
-﻿namespace Moss.NET.Sdk;
+﻿namespace Moss.NET.Sdk.UI;
 
 public abstract class Theme
 {

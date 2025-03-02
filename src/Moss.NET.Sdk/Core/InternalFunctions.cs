@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Moss.NET.Sdk.FFI;
 
-namespace Moss.NET.Sdk;
+namespace Moss.NET.Sdk.Core;
 
 public class InternalFunctions
 {

@@ -2,6 +2,7 @@
 using Extism;
 using Moss.NET.Sdk.API;
 using Moss.NET.Sdk.FFI;
+using Moss.NET.Sdk.FFI.Dto;
 
 namespace Moss.NET.Sdk;
 

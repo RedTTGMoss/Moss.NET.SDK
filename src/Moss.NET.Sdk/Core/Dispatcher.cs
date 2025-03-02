@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Moss.NET.Sdk;
+namespace Moss.NET.Sdk.Core;
 
 public static class Dispatcher
 {

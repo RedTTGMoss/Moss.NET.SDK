@@ -2,7 +2,7 @@
 using Extism;
 using Moss.NET.Sdk.FFI;
 
-namespace Moss.NET.Sdk.UI;
+namespace Moss.NET.Sdk.UI.Widgets;
 
 public partial class TextWidget
 {

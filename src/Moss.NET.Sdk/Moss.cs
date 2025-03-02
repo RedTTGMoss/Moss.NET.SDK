@@ -1,9 +1,10 @@
 ﻿using System.Runtime.InteropServices;
 using Moss.NET.Sdk.FFI;
+using Moss.NET.Sdk.UI;
 
 namespace Moss.NET.Sdk;
 
-public class Moss
+public static class Moss
 {
     [DllImport(Functions.DLL, EntryPoint = "moss_em_get_state")]
     private static extern ulong GetMossState(); //-> MossState

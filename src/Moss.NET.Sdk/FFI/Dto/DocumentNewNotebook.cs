@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Moss.NET.Sdk.FFI;
+namespace Moss.NET.Sdk.FFI.Dto;
 
 internal class DocumentNewNotebook
 {

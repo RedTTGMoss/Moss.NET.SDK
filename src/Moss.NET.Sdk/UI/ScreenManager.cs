@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text.Json;
 using Extism;
+using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
+using Moss.NET.Sdk.FFI.Dto;
 
-namespace Moss.NET.Sdk;
+namespace Moss.NET.Sdk.UI;
 
 public static class ScreenManager
 {
@@ -58,7 +59,7 @@ public static class ScreenManager
         where T : Screen, new()
     {
         var instance = Activator.CreateInstance<T>();
-        var screen = new FFI.Screen(instance.Name, "ext_event_screen_loop", "ext_event_screen_preloop",
+        var screen = new FFI.Dto.Screen(instance.Name, "ext_event_screen_loop", "ext_event_screen_preloop",
             "ext_event_screen_postloop");
         var screenPtr = Utils.Serialize(screen, JsonContext.Default.Screen);
         Screens.TryAdd(instance.Name, instance);
@@ -66,7 +67,7 @@ public static class ScreenManager
         RegisterScreen(screenPtr);
     }
 
-    public static void OpenScreen<T>(Dictionary<string, object> values)
+    public static void Open<T>(Dictionary<string, object> values)
         where T : Screen, new()
     {
         var instance = Activator.CreateInstance<T>();
@@ -80,7 +81,7 @@ public static class ScreenManager
         OpenScreen(namePtr, valuesPtr);
     }
 
-    public static void CloseScreen()
+    public static void Close()
     {
         if (OpenedScreens.TryPop(out var screen))
         {

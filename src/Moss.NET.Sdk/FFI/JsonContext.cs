@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Moss.NET.Sdk.API;
+using Moss.NET.Sdk.FFI.Dto;
 using Moss.NET.Sdk.NEW;
+using Moss.NET.Sdk.UI;
+using Screen = Moss.NET.Sdk.FFI.Dto.Screen;
 
 namespace Moss.NET.Sdk.FFI;
 

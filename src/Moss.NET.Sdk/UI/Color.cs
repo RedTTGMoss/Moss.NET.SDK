@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Text.Json.Serialization;
 
-namespace Moss.NET.Sdk;
+namespace Moss.NET.Sdk.UI;
 
 public readonly struct Color(long r, long g, long b, long? a = 255)
 {

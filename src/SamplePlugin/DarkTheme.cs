@@ -1,4 +1,5 @@
 ﻿using Moss.NET.Sdk;
+using Moss.NET.Sdk.UI;
 
 namespace SamplePlugin;
 

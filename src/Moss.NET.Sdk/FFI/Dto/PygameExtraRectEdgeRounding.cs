@@ -1,6 +1,6 @@
 //ToDo: make all edgerounding properties optional
 
-namespace Moss.NET.Sdk.FFI;
+namespace Moss.NET.Sdk.FFI.Dto;
 
 public record PygameExtraRectEdgeRounding(
     int edge_rounding,

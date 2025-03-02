@@ -1,6 +1,4 @@
-﻿using Moss.NET.Sdk.UI;
-
-namespace Moss.NET.Sdk;
+﻿namespace Moss.NET.Sdk.UI;
 
 //ToDo: implement custom screen management to avoid using names
 public abstract class Screen

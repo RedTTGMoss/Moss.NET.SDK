@@ -7,7 +7,7 @@ Screen & ChildScreen: - These are considered UI rendering objects and will have 
 - event_hook: str - An extension function which will receive API events, must accept a single argument name: String (otpional)
 */
 
-namespace Moss.NET.Sdk.FFI;
+namespace Moss.NET.Sdk.FFI.Dto;
 
 internal record Screen(
     string key,

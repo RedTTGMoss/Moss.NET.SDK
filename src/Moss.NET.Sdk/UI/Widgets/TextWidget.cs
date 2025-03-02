@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json;
 using Extism;
 using Moss.NET.Sdk.FFI;
 
-namespace Moss.NET.Sdk.UI;
+namespace Moss.NET.Sdk.UI.Widgets;
 
 [SuppressMessage("Trimming",
     "IL2026:Members annotated with \'RequiresUnreferencedCodeAttribute\' require dynamic access otherwise can break functionality when trimming application code")]
