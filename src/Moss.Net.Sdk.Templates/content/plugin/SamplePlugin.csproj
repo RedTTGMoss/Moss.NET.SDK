@@ -13,8 +13,14 @@
         <PackageReference Include="Moss.NET.Sdk" Version="1.1.0-pre" />
     </ItemGroup>
 
-    <ItemGroup>
-        <EmbeddedResource Include="Assets/**/**" />
+	<ItemGroup>
+        <EmbeddedResource Include="Assets/**/**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
     </ItemGroup>
+
+    <Target Name="Bundle" AfterTargets="PostBuildEvent">
+        <Copy SourceFiles="@(EmbeddedResource)" DestinationFolder="$(OutputPath)AppBundle\Assets\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    </Target>
 
 </Project>

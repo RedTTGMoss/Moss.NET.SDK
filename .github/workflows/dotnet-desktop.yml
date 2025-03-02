@@ -70,7 +70,7 @@ jobs:
         run: |
           IFS=$'\n' # Set the Internal Field Separator to newline for reading multi-line variable
           for PROJECT in $PROJECTS; do
-            dotnet build -c Release -o ./nuget "$PROJECT"
+            dotnet package -c Release -o ./nuget "$PROJECT"
           done
 
       - name: Publish to NuGet
