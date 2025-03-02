@@ -24,6 +24,12 @@ public class SampleScreen : Screen
         ScreenManager.SetValue("hello", true);
 
         ScreenManager.GetValue<bool>("hello");
+
+        var cm = ContextMenu.Create("test_cm")
+            .AddButton("test", "notebook", "notebook", "no_action")
+            .Build();
+
+        cm.Open(10, 10);
     }
 
     protected override void OnLoop()

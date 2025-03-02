@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
+using Extism;
+using Moss.NET.Sdk.FFI;
 
 namespace Moss.NET.Sdk.Core;
 
@@ -18,5 +21,15 @@ public static class Extensions
             JsonValueKind.Null => default,
             _ => throw new InvalidOperationException($"Unsupported value kind: {element.ValueKind}")
         };
+    }
+
+    public static ulong GetPointer(this string str)
+    {
+        return Pdk.Allocate(str).Offset;
+    }
+
+    public static ulong GetPointer<T>(this T @this)
+    {
+        return Utils.Serialize(@this, (JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T)));
     }
 }

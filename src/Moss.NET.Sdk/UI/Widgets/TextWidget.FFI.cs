@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using Extism;
+using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
 
 namespace Moss.NET.Sdk.UI.Widgets;
@@ -27,16 +28,16 @@ public partial class TextWidget
 
     private void SetText(string text)
     {
-        SetText(Id, Pdk.Allocate(text).Offset);
+        SetText(Id, text.GetPointer());
     }
 
     private void SetFont(string font, ulong fontSize)
     {
-        SetFont(Id, Pdk.Allocate(font).Offset, fontSize);
+        SetFont(Id, font.GetPointer(), fontSize);
     }
 
     private void SetRect(Rect bounds)
     {
-        SetTextRect(Id, Utils.Serialize(bounds, JsonContext.Default.Rect));
+        SetTextRect(Id, bounds.GetPointer());
     }
 }
