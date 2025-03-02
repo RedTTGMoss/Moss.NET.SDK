@@ -10,7 +10,7 @@ public class MossExtension
 
     public virtual ExtensionInfo Register(MossState state)
     {
-        return new ExtensionInfo([]);
+        return new ExtensionInfo();
     }
 
     public virtual void Unregister()
@@ -24,7 +24,10 @@ public class MossExtension
     private static void SetExtensionInfo()
     {
         var input = Pdk.GetInputJson(JsonContext.Default.MossState);
-        Pdk.SetOutputJson(Instance!.Register(input!), JsonContext.Default.ExtensionInfo);
+        var extensionInfo = Instance!.Register(input!);
+        extensionInfo.Files = Assets.Expose();
+
+        Pdk.SetOutputJson(extensionInfo, JsonContext.Default.ExtensionInfo);
     }
 
     public static void Init<T>() where T : MossExtension, new()

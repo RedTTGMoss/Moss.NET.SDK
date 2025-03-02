@@ -12,5 +12,9 @@
         <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
         <PackageReference Include="Extism.Pdk" Version="1.0.3"/>
     </ItemGroup>
+    
+    <ItemGroup>
+        <EmbeddedResource Include="Assets/**/**" />
+    </ItemGroup>
 
 </Project>

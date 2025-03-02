@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Moss.NET.Sdk;
 
-public readonly struct ExtensionInfo(List<File> files)
+public class ExtensionInfo
 {
-    [JsonPropertyName("files")] public List<File> Files { get; } = files;
+    [JsonPropertyName("files")] internal List<File> Files { get; set; }
 }

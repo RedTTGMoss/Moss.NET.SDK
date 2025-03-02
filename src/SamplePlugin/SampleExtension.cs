@@ -30,6 +30,8 @@ public class SampleExtension : MossExtension
         Defaults.SetDefaultValue("OUTLINE_COLOR", Color.Blue);
         Theme.Apply(new DarkTheme());
 
+        Assets.Add("swap.svg");
+
         var md = Storage.GetDocumentMetadata("0ba3df9c-8ca0-4347-8d7c-07471101baad");
         Pdk.Log(LogLevel.Info, $"Metadata: {md.VisibleName} with {md.Hash}");
 
@@ -46,7 +48,7 @@ public class SampleExtension : MossExtension
             new ContextButton("Sample Button", "notebook", "notebook", "no_action",
                 "no_contextmenu"));
 
-        return new ExtensionInfo([]);
+        return new ExtensionInfo();
     }
 
     public override void ExtensionLoop(MossState state)

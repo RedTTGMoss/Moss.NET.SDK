@@ -13,4 +13,8 @@
         <PackageReference Include="Moss.NET.Sdk" Version="1.1.0-pre" />
     </ItemGroup>
 
+    <ItemGroup>
+        <EmbeddedResource Include="Assets/**/**" />
+    </ItemGroup>
+
 </Project>
