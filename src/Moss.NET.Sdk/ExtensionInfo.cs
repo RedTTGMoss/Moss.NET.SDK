@@ -5,5 +5,5 @@ namespace Moss.NET.Sdk;
 
 public class ExtensionInfo
 {
-    [JsonPropertyName("files")] internal List<File> Files { get; set; }
+    [JsonPropertyName("files")] public List<File> Files { get; internal set; }
 }
