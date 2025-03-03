@@ -60,12 +60,13 @@ jobs:
           done
 
       - name: GIT commit and push overriding conflicts with local changes (verbose)
+        continue-on-error: true
         run: |
           git commit -m "Update version to ${{ env.RELEASE_VERSION }}"
           git fetch origin
           git rebase --strategy-option=theirs origin/main
           git push
-
+        
       - name: Build and package
         run: |
           IFS=$'\n' # Set the Internal Field Separator to newline for reading multi-line variable
