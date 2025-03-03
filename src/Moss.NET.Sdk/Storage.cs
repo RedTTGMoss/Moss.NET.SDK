@@ -126,26 +126,6 @@ public static class Storage
     }
 
     /// <summary>
-    /// Creates a new EPUB document from byte data.
-    /// </summary>
-    /// <param name="name">The name of the new EPUB document.</param>
-    /// <param name="data">The byte data of the EPUB document.</param>
-    /// <param name="parent">The parent document UUID (optional).</param>
-    /// <returns>The UUID of the new EPUB document.</returns>
-    public static string NewEpub(string name, byte[] data, string? parent = null)
-    {
-        var notebook = new DocumentNewEpub
-        {
-            Name = name,
-            Parent = parent,
-            EpubData = data
-        };
-
-        var resultPtr = NewEpub(notebook.GetPointer());
-        return MemoryBlock.Find(resultPtr).ReadString();
-    }
-
-    /// <summary>
     /// This function will modify all the document UUIDs including nested UUID references to a new random UUID and return the new UUID.
     /// </summary>
     /// <param name="uuid">The uuid to randomize</param>

@@ -28,8 +28,9 @@ public class SampleExtension : MossExtension
         Defaults.SetDefaultValue("OUTLINE_COLOR", Color.Blue);
         Theme.Apply(new DarkTheme());
 
-        Assets.Add("Assets/swap.svg");
-        Assets.Add("Assets/test.pdf");
+        Assets.Add("extension/Assets/swap.svg");
+        Assets.Add("extension/Assets/test.pdf");
+        Assets.Add("extension/Assets/test.epub");
 
         var md = Storage.GetApiDocumentMetadata("0ba3df9c-8ca0-4347-8d7c-07471101baad");
         Pdk.Log(LogLevel.Info, $"Metadata: {md.VisibleName} with {md.Hash}");
@@ -39,9 +40,9 @@ public class SampleExtension : MossExtension
         //var testUuid = Storage.NewNotebook("test notebook");
         Storage.NewPdf("test pdf", "extension/Assets/test.pdf");
 
-        Storage.NewMetadata("Test collection", RMDocumentType.CollectionType);
+        //Storage.NewMetadata("Test collection", RMDocumentType.CollectionType);
 
-        //Storage.NewEpub("test ebook", Array.Empty<byte>());
+        Storage.NewEpub("test ebook", "extension/Assets/test.epub");
         InternalFunctions.ExportDocument("0ba3df9c-8ca0-4347-8d7c-07471101baad");
         Storage.UnloadFiles("0ba3df9c-8ca0-4347-8d7c-07471101baad");
         Storage.EnsureDownload("0ba3df9c-8ca0-4347-8d7c-07471101baad");
@@ -49,13 +50,13 @@ public class SampleExtension : MossExtension
 
         Storage.RandomizeUUIDs("0ba3df9c-8ca0-4347-8d7c-07471101baad");
 
-        Moss.NET.Sdk.Moss.RegisterExtensionButton(
-            new ContextButton("Sample Button", "notebook", "notebook", "no_action",
-                "no_contextmenu"));
-
-        ContextMenu.Create("test_cm")
+        var cm = ContextMenu.Create("test_cm")
             .AddButton("test", "swap", "notebook", "no_action")
             .Build();
+
+        Moss.NET.Sdk.Moss.RegisterExtensionButton(
+            new ContextButton("Sample Button", "notebook", "notebook", "no_action",
+                cm.Key));
 
         return new ExtensionInfo();
     }
