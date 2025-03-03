@@ -12,6 +12,7 @@ namespace Moss.NET.Sdk.FFI;
 [JsonSerializable(typeof(Color))]
 [JsonSerializable(typeof(TextColor))]
 [JsonSerializable(typeof(ContextButton))]
+[JsonSerializable(typeof(ContextMenu))]
 [JsonSerializable(typeof(List<ContextButton>))]
 [JsonSerializable(typeof(List<string>))]
 [JsonSerializable(typeof(List<ConfigGetD>))]

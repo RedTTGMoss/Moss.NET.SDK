@@ -30,6 +30,11 @@ public static class Extensions
 
     public static ulong GetPointer<T>(this T @this)
     {
-        return Utils.Serialize(@this, (JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T)));
+        return GetPointer(@this, (JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T)));
+    }
+
+    public static ulong GetPointer<T>(this T @this, JsonTypeInfo<T> typeInfo)
+    {
+        return Utils.Serialize(@this, typeInfo);
     }
 }

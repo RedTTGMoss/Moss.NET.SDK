@@ -24,7 +24,7 @@ public class ContextMenuBuilder(string name)
     {
         var cm = new ContextMenu(name, _buttons);
         RegisterContextMenu(cm.GetPointer());
-        ContextMenu.Cache.Add(name, cm);
+        ContextMenu.Cache[name] = cm;
 
         return cm;
     }

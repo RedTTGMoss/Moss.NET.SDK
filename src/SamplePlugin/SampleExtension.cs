@@ -30,7 +30,7 @@ public class SampleExtension : MossExtension
         Defaults.SetDefaultValue("OUTLINE_COLOR", Color.Blue);
         Theme.Apply(new DarkTheme());
 
-        Assets.Add("swap.svg");
+        Assets.Add("Assets/swap.svg");
 
         var md = Storage.GetDocumentMetadata("0ba3df9c-8ca0-4347-8d7c-07471101baad");
         Pdk.Log(LogLevel.Info, $"Metadata: {md.VisibleName} with {md.Hash}");
@@ -48,6 +48,10 @@ public class SampleExtension : MossExtension
             new ContextButton("Sample Button", "notebook", "notebook", "no_action",
                 "no_contextmenu"));
 
+        ContextMenu.Create("test_cm")
+            .AddButton("test", "swap", "notebook", "no_action")
+            .Build();
+
         return new ExtensionInfo();
     }
 
@@ -63,6 +67,12 @@ public class SampleExtension : MossExtension
         Defaults.GetDefaultValue<string>("LOG_FILE");
         Config.Get<string>("theme");
         Moss.NET.Sdk.Moss.GetState();
+
+        var cm = ContextMenu.Get("test_cm");
+
+        cm.Open(10, 10);
+
+        GUI.InvertIcon("swap", "swap_inverted");
 
         InternalFunctions.ExportStatisticalData();
     }

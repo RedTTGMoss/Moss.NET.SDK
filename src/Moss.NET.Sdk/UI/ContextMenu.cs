@@ -23,5 +23,5 @@ public class ContextMenu(string key, List<ContextButton> buttons)
 
     public static ContextMenu Get(string name) => Cache[name];
 
-    public void Open(ulong x, ulong y) => OpenContextMenu(this.GetPointer(), x, y);
+    public void Open(ulong x, ulong y) => OpenContextMenu(Key.GetPointer(), x, y);
 }
