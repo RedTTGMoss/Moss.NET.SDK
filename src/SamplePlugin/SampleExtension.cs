@@ -24,24 +24,25 @@ public class SampleExtension : MossExtension
 
     public override ExtensionInfo Register(MossState state)
     {
-        Pdk.Log(LogLevel.Info, "registered sample extension");
-
         Config.Set("theme", "dark");
         Defaults.SetDefaultValue("OUTLINE_COLOR", Color.Blue);
         Theme.Apply(new DarkTheme());
 
         Assets.Add("Assets/swap.svg");
 
-        var md = Storage.GetDocumentMetadata("0ba3df9c-8ca0-4347-8d7c-07471101baad");
+        var md = Storage.GetApiDocumentMetadata("0ba3df9c-8ca0-4347-8d7c-07471101baad");
         Pdk.Log(LogLevel.Info, $"Metadata: {md.VisibleName} with {md.Hash}");
 
         var nid = Storage.DuplicateDocument("0ba3df9c-8ca0-4347-8d7c-07471101baad");
 
         //var testUuid = Storage.NewNotebook("test notebook");
         //Storage.NewPdf("test pdf", Array.Empty<byte>());
-      //  Storage.NewEpub("test ebook", Array.Empty<byte>());
-
+        //Storage.NewEpub("test ebook", Array.Empty<byte>());
+        InternalFunctions.ExportDocument("0ba3df9c-8ca0-4347-8d7c-07471101baad");
         Storage.UnloadFiles("0ba3df9c-8ca0-4347-8d7c-07471101baad");
+        Storage.EnsureDownload("0ba3df9c-8ca0-4347-8d7c-07471101baad");
+        Storage.LoadFilesFromCache("0ba3df9c-8ca0-4347-8d7c-07471101baad");
+
         Storage.RandomizeUUIDs("0ba3df9c-8ca0-4347-8d7c-07471101baad");
 
         Moss.NET.Sdk.Moss.RegisterExtensionButton(
@@ -74,7 +75,7 @@ public class SampleExtension : MossExtension
 
         GUI.InvertIcon("swap", "swap_inverted");
 
-        InternalFunctions.ExportStatisticalData();
+        RunOnce.Execute(InternalFunctions.ExportStatisticalData);
     }
 
     public override void Unregister()

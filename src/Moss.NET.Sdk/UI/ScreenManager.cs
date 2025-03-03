@@ -17,9 +17,7 @@ public static class ScreenManager
     private static extern void RegisterScreen(ulong keyPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "_moss_pe_open_screen")]
-    private static extern ulong
-        OpenScreen(ulong keyPtr,
-            ulong initial_valuesPtr); // initial_valuesPtr = dict of values, could be any object that is non primitive
+    private static extern ulong OpenScreen(ulong keyPtr, ulong initial_valuesPtr); // initial_valuesPtr = dict of values, could be any object that is non primitive
 
     [DllImport(Functions.DLL, EntryPoint = "moss_pe_get_screen_value")]
     private static extern ulong GetScreenValue(ulong keyPtr); //-> ConfigGet
@@ -61,10 +59,9 @@ public static class ScreenManager
         var instance = Activator.CreateInstance<T>();
         var screen = new FFI.Dto.Screen(instance.Name, "ext_event_screen_loop", "ext_event_screen_preloop",
             "ext_event_screen_postloop");
-        var screenPtr = Utils.Serialize(screen, JsonContext.Default.Screen);
-        Screens.TryAdd(instance.Name, instance);
 
-        RegisterScreen(screenPtr);
+        Screens.TryAdd(instance.Name, instance);
+        RegisterScreen(screen.GetPointer());
     }
 
     public static void Open<T>(Dictionary<string, object> values)

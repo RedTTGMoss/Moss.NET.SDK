@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Extism;
 using Moss.NET.Sdk.API;
+using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.FFI.Dto;
 
@@ -10,7 +11,7 @@ namespace Moss.NET.Sdk;
 public static class Storage
 {
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_metadata_get_all")]
-    private static extern ulong GetDocumentMetadata(ulong uuidPtr);
+    private static extern ulong GetApiDocumentMetadata(ulong uuidPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_duplicate")]
     private static extern ulong DuplicateDocument(ulong uuidPtr); // -> string
@@ -30,15 +31,21 @@ public static class Storage
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_unload_files")]
     private static extern void UnloadFiles(ulong uuidPtr);
 
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_ensure_download")]
+    private static extern void EnsureDownload(ulong uuidPtr);
+
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_load_files_from_cache")]
+    private static extern void LoadFilesFromCache(ulong uuidPtr);
+
     /// <summary>
     /// Retrieves the metadata of a document given its UUID.
     /// </summary>
     /// <param name="uuid">The UUID of the document.</param>
     /// <returns>The metadata of the document.</returns>
-    public static Metadata GetDocumentMetadata(string uuid)
+    public static Metadata GetApiDocumentMetadata(string uuid)
     {
         var uuidPtr = Pdk.Allocate(uuid).Offset;
-        var resultPtr = GetDocumentMetadata(uuidPtr);
+        var resultPtr = GetApiDocumentMetadata(uuidPtr);
 
         return Utils.Deserialize(resultPtr, JsonContext.Default.Metadata);
     }
@@ -186,5 +193,23 @@ public static class Storage
     {
         var ptr = Pdk.Allocate(uuid).Offset;
         UnloadFiles(ptr);
+    }
+
+    /// <summary>
+    /// Ensures that the document is downloaded.
+    /// </summary>
+    /// <param name="uuid"></param>
+    public static void EnsureDownload(string uuid)
+    {
+        EnsureDownload(uuid.GetPointer());
+    }
+
+    /// <summary>
+    /// This function loads all the files enforcing cache usage only. If the cache misses a file, it will not be downloaded.
+    /// </summary>
+    /// <param name="uuid"></param>
+    public static void LoadFilesFromCache(string uuid)
+    {
+        LoadFilesFromCache(uuid.GetPointer());
     }
 }
