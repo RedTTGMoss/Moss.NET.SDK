@@ -31,6 +31,7 @@ namespace Moss.NET.Sdk.FFI;
 [JsonSerializable(typeof(DocumentNewNotebook))]
 [JsonSerializable(typeof(DocumentNewPdf))]
 [JsonSerializable(typeof(DocumentNewEpub))]
+[JsonSerializable(typeof(MetadataNew))]
 
 [JsonSerializable(typeof(RmPage))]
 [JsonSerializable(typeof(RMDocumentType))]

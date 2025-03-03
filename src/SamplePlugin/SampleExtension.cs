@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using Extism;
 using Moss.NET.Sdk;
+using Moss.NET.Sdk.API;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.UI;
 
@@ -37,6 +38,9 @@ public class SampleExtension : MossExtension
 
         //var testUuid = Storage.NewNotebook("test notebook");
         Storage.NewPdf("test pdf", "extension/Assets/test.pdf");
+
+        Storage.NewMetadata("Test collection", RMDocumentType.CollectionType);
+
         //Storage.NewEpub("test ebook", Array.Empty<byte>());
         InternalFunctions.ExportDocument("0ba3df9c-8ca0-4347-8d7c-07471101baad");
         Storage.UnloadFiles("0ba3df9c-8ca0-4347-8d7c-07471101baad");

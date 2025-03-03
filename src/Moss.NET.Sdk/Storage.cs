@@ -37,6 +37,9 @@ public static class Storage
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_load_files_from_cache")]
     private static extern void LoadFilesFromCache(ulong uuidPtr);
 
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_metadata_new")]
+    private static extern ulong NewMetadata(ulong metadataNewPtr);
+
     /// <summary>
     /// Retrieves the metadata of a document given its UUID.
     /// </summary>
@@ -47,7 +50,7 @@ public static class Storage
         var uuidPtr = Pdk.Allocate(uuid).Offset;
         var resultPtr = GetApiDocumentMetadata(uuidPtr);
 
-        return Utils.Deserialize(resultPtr, JsonContext.Default.Metadata);
+        return resultPtr.Get<Metadata>();
     }
 
     /// <summary>
@@ -77,8 +80,7 @@ public static class Storage
             Parent = parent
         };
 
-        var ptr = Utils.Serialize(notebook, JsonContext.Default.DocumentNewNotebook);
-        var resultPtr = NewNotebook(ptr);
+        var resultPtr = NewNotebook(notebook.GetPointer());
 
         return MemoryBlock.Find(resultPtr).ReadString();
     }
@@ -92,38 +94,14 @@ public static class Storage
     /// <returns>The UUID of the new PDF document.</returns>
     public static string NewPdf(string name, string file, string? parent = null)
     {
-        var notebook = new DocumentNewPdf()
+        var notebook = new DocumentNewPdf
         {
             Name = name,
             Parent = parent,
             PdfFile = file
         };
 
-        var ptr = Utils.Serialize(notebook, JsonContext.Default.DocumentNewPdf);
-        var resultPtr = NewPdf(ptr);
-
-        return MemoryBlock.Find(resultPtr).ReadString();
-    }
-
-    /// <summary>
-    /// Creates a new PDF document from byte data.
-    /// </summary>
-    /// <param name="name">The name of the new PDF document.</param>
-    /// <param name="data">The byte data of the PDF document.</param>
-    /// <param name="parent">The parent document UUID (optional).</param>
-    /// <returns>The UUID of the new PDF document.</returns>
-    public static string NewPdf(string name, byte[] data, string? parent = null)
-    {
-        var notebook = new DocumentNewPdf()
-        {
-            Name = name,
-            Parent = parent,
-            PdfData = data
-        };
-
-        var ptr = Utils.Serialize(notebook, JsonContext.Default.DocumentNewPdf);
-        var resultPtr = NewPdf(ptr);
-
+        var resultPtr = NewPdf(notebook.GetPointer());
         return MemoryBlock.Find(resultPtr).ReadString();
     }
 
@@ -136,16 +114,14 @@ public static class Storage
     /// <returns>The UUID of the new EPUB document.</returns>
     public static string NewEpub(string name, string file, string? parent = null)
     {
-        var notebook = new DocumentNewEpub()
+        var notebook = new DocumentNewEpub
         {
             Name = name,
             Parent = parent,
             EpubFile = file
         };
 
-        var ptr = Utils.Serialize(notebook, JsonContext.Default.DocumentNewEpub);
-        var resultPtr = NewEpub(ptr);
-
+        var resultPtr = NewEpub(notebook.GetPointer());
         return MemoryBlock.Find(resultPtr).ReadString();
     }
 
@@ -158,16 +134,14 @@ public static class Storage
     /// <returns>The UUID of the new EPUB document.</returns>
     public static string NewEpub(string name, byte[] data, string? parent = null)
     {
-        var notebook = new DocumentNewEpub()
+        var notebook = new DocumentNewEpub
         {
             Name = name,
             Parent = parent,
             EpubData = data
         };
 
-        var ptr = Utils.Serialize(notebook, JsonContext.Default.DocumentNewEpub);
-        var resultPtr = NewEpub(ptr);
-
+        var resultPtr = NewEpub(notebook.GetPointer());
         return MemoryBlock.Find(resultPtr).ReadString();
     }
 
@@ -211,5 +185,24 @@ public static class Storage
     public static void LoadFilesFromCache(string uuid)
     {
         LoadFilesFromCache(uuid.GetPointer());
+    }
+
+    /// <summary>
+    /// Create a new metadata object
+    /// </summary>
+    /// <param name="name">The visible name</param>
+    /// <param name="type">Does this metadata corresponds to a notebook or a collection?</param>
+    /// <param name="parent">The parent collection</param>
+    /// <returns>An id to work with later</returns>
+    public static ulong NewMetadata(string name, RMDocumentType type, string? parent = null)
+    {
+        var md = new MetadataNew
+        {
+            Name = name,
+            DocumentType = type,
+            Parent = parent
+        };
+
+        return NewMetadata(md.GetPointer());
     }
 }
