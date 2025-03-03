@@ -1,11 +1,10 @@
 ﻿using System.Runtime.InteropServices;
-using Extism;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
 
 namespace Moss.NET.Sdk.UI.Widgets;
 
-public partial class TextWidget
+public partial class Label
 {
     [DllImport(Functions.DLL, EntryPoint = "moss_text_make")]
     private static extern ulong
@@ -20,8 +19,8 @@ public partial class TextWidget
     [DllImport(Functions.DLL, EntryPoint = "moss_text_set_rect")]
     private static extern void SetTextRect(ulong text_id, ulong rectPtr);
 
-    //[DllImport(Functions.DLL, EntryPoint = "moss_text_get_rect")]
-    private static extern ulong GetTextRect(ulong text_id, ulong rectPtr); // -> Rect
+    [DllImport(Functions.DLL, EntryPoint = "moss_text_get_rect")]
+    private static extern ulong GetTextRect(ulong text_id); // -> Rect
 
     [DllImport(Functions.DLL, EntryPoint = "moss_text_display")]
     private static extern void MossDisplayText(ulong text_id);
@@ -39,5 +38,10 @@ public partial class TextWidget
     private void SetRect(Rect bounds)
     {
         SetTextRect(Id, bounds.GetPointer());
+    }
+
+    private Rect GetRect()
+    {
+        return GetTextRect(Id).Get<Rect>();
     }
 }

@@ -6,20 +6,20 @@ namespace SamplePlugin;
 
 public class SampleScreen : Screen
 {
-    private TextWidget helloWidget;
-    private RectWidget rectWidget;
+    private Label _hello;
+    private Rectangle _rectangle;
     public override string Name => "SampleScreen";
 
     public override void PreLoop()
     {
-        helloWidget = new TextWidget("Hello, World!", 12, 100, 100, 100, 50);
-        rectWidget = new RectWidget(Color.Red, 10, 10, 10, 10);
+        _hello = new Label("Hello, World!", 12, 100,100);
+        _rectangle = new Rectangle(Color.Red, 10, 10, 10, 10);
 
-        helloWidget.FontSize = 12;
-        helloWidget.Text = "Edited";
+        _hello.FontSize = 12;
+        _hello.Text = "Edited";
 
-        AddWidget(helloWidget);
-        AddWidget(rectWidget);
+        AddWidget(_hello);
+        AddWidget(_rectangle);
 
         ScreenManager.SetValue("hello", true);
 

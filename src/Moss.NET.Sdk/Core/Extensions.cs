@@ -37,4 +37,14 @@ public static class Extensions
     {
         return Utils.Serialize(@this, typeInfo);
     }
+
+    public static T Get<T>(this ulong ptr, JsonTypeInfo<T> typeInfo)
+    {
+        return Utils.Deserialize(ptr, typeInfo);
+    }
+
+    public static T Get<T>(this ulong ptr)
+    {
+        return Get(ptr, (JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T)));
+    }
 }

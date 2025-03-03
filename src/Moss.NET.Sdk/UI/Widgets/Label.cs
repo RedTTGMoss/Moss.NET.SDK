@@ -6,22 +6,24 @@ namespace Moss.NET.Sdk.UI.Widgets;
 
 [SuppressMessage("Trimming",
     "IL2026:Members annotated with \'RequiresUnreferencedCodeAttribute\' require dynamic access otherwise can break functionality when trimming application code")]
-public partial class TextWidget : Widget
+public partial class Label : Widget
 {
     private string _font;
     private ulong _fontSize;
     private string _text;
 
-    public TextWidget(string text, ulong fontSize, int x = 0, int y = 0, int width = 0, int height = 0)
+    public Label(string text, ulong fontSize, int x = 0, int y = 0)
     {
         _text = text;
         _font = Defaults.GetDefaultValue<string>("CUSTOM_FONT");
         _fontSize = fontSize;
         Id = Init();
 
-        Bounds = new Rect(x, y, width, height);
-
+        Bounds = new Rect(x, y, 0, 0);
         SetRect(Bounds);
+
+        // Get Bounds to know the exact size of the widget
+        Bounds = GetRect();
     }
 
     public string Text

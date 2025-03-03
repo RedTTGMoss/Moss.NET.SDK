@@ -4,7 +4,7 @@ using Moss.NET.Sdk.FFI.Dto;
 
 namespace Moss.NET.Sdk.UI.Widgets;
 
-public class RectWidget(Color color, int x, int y, int width, int height)
+public class Rectangle(Color color, int x, int y, int width, int height)
     : Widget
 {
     public Rect Bounds { get; set; } = new(x, y, width, height);
