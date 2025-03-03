@@ -1,66 +1,33 @@
-﻿using System;
+﻿using Ardalis.SmartEnum;
 
 namespace Moss.NET.Sdk.NEW;
 
-public enum AccessorTypes
+// using with:
+// [JsonConverter(typeof(SmartEnumNameConverter<TestEnum,int>))]
+public sealed class AccessorTypes : SmartEnum<AccessorTypes>
 {
-    // Document API SUB
-    APIDocumentMetadata,
-    APIDocumentContent,
+    public static readonly AccessorTypes APIDocumentMetadata = new("api_document_metadata", 1);
+    public static readonly AccessorTypes APIDocumentContent = new("api_document_content", 2);
 
-    // Collection API SUB
-    APICollectionMetadata,
+    public static readonly AccessorTypes APICollectionMetadata = new("api_collection_metadata", 3);
 
-    // API
-    APIDocument,
-    APICollection,
+    public static readonly AccessorTypes APIDocument = new( "api_document", 4);
+    public static readonly AccessorTypes APICollection = new("api_collection", 5);
 
-    // Document Standalone SUB
-    StandaloneDocumentMetadata,
-    StandaloneDocumentContent,
+    public static readonly AccessorTypes StandaloneDocumentMetadata = new("document_metadata", 6);
+    public static readonly AccessorTypes StandaloneDocumentContent = new("document_content", 7);
 
-    // Collection Standalone SUB
-    StandaloneCollectionMetadata,
+    public static readonly AccessorTypes StandaloneCollectionMetadata = new("collection_metadata", 8);
 
-    // Standalone
-    StandaloneDocument,
-    StandaloneCollection,
+    public static readonly AccessorTypes StandaloneDocument = new("document", 9);
+    public static readonly AccessorTypes StandaloneCollection = new("collection", 10);
 
-    StandaloneMetadata,
-    StandaloneContent
-}
+    public static readonly AccessorTypes StandaloneMetadata = new("metadata", 11);
+    public static readonly AccessorTypes StandaloneContent = new("content", 12);
 
-public static class AccessorTypesExtensions
-{
-    private static readonly string[] Values =
-    [
-        "api_document_metadata",
-        "api_document_content",
-        "api_collection_metadata",
-        "api_document",
-        "api_collection",
-        "document_metadata",
-        "document_content",
-        "collection_metadata",
-        "document",
-        "collection",
-        "metadata",
-        "content"
-    ];
-
-    public static string GetValue(this AccessorTypes accessorType)
+    private AccessorTypes(string name, int value) : base(name, value)
     {
-        return Values[(int)accessorType];
     }
 
-    public static AccessorTypes Parse(string value)
-    {
-        var index = Array.IndexOf(Values, value);
-        if (index != -1)
-        {
-            return (AccessorTypes)index;
-        }
-
-        throw new ArgumentException($"Invalid AccessorTypes value: {value}");
-    }
+    public static implicit operator string(AccessorTypes accessorType) => accessorType.Name;
 }
