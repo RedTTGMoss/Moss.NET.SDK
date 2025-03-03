@@ -13,9 +13,6 @@ internal class DocumentNewPdf
     [JsonPropertyName("document_uuid")]
     public string? DocumentUuid { get; set; }
 
-    [JsonPropertyName("pdf_data")]
-    public byte[]? PdfData { get; set; }
-
     [JsonPropertyName("pdf_file")]
     public string? PdfFile { get; set; }
 }

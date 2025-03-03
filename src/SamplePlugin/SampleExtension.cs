@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using Extism;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Core;
-using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.UI;
 
 namespace SamplePlugin;
@@ -29,6 +28,7 @@ public class SampleExtension : MossExtension
         Theme.Apply(new DarkTheme());
 
         Assets.Add("Assets/swap.svg");
+        Assets.Add("Assets/test.pdf");
 
         var md = Storage.GetApiDocumentMetadata("0ba3df9c-8ca0-4347-8d7c-07471101baad");
         Pdk.Log(LogLevel.Info, $"Metadata: {md.VisibleName} with {md.Hash}");
@@ -36,7 +36,7 @@ public class SampleExtension : MossExtension
         var nid = Storage.DuplicateDocument("0ba3df9c-8ca0-4347-8d7c-07471101baad");
 
         //var testUuid = Storage.NewNotebook("test notebook");
-        //Storage.NewPdf("test pdf", Array.Empty<byte>());
+        Storage.NewPdf("test pdf", "extension/Assets/test.pdf");
         //Storage.NewEpub("test ebook", Array.Empty<byte>());
         InternalFunctions.ExportDocument("0ba3df9c-8ca0-4347-8d7c-07471101baad");
         Storage.UnloadFiles("0ba3df9c-8ca0-4347-8d7c-07471101baad");
@@ -75,7 +75,7 @@ public class SampleExtension : MossExtension
 
         GUI.InvertIcon("swap", "swap_inverted");
 
-        RunOnce.Execute(InternalFunctions.ExportStatisticalData);
+        InternalFunctions.ExportStatisticalData();
     }
 
     public override void Unregister()

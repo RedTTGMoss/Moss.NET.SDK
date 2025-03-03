@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Extism;
+using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
+using Moss.NET.Sdk.FFI.Dto;
 
 namespace Moss.NET.Sdk.UI.Widgets;
 
@@ -8,16 +10,13 @@ namespace Moss.NET.Sdk.UI.Widgets;
     "IL2026:Members annotated with \'RequiresUnreferencedCodeAttribute\' require dynamic access otherwise can break functionality when trimming application code")]
 public partial class Label : Widget
 {
-    private string _font;
+    private string _font = null!;
     private ulong _fontSize;
-    private string _text;
+    private string _text = null!;
 
     public Label(string text, ulong fontSize, int x = 0, int y = 0)
     {
-        _text = text;
-        _font = Defaults.GetDefaultValue<string>("CUSTOM_FONT");
-        _fontSize = fontSize;
-        Id = Init();
+        Id = Init(text, fontSize);
 
         Bounds = new Rect(x, y, 0, 0);
         SetRect(Bounds);
@@ -64,14 +63,18 @@ public partial class Label : Widget
     public Color Foreground { get; set; } = Color.Black;
     public Color? Background { get; set; }
 
-    private ulong Init()
+    private ulong Init(string text, ulong fontSize)
     {
+        _text = text;
+        _font = Defaults.GetDefaultValue<string>("CUSTOM_FONT");
+        _fontSize = fontSize;
+
         var textPtr = Pdk.Allocate(Text).Offset;
         var fontPtr = Pdk.Allocate(Font).Offset;
         var textColor = new TextColor(Foreground, Background);
 
-        var resultPtr = MakeText(textPtr, fontPtr, FontSize, Utils.Serialize(textColor, JsonContext.Default.TextColor));
-        var value = Utils.Deserialize(resultPtr, JsonContext.Default.ConfigGetD).value;
+        var resultPtr = MakeText(textPtr, fontPtr, FontSize, textColor.GetPointer());
+        var value = resultPtr.Get<ConfigGetD>().value;
 
         return value.GetUInt64();
     }

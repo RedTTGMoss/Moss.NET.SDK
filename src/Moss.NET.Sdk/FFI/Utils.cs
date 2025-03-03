@@ -10,7 +10,10 @@ internal static class Utils
     public static ulong Serialize<T>(T value, JsonTypeInfo<T> typeInfo)
     {
         var data = JsonSerializer.Serialize(value, typeInfo);
-        //Pdk.Log(LogLevel.Info, data);
+
+#if DEBUG
+        Pdk.Log(LogLevel.Info, data);
+#endif
 
         return Pdk.Allocate(data).Offset;
     }
@@ -20,9 +23,9 @@ internal static class Utils
         var memory = MemoryBlock.Find(ptr);
         var output = memory.ReadString();
 
-        #if DEBUG
+#if DEBUG
         Pdk.Log(LogLevel.Info, $"{typeInfo.Type.Name}: {output}");
-        #endif
+#endif
 
         try
         {
