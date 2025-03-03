@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Moss.NET.Sdk.NEW.Converters;
+namespace Moss.NET.Sdk.Core.Converters;
 
 public class EnumTypeConverter<T> : JsonConverter<T>
     where T : struct

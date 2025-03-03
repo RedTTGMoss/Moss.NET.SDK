@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using Moss.NET.Sdk.NEW.Converters;
+using Moss.NET.Sdk.Core.Converters;
 
 namespace Moss.NET.Sdk.API;
 
