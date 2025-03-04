@@ -12,16 +12,22 @@ internal static class Utils
         var data = JsonSerializer.Serialize(value, typeInfo);
 
 #if DEBUG
-        Pdk.Log(LogLevel.Info, data);
+        Pdk.Log(LogLevel.Info, $"{typeof(T).FullName}:{data}");
 #endif
 
         return Pdk.Allocate(data).Offset;
     }
 
-    public static T Deserialize<T>(ulong ptr, JsonTypeInfo<T> typeInfo)
+    public static T? Deserialize<T>(ulong ptr, JsonTypeInfo<T> typeInfo)
     {
         var memory = MemoryBlock.Find(ptr);
         var output = memory.ReadString();
+
+        if (string.IsNullOrEmpty(output))
+        {
+            Pdk.Log(LogLevel.Error, $"Deserialization failed: empty string for {typeInfo.Type.Name}");
+            return default;
+        }
 
 #if DEBUG
         Pdk.Log(LogLevel.Info, $"{typeInfo.Type.Name}: {output}");
@@ -33,8 +39,8 @@ internal static class Utils
         }
         catch (Exception e)
         {
-            Pdk.Log(LogLevel.Error, e.Message + ": " + output);
-            return default!;
+            Pdk.Log(LogLevel.Error, e.Message + $"({typeInfo.Type.Name}): " + output);
+            return default;
         }
     }
 }

@@ -10,7 +10,7 @@ public static class Extensions
 {
     public static T GetValue<T>(this JsonElement element)
     {
-        return element.ValueKind switch
+        return (element.ValueKind switch
         {
             JsonValueKind.String => (T)(object)element.GetString(),
             JsonValueKind.Number when typeof(T) == typeof(int) => (T)(object)element.GetInt32(),
@@ -19,8 +19,9 @@ public static class Extensions
             JsonValueKind.Number when typeof(T) == typeof(decimal) => (T)(object)element.GetDecimal(),
             JsonValueKind.True or JsonValueKind.False => (T)(object)element.GetBoolean(),
             JsonValueKind.Null => default,
+            JsonValueKind.Object => JsonSerializer.Deserialize(element.GetRawText(), (JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T))),
             _ => throw new InvalidOperationException($"Unsupported value kind: {element.ValueKind}")
-        };
+        })!;
     }
 
     public static ulong GetPointer(this string str)
@@ -47,4 +48,7 @@ public static class Extensions
     {
         return Get(ptr, (JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T)));
     }
+
+    public static MemoryBlock Find(this ulong ptr) => MemoryBlock.Find(ptr);
+    public static string ReadString(this ulong ptr) => MemoryBlock.Find(ptr).ReadString();
 }

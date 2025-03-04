@@ -69,13 +69,10 @@ public static class ScreenManager
     {
         var instance = Activator.CreateInstance<T>();
 
-        var namePtr = Pdk.Allocate(instance.Name).Offset;
-        var valuesPtr = Utils.Serialize(values, JsonContext.Default.DictionaryStringObject);
-
         if (!Screens.ContainsKey(instance.Name)) Register<T>();
 
         OpenedScreens.Push(Screens[instance.Name]);
-        OpenScreen(namePtr, valuesPtr);
+        OpenScreen(instance.Name.GetPointer(), values.GetPointer());
     }
 
     public static void Close()

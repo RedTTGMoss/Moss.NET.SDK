@@ -18,4 +18,7 @@ internal class DocumentNewEpub
 
     [JsonPropertyName("epub_file")]
     public string? EpubFile { get; set; }
+
+    [JsonPropertyName("accessor")]
+    public Accessor Accessor { get; set; }
 }

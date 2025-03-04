@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.FFI.Dto;
 
@@ -16,8 +17,7 @@ public class Rectangle(Color color, int x, int y, int width, int height)
     protected override void OnRender()
     {
         var extraRect = new PygameExtraRect(Color, Bounds, Bounds.width);
-        var extraRectPtr = Utils.Serialize(extraRect, JsonContext.Default.PygameExtraRect);
 
-        DrawRect(extraRectPtr);
+        DrawRect(extraRect.GetPointer());
     }
 }

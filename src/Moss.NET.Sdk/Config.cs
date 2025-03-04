@@ -15,12 +15,12 @@ public static class Config
 
     public static void Set(string key, object value)
     {
-        SetConfig(Utils.Serialize(new ConfigSet(key, value), JsonContext.Default.ConfigSet));
+        SetConfig(new ConfigSet(key, value).GetPointer());
     }
 
     public static T Get<T>(string key)
     {
-        var ptr = GetConfig(Utils.Serialize(new ConfigGetS(key), JsonContext.Default.ConfigGetS));
-        return Utils.Deserialize(ptr, JsonContext.Default.ConfigGetD).value.GetValue<T>();
+        var ptr = GetConfig(new ConfigGetS(key).GetPointer());
+        return ptr.Get<ConfigGetD>().value.GetValue<T>();
     }
 }

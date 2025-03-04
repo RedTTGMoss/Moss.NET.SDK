@@ -25,8 +25,9 @@ namespace Moss.NET.Sdk.FFI;
 [JsonSerializable(typeof(PygameExtraRect))]
 [JsonSerializable(typeof(PygameExtraRectEdgeRounding))]
 [JsonSerializable(typeof(Rect))]
-[JsonSerializable(typeof(Screen))]
 [JsonSerializable(typeof(Dictionary<string, object>))]
+[JsonSerializable(typeof(Screen))]
+[JsonSerializable(typeof(Accessor))]
 
 [JsonSerializable(typeof(DocumentNewNotebook))]
 [JsonSerializable(typeof(DocumentNewPdf))]

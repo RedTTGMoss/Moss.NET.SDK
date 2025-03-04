@@ -4,17 +4,24 @@ using Moss.NET.Sdk.API;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.FFI.Dto;
+using Moss.NET.Sdk.NEW;
 
 namespace Moss.NET.Sdk;
 
 //refers to https://redttg.gitbook.io/moss/extensions/host-functions
 public static class Storage
 {
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_metadata_get_all")]
-    private static extern ulong GetApiDocumentMetadata(ulong uuidPtr);
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_get_all")]
+    private static extern ulong Get(ulong accessorPtr); // -> ConfigGet[T]
+
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_get")]
+    private static extern ulong Get(ulong accessorPtr, ulong keyPtr); // -> ConfigGet[T]
+
+    [DllImport(Functions.DLL, EntryPoint = "_moss_api_set")]
+    private static extern void Set(ulong accessorPtr, ulong configSetPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_duplicate")]
-    private static extern ulong DuplicateDocument(ulong uuidPtr); // -> string
+    private static extern ulong DuplicateDocument(ulong accessorPtr); // -> string
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_notebook")]
     private static extern ulong NewNotebook(ulong newDocPtr);
@@ -26,16 +33,16 @@ public static class Storage
     private static extern ulong NewEpub(ulong newEpPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_randomize_uuids")]
-    private static extern ulong RandomizeUuids(ulong uuidPtr);
+    private static extern ulong RandomizeUuids(ulong accessorPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_unload_files")]
-    private static extern void UnloadFiles(ulong uuidPtr);
+    private static extern void UnloadFiles(ulong accessorPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_ensure_download")]
-    private static extern void EnsureDownload(ulong uuidPtr);
+    private static extern void EnsureDownload(ulong accessorPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_load_files_from_cache")]
-    private static extern void LoadFilesFromCache(ulong uuidPtr);
+    private static extern void LoadFilesFromCache(ulong accessorPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_metadata_new")]
     private static extern ulong NewMetadata(ulong metadataNewPtr);
@@ -47,10 +54,34 @@ public static class Storage
     /// <returns>The metadata of the document.</returns>
     public static Metadata GetApiDocumentMetadata(string uuid)
     {
-        var uuidPtr = Pdk.Allocate(uuid).Offset;
-        var resultPtr = GetApiDocumentMetadata(uuidPtr);
+        var accessor = new Accessor()
+        {
+            Type = AccessorType.APIDocument,
+            Uuid = uuid
+        };
 
-        return resultPtr.Get<Metadata>();
+        return Get<Metadata>(accessor);
+    }
+
+    public static T Get<T>(Accessor accessor)
+    {
+        var resultPtr = Get(accessor.GetPointer());
+        var result = resultPtr.Get<ConfigGetD>();
+
+        return result.value.GetValue<T>();
+    }
+
+    public static T Get<T>(Accessor accessor, string key)
+    {
+        var resultPtr = Get(accessor.GetPointer(), key.GetPointer());
+        var result = resultPtr.Get<ConfigGetD>();
+
+        return result.value.GetValue<T>();
+    }
+
+    public static void Set(Accessor accessor, string key, object value)
+    {
+        Set(accessor.GetPointer(),new ConfigSet(key, value).GetPointer());
     }
 
     /// <summary>
@@ -60,11 +91,11 @@ public static class Storage
     /// <returns>The UUID of the duplicated document.</returns>
     public static string DuplicateDocument(string uuid)
     {
-        var uuidPtr = Pdk.Allocate(uuid).Offset;
-        var resultPtr = DuplicateDocument(uuidPtr);
+        var resultPtr = DuplicateDocument(InternalFunctions.GetAccessor(uuid).GetPointer());
 
-        return MemoryBlock.Find(resultPtr).ReadString();
+        return resultPtr.ReadString();
     }
+
 
     /// <summary>
     /// Creates a new notebook document.
@@ -74,15 +105,18 @@ public static class Storage
     /// <returns>The UUID of the new notebook document.</returns>
     public static string NewNotebook(string name, string? parent = null)
     {
-        var notebook = new DocumentNewNotebook()
+        var notebook = new DocumentNewNotebook
         {
             Name = name,
-            Parent = parent
+            Parent = parent,
+            Accessor = new Accessor
+            {
+                Type = AccessorType.APIDocument
+            },
+            NotebookFiles = []
         };
 
-        var resultPtr = NewNotebook(notebook.GetPointer());
-
-        return MemoryBlock.Find(resultPtr).ReadString();
+        return NewNotebook(notebook.GetPointer()).ReadString();
     }
 
     /// <summary>
@@ -98,11 +132,15 @@ public static class Storage
         {
             Name = name,
             Parent = parent,
-            PdfFile = file
+            PdfFile = file,
+            Accessor = new Accessor
+            {
+                Type = AccessorType.APIDocument
+            }
         };
 
         var resultPtr = NewPdf(notebook.GetPointer());
-        return MemoryBlock.Find(resultPtr).ReadString();
+        return resultPtr.ReadString();
     }
 
     /// <summary>
@@ -118,11 +156,15 @@ public static class Storage
         {
             Name = name,
             Parent = parent,
-            EpubFile = file
+            EpubFile = file,
+            Accessor = new Accessor
+            {
+                Type = AccessorType.APIDocument
+            }
         };
 
         var resultPtr = NewEpub(notebook.GetPointer());
-        return MemoryBlock.Find(resultPtr).ReadString();
+        return resultPtr.ReadString();
     }
 
     /// <summary>
@@ -131,10 +173,9 @@ public static class Storage
     /// <param name="uuid">The uuid to randomize</param>
     public static string RandomizeUUIDs(string uuid)
     {
-        var ptr = Pdk.Allocate(uuid).Offset;
-        var resultPtr = RandomizeUuids(ptr);
+        var resultPtr = RandomizeUuids(InternalFunctions.GetAccessor(uuid).GetPointer());
 
-        return MemoryBlock.Find(resultPtr).ReadString();
+        return resultPtr.ReadString();
     }
 
     /// <summary>
@@ -145,8 +186,7 @@ public static class Storage
     /// <param name="uuid">The uuid to unload</param>
     public static void UnloadFiles(string uuid)
     {
-        var ptr = Pdk.Allocate(uuid).Offset;
-        UnloadFiles(ptr);
+        UnloadFiles(InternalFunctions.GetAccessor(uuid).GetPointer());
     }
 
     /// <summary>
@@ -155,7 +195,7 @@ public static class Storage
     /// <param name="uuid"></param>
     public static void EnsureDownload(string uuid)
     {
-        EnsureDownload(uuid.GetPointer());
+        EnsureDownload(InternalFunctions.GetAccessor(uuid).GetPointer());
     }
 
     /// <summary>
@@ -164,7 +204,7 @@ public static class Storage
     /// <param name="uuid"></param>
     public static void LoadFilesFromCache(string uuid)
     {
-        LoadFilesFromCache(uuid.GetPointer());
+        LoadFilesFromCache(InternalFunctions.GetAccessor(uuid).GetPointer());
     }
 
     /// <summary>

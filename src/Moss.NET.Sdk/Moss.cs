@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.UI;
 
@@ -14,11 +15,11 @@ public static class Moss
 
     public static MossState GetState()
     {
-        return Utils.Deserialize(GetMossState(), JsonContext.Default.MossState);
+        return GetMossState().Get<MossState>();
     }
 
     public static void RegisterExtensionButton(ContextButton button)
     {
-        RegisterExtensionButton(Utils.Serialize(button, JsonContext.Default.ContextButton));
+        RegisterExtensionButton(button.GetPointer());
     }
 }

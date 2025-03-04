@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Moss.NET.Sdk.Core.Converters;
+using Moss.NET.Sdk.FFI;
 
 namespace Moss.NET.Sdk.API;
 
@@ -11,7 +12,10 @@ public class Metadata
     [JsonConverter(typeof(EnumTypeConverter<RMDocumentType>))]
     public RMDocumentType Type { get; set; }
 
-    [JsonPropertyName("parent")] public string Parent { get; set; }
+    [JsonPropertyName("accessor")]
+    public Accessor Accessor { get; set; }
+
+    [JsonPropertyName("parent")] public string? Parent { get; set; }
 
     [JsonPropertyName("created_time")] public long CreatedTime { get; set; }
 

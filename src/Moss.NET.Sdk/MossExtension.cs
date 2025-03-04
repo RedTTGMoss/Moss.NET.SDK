@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 using Extism;
 using Moss.NET.Sdk.FFI;
 
@@ -26,6 +27,10 @@ public class MossExtension
         var input = Pdk.GetInputJson(JsonContext.Default.MossState);
         var extensionInfo = Instance!.Register(input!);
         extensionInfo.Files = Assets.Expose();
+
+        #if DEBUG
+        Pdk.Log(LogLevel.Info, "output: " + JsonSerializer.Serialize(extensionInfo, JsonContext.Default.ExtensionInfo));
+        #endif
 
         Pdk.SetOutputJson(extensionInfo, JsonContext.Default.ExtensionInfo);
     }

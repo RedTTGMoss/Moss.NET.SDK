@@ -5,6 +5,9 @@ namespace Moss.NET.Sdk.FFI.Dto;
 
 internal class DocumentNewNotebook
 {
+    [JsonPropertyName("accessor")]
+    public Accessor Accessor { get; set; }
+
     [JsonPropertyName("name")]
     public string Name { get; set; } = null!;
 

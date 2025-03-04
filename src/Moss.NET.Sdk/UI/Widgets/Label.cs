@@ -69,11 +69,9 @@ public partial class Label : Widget
         _font = Defaults.GetDefaultValue<string>("CUSTOM_FONT");
         _fontSize = fontSize;
 
-        var textPtr = Pdk.Allocate(Text).Offset;
-        var fontPtr = Pdk.Allocate(Font).Offset;
         var textColor = new TextColor(Foreground, Background);
 
-        var resultPtr = MakeText(textPtr, fontPtr, FontSize, textColor.GetPointer());
+        var resultPtr = MakeText(Text.GetPointer(), Font.GetPointer(), FontSize, textColor.GetPointer());
         var value = resultPtr.Get<ConfigGetD>().value;
 
         return value.GetUInt64();

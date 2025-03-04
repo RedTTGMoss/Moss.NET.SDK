@@ -3,13 +3,15 @@ using Extism;
 
 namespace Moss.NET.Sdk.FFI;
 
-internal static class MossEntry
+internal class MossEntry
 {
+    private static LoggerInstance _logger = Log.GetLogger<MossEntry>();
+
     [UnmanagedCallersOnly(EntryPoint = "moss_unregister")]
     public static ulong Unregister()
     {
         MossExtension.Instance!.Unregister();
-        Pdk.Log(LogLevel.Info, "unregistered extension");
+        _logger.Info("unregistered extension");
         return 0;
     }
 

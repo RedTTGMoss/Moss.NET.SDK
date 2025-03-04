@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using Extism;
+using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.FFI.Dto;
 using Moss.NET.Sdk.UI;
@@ -30,49 +31,42 @@ public static class Defaults
 
     public static void SetDefaultColor(string key, Color color)
     {
-        var keyPtr = Pdk.Allocate(key).Offset;
-
-        SetDefaultColor(keyPtr, Utils.Serialize(color, JsonContext.Default.Color));
+        SetDefaultColor(key.GetPointer(), color.GetPointer());
     }
 
     public static void SetDefaultTextColor(string key, Color foreground, Color background)
     {
-        var keyPtr = Pdk.Allocate(key).Offset;
         var textColor = new TextColor(foreground, background);
-        var textColorPtr = Utils.Serialize(textColor, JsonContext.Default.TextColor);
 
-        SetDefaultTextColor(keyPtr, textColorPtr);
+        SetDefaultTextColor(key.GetPointer(), textColor.GetPointer());
     }
 
     public static void SetDefaultValue(string key, object value)
     {
-        var valuePtr = Utils.Serialize(new ConfigSet(key, value), JsonContext.Default.ConfigSet);
+        var valuePtr = new ConfigSet(key, value).GetPointer();
 
         SetDefaultValue(valuePtr);
     }
 
     public static T GetDefaultValue<T>(string key)
     {
-        var keyPtr = Pdk.Allocate(key).Offset;
-        var valuePtr = GetDefaultValue(keyPtr);
+        var valuePtr = GetDefaultValue(key.GetPointer());
 
-        return Utils.Deserialize(valuePtr, JsonContext.Default.ConfigGetD).value
+        return valuePtr.Get<ConfigGetD>().value
             .Deserialize<T>((JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T)));
     }
 
     public static Color GetDefaultColor(string key)
     {
-        var keyPtr = Pdk.Allocate(key).Offset;
-        var valuePtr = MossGetDefaultColor(keyPtr);
+        var valuePtr = MossGetDefaultColor(key.GetPointer());
 
-        return Utils.Deserialize(valuePtr, JsonContext.Default.Color);
+        return valuePtr.Get<Color>();
     }
 
     public static TextColor GetDefaultTextColor(string key)
     {
-        var keyPtr = Pdk.Allocate(key).Offset;
-        var textColorPtr = GetDefaultTextColor(keyPtr);
+        var textColorPtr = GetDefaultTextColor(key.GetPointer());
 
-        return Utils.Deserialize(textColorPtr, JsonContext.Default.TextColor);
+        return textColorPtr.Get<TextColor>();
     }
 }

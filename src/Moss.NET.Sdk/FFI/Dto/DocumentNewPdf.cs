@@ -4,6 +4,9 @@ namespace Moss.NET.Sdk.FFI.Dto;
 
 internal class DocumentNewPdf
 {
+    [JsonPropertyName("accessor")]
+    public Accessor Accessor { get; set; }
+
     [JsonPropertyName("name")]
     public string Name { get; set; } = null!;
 
