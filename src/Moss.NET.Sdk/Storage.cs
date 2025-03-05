@@ -50,6 +50,15 @@ public static class Storage
     [DllImport(Functions.DLL, EntryPoint = "moss_api_metadata_new")]
     private static extern ulong NewMetadata(ulong metadataNewPtr);
 
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_content_new_notebook")]
+    private static extern ulong MossNewContentNotebook(ulong pageCount); // -> int
+
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_content_new_pdf")]
+    private static extern ulong MossNewContentPdf(); // -> int
+
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_content_new_epub")]
+    private static extern ulong MossNewContentEpub(); // -> int
+
     /// <summary>
     /// Retrieves the metadata of a document given its UUID.
     /// </summary>
@@ -247,7 +256,7 @@ public static class Storage
     /// <param name="type">Does this metadata corresponds to a notebook or a collection?</param>
     /// <param name="parent">The parent collection</param>
     /// <returns>An id to work with later</returns>
-    public static ulong NewMetadata(string name, RMDocumentType type, string? parent = null)
+    public static StandaloneId NewMetadata(string name, RMDocumentType type, string? parent = null)
     {
         var md = new MetadataNew
         {
@@ -257,5 +266,26 @@ public static class Storage
         };
 
         return NewMetadata(md.GetPointer());
+    }
+
+    /// <summary>
+    /// This function creates a content object for a blank notebook with a specified page count.
+    /// You must pass at minimum one page! Returns standalone content id
+    /// </summary>
+    /// <param name="pageCount">The number of pages in the notebook</param>
+    /// <returns>The content id</returns>
+    public static StandaloneId NewContentNotebook(ulong pageCount)
+    {
+        return MossNewContentNotebook(pageCount);
+    }
+
+    public static StandaloneId NewContentPdf()
+    {
+        return MossNewContentPdf();
+    }
+
+    public static StandaloneId NewContentEpub()
+    {
+        return MossNewContentEpub();
     }
 }
