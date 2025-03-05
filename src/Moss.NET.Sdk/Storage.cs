@@ -41,6 +41,9 @@ public static class Storage
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_ensure_download")]
     private static extern void EnsureDownload(ulong accessorPtr);
 
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_ensure_download_and_callback")]
+    private static extern void EnsureDownload(ulong accessorPtr, ulong callbackPtr);
+
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_load_files_from_cache")]
     private static extern void LoadFilesFromCache(ulong accessorPtr);
 
@@ -196,6 +199,16 @@ public static class Storage
     public static void EnsureDownload(string uuid)
     {
         EnsureDownload(InternalFunctions.GetAccessor(uuid).GetPointer());
+    }
+
+    /// <summary>
+    /// Ensures that the document is downloaded.
+    /// </summary>
+    /// <param name="uuid"></param>
+    /// <param name="callback"></param>
+    public static void EnsureDownload(string uuid, string callback) //Todo: replace callback with Action if dispatching events works properly
+    {
+        EnsureDownload(InternalFunctions.GetAccessor(uuid).GetPointer(), callback.GetPointer());
     }
 
     /// <summary>

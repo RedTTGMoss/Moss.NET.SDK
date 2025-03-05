@@ -8,11 +8,15 @@ public static class Log
 
     public static LoggerInstance GetLogger<T>()
     {
-        var typeName = typeof(T).Name;
-        if (!Cache.TryGetValue(typeName, out var loggerInstance))
+        return GetLogger(typeof(T).Name);
+    }
+
+    public static LoggerInstance GetLogger(string name)
+    {
+        if (!Cache.TryGetValue(name, out var loggerInstance))
         {
-            loggerInstance = new LoggerInstance(typeName);
-            Cache[typeName] = loggerInstance;
+            loggerInstance = new LoggerInstance(name);
+            Cache[name] = loggerInstance;
         }
 
         return loggerInstance;
