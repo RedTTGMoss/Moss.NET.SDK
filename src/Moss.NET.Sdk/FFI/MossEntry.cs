@@ -7,7 +7,7 @@ internal class MossEntry
 {
     private static LoggerInstance _logger = Log.GetLogger<MossEntry>();
 
-    [UnmanagedCallersOnly(EntryPoint = "moss_unregister")]
+    [UnmanagedCallersOnly(EntryPoint = "moss_extension_unregister")]
     public static ulong Unregister()
     {
         MossExtension.Instance!.Unregister();
