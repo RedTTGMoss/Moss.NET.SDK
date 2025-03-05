@@ -11,7 +11,7 @@ internal class MossEntry
     public static ulong Unregister()
     {
         MossExtension.Instance?.Unregister();
-        _logger.Info("unregistered extension");
+
         return 0;
     }
 
