@@ -10,7 +10,7 @@ internal class MossEntry
     [UnmanagedCallersOnly(EntryPoint = "moss_extension_unregister")]
     public static ulong Unregister()
     {
-        MossExtension.Instance!.Unregister();
+        MossExtension.Instance?.Unregister();
         _logger.Info("unregistered extension");
         return 0;
     }
@@ -20,7 +20,7 @@ internal class MossEntry
     {
         var state = Pdk.GetInputJson(JsonContext.Default.MossState)!;
 
-        MossExtension.Instance!.ExtensionLoop(state);
+        MossExtension.Instance?.ExtensionLoop(state);
 
         return 0;
     }

@@ -59,7 +59,7 @@ public static class Storage
     {
         var accessor = new Accessor()
         {
-            Type = AccessorType.APIDocument,
+            Type = AccessorType.APIDocumentMetadata,
             Uuid = uuid
         };
 
@@ -70,7 +70,7 @@ public static class Storage
     {
         var accessor = new Accessor()
         {
-            Type = AccessorType.APIDocument,
+            Type = AccessorType.APIDocumentMetadata,
             Uuid = uuid
         };
 
@@ -102,7 +102,7 @@ public static class Storage
     {
         Set(new Accessor
         {
-            Type = AccessorType.APIDocument,
+            Type = AccessorType.APIDocumentMetadata,
             Uuid = uuid
         }, key, value);
     }

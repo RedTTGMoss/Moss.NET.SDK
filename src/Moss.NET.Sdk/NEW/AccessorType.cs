@@ -25,6 +25,9 @@ public sealed class AccessorType : SmartEnum<AccessorType>
     public static readonly AccessorType StandaloneMetadata = new("metadata", 11);
     public static readonly AccessorType StandaloneContent = new("content", 12);
 
+    public static readonly AccessorType FileSyncProgress = new("file_sync_progress", 13);
+    public static readonly AccessorType DocumentSyncProgress = new("document_sync_progress", 14);
+
     private AccessorType(string name, int value) : base(name, value)
     {
     }
