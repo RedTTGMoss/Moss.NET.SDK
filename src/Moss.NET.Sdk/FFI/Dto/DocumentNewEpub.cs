@@ -1,4 +1,6 @@
 ﻿using System.Text.Json.Serialization;
+using Moss.NET.Sdk.Core;
+using Moss.NET.Sdk.Core.Converters;
 
 namespace Moss.NET.Sdk.FFI.Dto;
 
@@ -14,7 +16,8 @@ internal class DocumentNewEpub
     public string? DocumentUuid { get; set; }
 
     [JsonPropertyName("epub_data")]
-    public byte[]? EpubData { get; set; }
+    [JsonConverter(typeof(Base64Converter))]
+    public Base64 EpubData { get; set; }
 
     [JsonPropertyName("epub_file")]
     public string? EpubFile { get; set; }

@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using Extism;
 using Moss.NET.Sdk.API;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
@@ -171,8 +170,23 @@ public static class Storage
             }
         };
 
-        var resultPtr = NewPdf(notebook.GetPointer());
-        return resultPtr.ReadString();
+        return NewPdf(notebook.GetPointer()).ReadString();
+    }
+
+    public static string NewPdf(string name, Base64 data, string? parent = null)
+    {
+        var notebook = new DocumentNewPdf
+        {
+            Name = name,
+            Parent = parent,
+            PdfData = data,
+            Accessor = new Accessor
+            {
+                Type = AccessorType.APIDocument
+            }
+        };
+
+        return NewPdf(notebook.GetPointer()).ReadString();
     }
 
     /// <summary>
@@ -195,8 +209,23 @@ public static class Storage
             }
         };
 
-        var resultPtr = NewEpub(notebook.GetPointer());
-        return resultPtr.ReadString();
+        return NewEpub(notebook.GetPointer()).ReadString();
+    }
+
+    public static string NewEpub(string name, Base64 data, string? parent = null)
+    {
+        var notebook = new DocumentNewEpub
+        {
+            Name = name,
+            Parent = parent,
+            EpubData = data,
+            Accessor = new Accessor
+            {
+                Type = AccessorType.APIDocument
+            }
+        };
+
+        return NewEpub(notebook.GetPointer()).ReadString();
     }
 
     /// <summary>
