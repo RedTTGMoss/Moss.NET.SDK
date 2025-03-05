@@ -66,6 +66,17 @@ public static class Storage
         return Get<Metadata>(accessor);
     }
 
+    public static T GetApiDocumentMetadata<T>(string uuid, string key)
+    {
+        var accessor = new Accessor()
+        {
+            Type = AccessorType.APIDocument,
+            Uuid = uuid
+        };
+
+        return Get<T>(accessor, key);
+    }
+
     public static T Get<T>(Accessor accessor)
     {
         var resultPtr = Get(accessor.GetPointer());
@@ -85,6 +96,15 @@ public static class Storage
     public static void Set(Accessor accessor, string key, object value)
     {
         Set(accessor.GetPointer(),new ConfigSet(key, value).GetPointer());
+    }
+
+    public static void SetApiDocumentMetadataValue(string uuid, string key, object value)
+    {
+        Set(new Accessor
+        {
+            Type = AccessorType.APIDocument,
+            Uuid = uuid
+        }, key, value);
     }
 
     /// <summary>

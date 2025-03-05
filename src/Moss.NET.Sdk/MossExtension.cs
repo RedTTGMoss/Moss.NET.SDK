@@ -28,11 +28,12 @@ public class MossExtension
         var extensionInfo = Instance!.Register(input!);
         extensionInfo.Files = Assets.Expose();
 
-        #if DEBUG
-        Pdk.Log(LogLevel.Info, "output: " + JsonSerializer.Serialize(extensionInfo, JsonContext.Default.ExtensionInfo));
-        #endif
+        var output = JsonSerializer.Serialize(extensionInfo, JsonContext.Default.ExtensionInfo);
+#if DEBUG
+            Pdk.Log(LogLevel.Info, "output: " + output);
+#endif
 
-        Pdk.SetOutputJson(extensionInfo, JsonContext.Default.ExtensionInfo);
+        Pdk.SetOutput(output);
     }
 
     public static void Init<T>() where T : MossExtension, new()
