@@ -17,10 +17,14 @@
         <EmbeddedResource Include="Assets/**/**">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </EmbeddedResource>
+		<None Include="*.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <Target Name="Bundle" AfterTargets="PostBuildEvent">
         <Copy SourceFiles="@(EmbeddedResource)" DestinationFolder="$(OutputPath)AppBundle\Assets\%(RecursiveDir)" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="@(None)" DestinationFolder="$(OutputPath)AppBundle\%(RecursiveDir)" SkipUnchangedFiles="true" />
     </Target>
 
 </Project>
