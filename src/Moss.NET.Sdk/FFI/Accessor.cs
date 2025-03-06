@@ -11,8 +11,8 @@ public class Accessor
     public required AccessorType Type { get; set; }
 
     [JsonPropertyName("uuid")]
-    public string? Uuid { get; set; }
+    public string Uuid { get; set; }
 
     [JsonPropertyName("id")]
-    public int? Id { get; set; }
+    public ulong? Id { get; set; }
 }

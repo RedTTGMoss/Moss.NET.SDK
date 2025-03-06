@@ -8,7 +8,7 @@ using Moss.NET.Sdk.NEW;
 namespace Moss.NET.Sdk;
 
 //refers to https://redttg.gitbook.io/moss/extensions/host-functions
-public static class Storage
+public static class StorageFunctions
 {
     [DllImport(Functions.DLL, EntryPoint = "moss_api_get_all")]
     private static extern ulong Get(ulong accessorPtr); // -> ConfigGet[T]
@@ -19,11 +19,6 @@ public static class Storage
     [DllImport(Functions.DLL, EntryPoint = "_moss_api_set")]
     private static extern void Set(ulong accessorPtr, ulong configSetPtr);
 
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_duplicate")]
-    private static extern ulong DuplicateDocument(ulong accessorPtr); // -> string
-
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_notebook")]
-    private static extern ulong NewNotebook(ulong newDocPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_pdf")]
     private static extern ulong NewPdf(ulong newPdfPtr);
@@ -37,11 +32,6 @@ public static class Storage
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_unload_files")]
     private static extern void UnloadFiles(ulong accessorPtr);
 
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_ensure_download")]
-    private static extern void EnsureDownload(ulong accessorPtr);
-
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_ensure_download_and_callback")]
-    private static extern void EnsureDownload(ulong accessorPtr, ulong callbackPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_load_files_from_cache")]
     private static extern void LoadFilesFromCache(ulong accessorPtr);
@@ -58,21 +48,6 @@ public static class Storage
     [DllImport(Functions.DLL, EntryPoint = "moss_api_content_new_epub")]
     private static extern ulong MossNewContentEpub(); // -> int
 
-    /// <summary>
-    /// Retrieves the metadata of a document given its UUID.
-    /// </summary>
-    /// <param name="uuid">The UUID of the document.</param>
-    /// <returns>The metadata of the document.</returns>
-    public static Metadata GetApiDocumentMetadata(string uuid)
-    {
-        var accessor = new Accessor()
-        {
-            Type = AccessorType.APIDocumentMetadata,
-            Uuid = uuid
-        };
-
-        return Get<Metadata>(accessor);
-    }
 
     public static T GetApiDocumentMetadata<T>(string uuid, string key)
     {
@@ -113,41 +88,6 @@ public static class Storage
             Type = AccessorType.APIDocumentMetadata,
             Uuid = uuid
         }, key, value);
-    }
-
-    /// <summary>
-    /// Duplicates a document given its UUID.
-    /// </summary>
-    /// <param name="uuid">The UUID of the document to duplicate.</param>
-    /// <returns>The UUID of the duplicated document.</returns>
-    public static string DuplicateDocument(string uuid)
-    {
-        var resultPtr = DuplicateDocument(InternalFunctions.GetAccessor(uuid).GetPointer());
-
-        return resultPtr.ReadString();
-    }
-
-
-    /// <summary>
-    /// Creates a new notebook document.
-    /// </summary>
-    /// <param name="name">The name of the new notebook.</param>
-    /// <param name="parent">The parent document UUID (optional).</param>
-    /// <returns>The UUID of the new notebook document.</returns>
-    public static string NewNotebook(string name, string? parent = null)
-    {
-        var notebook = new DocumentNewNotebook
-        {
-            Name = name,
-            Parent = parent,
-            Accessor = new Accessor
-            {
-                Type = AccessorType.APIDocument
-            },
-            NotebookFiles = []
-        };
-
-        return NewNotebook(notebook.GetPointer()).ReadString();
     }
 
     /// <summary>
@@ -251,25 +191,6 @@ public static class Storage
     }
 
     /// <summary>
-    /// Ensures that the document is downloaded.
-    /// </summary>
-    /// <param name="uuid"></param>
-    public static void EnsureDownload(string uuid)
-    {
-        EnsureDownload(InternalFunctions.GetAccessor(uuid).GetPointer());
-    }
-
-    /// <summary>
-    /// Ensures that the document is downloaded.
-    /// </summary>
-    /// <param name="uuid"></param>
-    /// <param name="callback"></param>
-    public static void EnsureDownload(string uuid, string callback) //Todo: replace callback with Action if dispatching events works properly
-    {
-        EnsureDownload(InternalFunctions.GetAccessor(uuid).GetPointer(), callback.GetPointer());
-    }
-
-    /// <summary>
     /// This function loads all the files enforcing cache usage only. If the cache misses a file, it will not be downloaded.
     /// </summary>
     /// <param name="uuid"></param>
@@ -285,7 +206,7 @@ public static class Storage
     /// <param name="type">Does this metadata corresponds to a notebook or a collection?</param>
     /// <param name="parent">The parent collection</param>
     /// <returns>An id to work with later</returns>
-    public static StandaloneId NewMetadata(string name, RMDocumentType type, string? parent = null)
+    internal static StandaloneId NewMetadata(string name, RMDocumentType type, string? parent = null)
     {
         var md = new MetadataNew
         {
