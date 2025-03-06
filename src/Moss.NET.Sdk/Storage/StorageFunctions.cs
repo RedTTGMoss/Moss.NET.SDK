@@ -19,22 +19,11 @@ public static class StorageFunctions
     [DllImport(Functions.DLL, EntryPoint = "_moss_api_set")]
     private static extern void Set(ulong accessorPtr, ulong configSetPtr);
 
-
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_pdf")]
     private static extern ulong NewPdf(ulong newPdfPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_epub")]
     private static extern ulong NewEpub(ulong newEpPtr);
-
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_randomize_uuids")]
-    private static extern ulong RandomizeUuids(ulong accessorPtr);
-
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_unload_files")]
-    private static extern void UnloadFiles(ulong accessorPtr);
-
-
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_load_files_from_cache")]
-    private static extern void LoadFilesFromCache(ulong accessorPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_metadata_new")]
     private static extern ulong NewMetadata(ulong metadataNewPtr);
@@ -47,6 +36,12 @@ public static class StorageFunctions
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_content_new_epub")]
     private static extern ulong MossNewContentEpub(); // -> int
+
+    //[DllImport(Functions.DLL, EntryPoint = "moss_api_delete")]
+    //private static extern void DeleteNotebook(ulong acessorPtr, ulong callbackPtr, int unload);
+
+    //[DllImport(Functions.DLL, EntryPoint = "moss_api_upload")]
+    //private static extern void UploadNotebook(ulong acessorPtr);
 
 
     public static T GetApiDocumentMetadata<T>(string uuid, string key)
@@ -166,37 +161,6 @@ public static class StorageFunctions
         };
 
         return NewEpub(notebook.GetPointer()).ReadString();
-    }
-
-    /// <summary>
-    /// This function will modify all the document UUIDs including nested UUID references to a new random UUID and return the new UUID.
-    /// </summary>
-    /// <param name="uuid">The uuid to randomize</param>
-    public static string RandomizeUUIDs(string uuid)
-    {
-        var resultPtr = RandomizeUuids(InternalFunctions.GetAccessor(uuid).GetPointer());
-
-        return resultPtr.ReadString();
-    }
-
-    /// <summary>
-    /// Simply unloads any files that Moss has loaded on the document.
-    /// Documents will usually be automatically unloaded upon closing.
-    /// If your extension loaded files though, this is the way to unload them and you should!
-    /// </summary>
-    /// <param name="uuid">The uuid to unload</param>
-    public static void UnloadFiles(string uuid)
-    {
-        UnloadFiles(InternalFunctions.GetAccessor(uuid).GetPointer());
-    }
-
-    /// <summary>
-    /// This function loads all the files enforcing cache usage only. If the cache misses a file, it will not be downloaded.
-    /// </summary>
-    /// <param name="uuid"></param>
-    public static void LoadFilesFromCache(string uuid)
-    {
-        LoadFilesFromCache(InternalFunctions.GetAccessor(uuid).GetPointer());
     }
 
     /// <summary>

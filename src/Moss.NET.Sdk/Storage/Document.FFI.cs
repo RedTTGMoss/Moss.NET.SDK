@@ -21,6 +21,15 @@ public partial class Document
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_notebook")]
     private static extern ulong NewNotebook(ulong newDocPtr);
 
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_unload_files")]
+    private static extern void UnloadFiles(ulong accessorPtr);
+
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_randomize_uuids")]
+    private static extern ulong RandomizeUuids(ulong accessorPtr);
+
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_load_files_from_cache")]
+    private static extern void LoadFilesFromCache(ulong accessorPtr);
+
     private static Metadata GetApiDocumentMetadata(string uuid)
     {
         var accessor = new Accessor()
