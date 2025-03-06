@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Extism;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
-using Moss.NET.Sdk.FFI.Dto;
 
 namespace Moss.NET.Sdk.UI;
 
@@ -19,18 +17,12 @@ public static class ScreenManager
     [DllImport(Functions.DLL, EntryPoint = "_moss_pe_open_screen")]
     private static extern ulong OpenScreen(ulong keyPtr, ulong initial_valuesPtr); // initial_valuesPtr = dict of values, could be any object that is non primitive
 
-    [DllImport(Functions.DLL, EntryPoint = "moss_pe_get_screen_value")]
-    private static extern ulong GetScreenValue(ulong keyPtr); //-> ConfigGet
-
-    [DllImport(Functions.DLL, EntryPoint = "_moss_pe_set_screen_value")]
-    private static extern void SetScreenValue(ulong configSetPtr);
-
     //pe_close_screen
     [DllImport(Functions.DLL, EntryPoint = "moss_pe_close_screen")]
     internal static extern void CloseMossScreen();
 
     [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_preloop")]
-    public static ulong DispatcherPreLoopEntry()
+    public static ulong PreLoopEntry()
     {
         OpenedScreens.Peek().PreLoop();
 
@@ -38,7 +30,7 @@ public static class ScreenManager
     }
 
     [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_postloop")]
-    public static ulong DispatcherPostLoopEntry()
+    public static ulong PostLoopEntry()
     {
         OpenedScreens.Peek().PostLoop();
 
@@ -46,7 +38,7 @@ public static class ScreenManager
     }
 
     [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_loop")]
-    public static ulong DispatcherLoopEntry()
+    public static ulong LoopEntry()
     {
         OpenedScreens.Peek().Loop();
 
@@ -86,19 +78,5 @@ public static class ScreenManager
         {
             CloseMossScreen();
         }
-    }
-
-    public static void SetValue(string key, object value)
-    {
-        SetScreenValue(Utils.Serialize(new ConfigSet(key, value), JsonContext.Default.ConfigSet));
-    }
-
-    public static T GetValue<T>(string key)
-    {
-        var valuePtr = GetScreenValue(Pdk.Allocate(key).Offset);
-
-        var value = Utils.Deserialize(valuePtr, JsonContext.Default.ConfigGetD).value;
-
-        return value.GetValue<T>();
     }
 }
