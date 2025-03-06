@@ -2,7 +2,7 @@
 using Ardalis.SmartEnum.SystemTextJson;
 using Moss.NET.Sdk.NEW;
 
-namespace Moss.NET.Sdk.FFI;
+namespace Moss.NET.Sdk;
 
 public class Accessor
 {

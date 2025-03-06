@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Moss.NET.Sdk;
+namespace Moss.NET.Sdk.FFI;
 
-public readonly struct File(string key, string path)
+internal readonly struct File(string key, string path)
 {
     [JsonPropertyName("key")] public string Key { get; } = key;
 

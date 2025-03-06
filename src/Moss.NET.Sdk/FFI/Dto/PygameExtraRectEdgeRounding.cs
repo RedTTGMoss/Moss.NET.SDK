@@ -2,7 +2,7 @@
 
 namespace Moss.NET.Sdk.FFI.Dto;
 
-public record PygameExtraRectEdgeRounding(
+internal record PygameExtraRectEdgeRounding(
     int edge_rounding,
     int edge_rounding_topright,
     int edge_rounding_topleft,

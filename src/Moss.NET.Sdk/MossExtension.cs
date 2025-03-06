@@ -9,9 +9,9 @@ public class MossExtension
 {
     internal static MossExtension? Instance;
 
-    public virtual ExtensionInfo Register(MossState state)
+    public virtual void Register(MossState state)
     {
-        return new ExtensionInfo();
+
     }
 
     public virtual void Unregister()
@@ -25,8 +25,11 @@ public class MossExtension
     private static void SetExtensionInfo()
     {
         var input = Pdk.GetInputJson(JsonContext.Default.MossState);
-        var extensionInfo = Instance!.Register(input!);
-        extensionInfo.Files = Assets.Expose();
+        Instance!.Register(input!);
+        var extensionInfo = new ExtensionInfo()
+        {
+            Files = Assets.Expose()
+        };
 
         var output = JsonSerializer.Serialize(extensionInfo, JsonContext.Default.ExtensionInfo);
 #if DEBUG

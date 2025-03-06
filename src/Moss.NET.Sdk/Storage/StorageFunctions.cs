@@ -5,7 +5,7 @@ using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.FFI.Dto;
 using Moss.NET.Sdk.NEW;
 
-namespace Moss.NET.Sdk;
+namespace Moss.NET.Sdk.Storage;
 
 //refers to https://redttg.gitbook.io/moss/extensions/host-functions
 public static class StorageFunctions

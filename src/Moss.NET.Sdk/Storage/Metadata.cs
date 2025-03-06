@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
+using Moss.NET.Sdk.API;
 using Moss.NET.Sdk.Core.Converters;
-using Moss.NET.Sdk.FFI;
 
-namespace Moss.NET.Sdk.API;
+namespace Moss.NET.Sdk.Storage;
 
 public class Metadata
 {

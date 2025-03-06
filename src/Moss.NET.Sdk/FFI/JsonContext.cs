@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Moss.NET.Sdk.API;
 using Moss.NET.Sdk.FFI.Dto;
 using Moss.NET.Sdk.NEW;
+using Moss.NET.Sdk.Storage;
 using Moss.NET.Sdk.UI;
 using Screen = Moss.NET.Sdk.FFI.Dto.Screen;
 

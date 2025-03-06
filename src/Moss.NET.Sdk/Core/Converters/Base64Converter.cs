@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Moss.NET.Sdk.Core.Converters;
 
-public class Base64Converter : JsonConverter<Base64>
+internal class Base64Converter : JsonConverter<Base64>
 {
     public override Base64? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
