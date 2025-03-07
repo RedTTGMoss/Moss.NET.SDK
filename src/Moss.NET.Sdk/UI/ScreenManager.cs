@@ -24,6 +24,8 @@ public static class ScreenManager
     [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_preloop")]
     public static ulong PreLoopEntry()
     {
+        if (OpenedScreens.Count == 0) return 0;
+
         OpenedScreens.Peek().PreLoop();
 
         return 0;
@@ -32,6 +34,8 @@ public static class ScreenManager
     [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_postloop")]
     public static ulong PostLoopEntry()
     {
+        if (OpenedScreens.Count == 0) return 0;
+
         OpenedScreens.Peek().PostLoop();
 
         return 0;
@@ -40,6 +44,8 @@ public static class ScreenManager
     [UnmanagedCallersOnly(EntryPoint = "ext_event_screen_loop")]
     public static ulong LoopEntry()
     {
+        if (OpenedScreens.Count == 0) return 0;
+
         OpenedScreens.Peek().Loop();
 
         return 0;

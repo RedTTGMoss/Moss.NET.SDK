@@ -18,6 +18,7 @@ namespace Moss.NET.Sdk.FFI;
 [JsonSerializable(typeof(List<string>))]
 [JsonSerializable(typeof(List<ConfigGetD>))]
 [JsonSerializable(typeof(List<ConfigGetS>))]
+[JsonSerializable(typeof(Accessor[]))]
 [JsonSerializable(typeof(MossState))]
 [JsonSerializable(typeof(ExtensionInfo))]
 [JsonSerializable(typeof(ConfigSet))]

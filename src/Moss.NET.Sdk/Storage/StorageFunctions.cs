@@ -13,9 +13,6 @@ namespace Moss.NET.Sdk.Storage;
 //refers to https://redttg.gitbook.io/moss/extensions/host-functions
 public static class StorageFunctions
 {
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_pdf")]
-    private static extern ulong NewPdf(ulong newPdfPtr);
-
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_epub")]
     private static extern ulong NewEpub(ulong newEpPtr);
 
@@ -83,45 +80,6 @@ public static class StorageFunctions
         });
 
         DeleteManyDocuments(accessors, callback, unload);
-    }
-
-    /// <summary>
-    /// Creates a new PDF document from a file.
-    /// </summary>
-    /// <param name="name">The name of the new PDF document.</param>
-    /// <param name="file">The file path of the PDF document.</param>
-    /// <param name="parent">The parent document UUID (optional).</param>
-    /// <returns>The UUID of the new PDF document.</returns>
-    public static string NewPdf(string name, string file, string? parent = null)
-    {
-        var notebook = new DocumentNewPdf
-        {
-            Name = name,
-            Parent = parent,
-            PdfFile = file,
-            Accessor = new Accessor
-            {
-                Type = AccessorType.APIDocument
-            }
-        };
-
-        return NewPdf(notebook.GetPointer()).ReadString();
-    }
-
-    public static string NewPdf(string name, Base64 data, string? parent = null)
-    {
-        var notebook = new DocumentNewPdf
-        {
-            Name = name,
-            Parent = parent,
-            PdfData = data,
-            Accessor = new Accessor
-            {
-                Type = AccessorType.APIDocument
-            }
-        };
-
-        return NewPdf(notebook.GetPointer()).ReadString();
     }
 
     /// <summary>
