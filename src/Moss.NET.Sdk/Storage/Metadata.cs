@@ -9,31 +9,31 @@ namespace Moss.NET.Sdk.Storage;
 
 public class Metadata
 {
-    [JsonPropertyName("hash")] public string Hash { get; set;}
+    [JsonPropertyName("hash")] public string Hash { get; init;}
 
     [JsonPropertyName("type")]
     [JsonConverter(typeof(EnumTypeConverter<RMDocumentType>))]
-    public RMDocumentType Type { get; set; }
+    public RMDocumentType Type { get; init; }
 
     [JsonPropertyName("accessor")]
-    public Accessor Accessor { get; set;}
+    public Accessor Accessor { get; init;}
 
-    [JsonPropertyName("parent")] public string? Parent { get; set; }
+    [JsonPropertyName("parent")] public string? Parent { get; init; }
 
-    [JsonPropertyName("created_time")] public long CreatedTime { get; set; }
+    [JsonPropertyName("created_time")] public long CreatedTime { get; init; }
 
-    [JsonPropertyName("last_modified")] public long LastModified { get; }
+    [JsonPropertyName("last_modified")] public long LastModified { get; init; }
 
-    [JsonPropertyName("visible_name")] public string VisibleName { get; set; }
+    [JsonPropertyName("visible_name")] public string VisibleName { get; init; }
 
     [JsonPropertyName("metadata_modified")]
-    public bool MetadataModified { get; set; }
+    public bool MetadataModified { get; init; }
 
-    [JsonPropertyName("modified")] public bool Modified { get; set; }
+    [JsonPropertyName("modified")] public bool Modified { get; init; }
 
-    [JsonPropertyName("synced")] public bool Synced { get; set; }
+    [JsonPropertyName("synced")] public bool Synced { get; init; }
 
-    [JsonPropertyName("version")] public int? Version { get; set; }
+    [JsonPropertyName("version")] public int? Version { get; init; }
 
     [DllImport(Functions.DLL, EntryPoint = "_moss_api_set")]
     private static extern void Set(ulong accessorPtr, ulong configSetPtr);

@@ -1,32 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Extism;
-using Moss.NET.Sdk.API;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.FFI.Dto;
-using Moss.NET.Sdk.NEW;
 
 namespace Moss.NET.Sdk.Storage;
 
 //refers to https://redttg.gitbook.io/moss/extensions/host-functions
 public static class StorageFunctions
 {
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_epub")]
-    private static extern ulong NewEpub(ulong newEpPtr);
-
     [DllImport(Functions.DLL, EntryPoint = "moss_api_metadata_new")]
     private static extern ulong NewMetadata(ulong metadataNewPtr);
-
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_content_new_notebook")]
-    private static extern ulong MossNewContentNotebook(ulong pageCount); // -> int
-
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_content_new_pdf")]
-    private static extern ulong MossNewContentPdf(); // -> int
-
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_content_new_epub")]
-    private static extern ulong MossNewContentEpub(); // -> int
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_delete")]
     private static extern ulong Delete(ulong accessorPtr, ulong callbackPtr, int unload); // ->taskid
@@ -50,17 +36,17 @@ public static class StorageFunctions
         return Upload(accessor.GetPointer(), callback.GetPointer(), unload ? 1 : 0);
     }
 
-    public static void UploadManyDocuments(IEnumerable<Accessor> accessors, string callback, bool unload = false)
+    public static ulong UploadManyDocuments(IEnumerable<Accessor> accessors, string callback, bool unload = false)
     {
-        UploadManyDocuments(accessors.ToArray().GetPointer(), callback.GetPointer(), unload ? 1 : 0);
+        return UploadManyDocuments(accessors.ToArray().GetPointer(), callback.GetPointer(), unload ? 1 : 0);
     }
 
-    public static void DeleteManyDocuments(IEnumerable<Accessor> accessors, string callback, bool unload = false)
+    public static ulong DeleteManyDocuments(IEnumerable<Accessor> accessors, string callback, bool unload = false)
     {
-        DeleteManyDocuments(accessors.ToArray().GetPointer(), callback.GetPointer(), unload ? 1 : 0);
+        return DeleteManyDocuments(accessors.ToArray().GetPointer(), callback.GetPointer(), unload ? 1 : 0);
     }
 
-    public static void UploadManyDocuments(IEnumerable<Document> documents, string callback, bool unload = false)
+    public static void UploadManyDocuments(IEnumerable<Document> documents, Action? callback = null, bool unload = false)
     {
         var accessors = documents.Select(d => new Accessor
         {
@@ -68,10 +54,11 @@ public static class StorageFunctions
             Uuid = d.Metadata.Accessor.Uuid
         });
 
-        UploadManyDocuments(accessors, callback, unload);
+        var taskid = UploadManyDocuments(accessors, "dispatch_entry", unload);
+        Dispatcher.Register(taskid, callback);
     }
 
-    public static void DeleteManyDocuments(IEnumerable<Document> documents, string callback, bool unload = false)
+    public static void DeleteManyDocuments(IEnumerable<Document> documents, Action? callback = null, bool unload = false)
     {
         var accessors = documents.Select(d => new Accessor
         {
@@ -79,46 +66,8 @@ public static class StorageFunctions
             Uuid = d.Metadata.Accessor.Uuid
         });
 
-        DeleteManyDocuments(accessors, callback, unload);
-    }
-
-    /// <summary>
-    /// Creates a new EPUB document from a file.
-    /// </summary>
-    /// <param name="name">The name of the new EPUB document.</param>
-    /// <param name="file">The file path of the EPUB document.</param>
-    /// <param name="parent">The parent document UUID (optional).</param>
-    /// <returns>The UUID of the new EPUB document.</returns>
-    public static string NewEpub(string name, string file, string? parent = null)
-    {
-        var notebook = new DocumentNewEpub
-        {
-            Name = name,
-            Parent = parent,
-            EpubFile = file,
-            Accessor = new Accessor
-            {
-                Type = AccessorType.APIDocument
-            }
-        };
-
-        return NewEpub(notebook.GetPointer()).ReadString();
-    }
-
-    public static string NewEpub(string name, Base64 data, string? parent = null)
-    {
-        var notebook = new DocumentNewEpub
-        {
-            Name = name,
-            Parent = parent,
-            EpubData = data,
-            Accessor = new Accessor
-            {
-                Type = AccessorType.APIDocument
-            }
-        };
-
-        return NewEpub(notebook.GetPointer()).ReadString();
+        var taskid = DeleteManyDocuments(accessors, "dispatch_entry", unload);
+        Dispatcher.Register(taskid, callback);
     }
 
     /// <summary>
@@ -138,26 +87,5 @@ public static class StorageFunctions
         };
 
         return NewMetadata(md.GetPointer());
-    }
-
-    /// <summary>
-    /// This function creates a content object for a blank notebook with a specified page count.
-    /// You must pass at minimum one page! Returns standalone content id
-    /// </summary>
-    /// <param name="pageCount">The number of pages in the notebook</param>
-    /// <returns>The content id</returns>
-    public static StandaloneId NewContentNotebook(ulong pageCount)
-    {
-        return MossNewContentNotebook(pageCount);
-    }
-
-    public static StandaloneId NewContentPdf()
-    {
-        return MossNewContentPdf();
-    }
-
-    public static StandaloneId NewContentEpub()
-    {
-        return MossNewContentEpub();
     }
 }

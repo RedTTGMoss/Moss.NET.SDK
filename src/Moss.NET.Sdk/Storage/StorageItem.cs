@@ -8,7 +8,6 @@ public abstract class StorageItem<TOut> where TOut : StorageItem<TOut>, new()
 {
     public Metadata Metadata { get; protected set; }
 
-
     /// <summary>
     /// It will halt until the document is finished downloading.
     /// </summary>
@@ -21,7 +20,7 @@ public abstract class StorageItem<TOut> where TOut : StorageItem<TOut>, new()
     /// Calls the callback when the document is finished downloading.
     /// </summary>
     /// <param name="callback"></param>
-    public void EnsureDownload(Action callback)
+    public void EnsureDownload(Action? callback = null)
     {
         DocumentFunctions.EnsureDownload(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer(), "dispatch_entry".GetPointer());
 
@@ -57,7 +56,7 @@ public abstract class StorageItem<TOut> where TOut : StorageItem<TOut>, new()
         DocumentFunctions.LoadFilesFromCache(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer());
     }
 
-    public void Delete(Action callback, bool unload = false)
+    public void Delete(Action? callback = null, bool unload = false)
     {
         var taskid = StorageFunctions.Delete(new Accessor {
             Type = AccessorType.APIDocument,
@@ -67,7 +66,7 @@ public abstract class StorageItem<TOut> where TOut : StorageItem<TOut>, new()
         Dispatcher.Register(taskid, callback);
     }
 
-    public void Upload(Action callback, bool unload = false)
+    public void Upload(Action? callback = null, bool unload = false)
     {
         var taskid = StorageFunctions.Upload(new Accessor {
             Type = AccessorType.APIDocument,

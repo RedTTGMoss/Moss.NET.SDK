@@ -10,9 +10,15 @@ public static class Dispatcher
     private static readonly LoggerInstance _logger = Log.GetLogger(nameof(Dispatcher));
     private static readonly Dictionary<ulong, Delegate> _events = new();
 
-    public static void Register(ulong id, Delegate callback)
+    public static void Register(ulong id, Delegate? callback)
     {
+        if (callback is null) callback = Noop;
+
         _events[id] = callback;
+    }
+
+    private static void Noop()
+    {
     }
 
     public static void Dispatch(ulong id, params object[] args)

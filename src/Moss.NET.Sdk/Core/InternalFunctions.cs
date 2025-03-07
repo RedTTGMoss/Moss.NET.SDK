@@ -25,6 +25,14 @@ public static class InternalFunctions
     [DllImport(Functions.DLL, EntryPoint = "moss_api_new_document_sync_progress")]
     private static extern ulong NewDocumentSyncProgress(ulong accessorPtr, ulong documentUuidPtr);
 
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_content_new_epub")]
+    public static extern ulong NewContentEpub(); // -> int
+
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_content_new_pdf")]
+    public static extern ulong NewContentPdf(); // -> int
+
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_content_new_notebook")]
+    public static extern ulong NewContentNotebook(ulong pageCount); // -> int
 
     public static ulong NewDocumentSyncProgress(Accessor accessor)
     {
