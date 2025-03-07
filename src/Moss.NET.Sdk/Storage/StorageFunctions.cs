@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 using Moss.NET.Sdk.API;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
@@ -15,9 +17,6 @@ public static class StorageFunctions
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_get")]
     private static extern ulong Get(ulong accessorPtr, ulong keyPtr); // -> ConfigGet[T]
-
-    [DllImport(Functions.DLL, EntryPoint = "_moss_api_set")]
-    private static extern void Set(ulong accessorPtr, ulong configSetPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_pdf")]
     private static extern ulong NewPdf(ulong newPdfPtr);
@@ -43,14 +42,52 @@ public static class StorageFunctions
     [DllImport(Functions.DLL, EntryPoint = "moss_api_upload")]
     private static extern ulong Upload(ulong accessorPtr, ulong callbackPtr, int unload);
 
-    public static void Delete(Accessor accessor, string callback, bool unload = false)
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_upload_many_documents")]
+    private static extern ulong UploadManyDocuments(ulong accessorListPtr, ulong callbackPtr, int unload);
+
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_delete_many_documents")]
+    private static extern ulong DeleteManyDocuments(ulong accessorListPtr, ulong callbackPtr, int unload);
+
+    public static ulong Delete(Accessor accessor, string callback, bool unload = false)
     {
-        Delete(accessor.GetPointer(), callback.GetPointer(), unload ? 1 : 0);
+        return Delete(accessor.GetPointer(), callback.GetPointer(), unload ? 1 : 0);
     }
 
-    public static void Upload(Accessor accessor, string callback, bool unload = false)
+    public static ulong Upload(Accessor accessor, string callback, bool unload = false)
     {
-        Upload(accessor.GetPointer(), callback.GetPointer(), unload ? 1 : 0);
+        return Upload(accessor.GetPointer(), callback.GetPointer(), unload ? 1 : 0);
+    }
+
+    public static void UploadManyDocuments(IEnumerable<Accessor> accessors, string callback, bool unload = false)
+    {
+        UploadManyDocuments(accessors.ToArray().GetPointer(), callback.GetPointer(), unload ? 1 : 0);
+    }
+
+    public static void DeleteManyDocuments(IEnumerable<Accessor> accessors, string callback, bool unload = false)
+    {
+        DeleteManyDocuments(accessors.ToArray().GetPointer(), callback.GetPointer(), unload ? 1 : 0);
+    }
+
+    public static void UploadManyDocuments(IEnumerable<Document> documents, string callback, bool unload = false)
+    {
+        var accessors = documents.Select(d => new Accessor
+        {
+            Type = AccessorType.APIDocument,
+            Uuid = d.Metadata.Accessor.Uuid
+        });
+
+        UploadManyDocuments(accessors, callback, unload);
+    }
+
+    public static void DeleteManyDocuments(IEnumerable<Document> documents, string callback, bool unload = false)
+    {
+        var accessors = documents.Select(d => new Accessor
+        {
+            Type = AccessorType.APIDocument,
+            Uuid = d.Metadata.Accessor.Uuid
+        });
+
+        DeleteManyDocuments(accessors, callback, unload);
     }
 
     public static T GetApiDocumentMetadata<T>(string uuid, string key)
@@ -78,20 +115,6 @@ public static class StorageFunctions
         var result = resultPtr.Get<ConfigGetD>();
 
         return result.value.GetValue<T>();
-    }
-
-    public static void Set(Accessor accessor, string key, object value)
-    {
-        Set(accessor.GetPointer(),new ConfigSet(key, value).GetPointer());
-    }
-
-    public static void SetApiDocumentMetadataValue(string uuid, string key, object value)
-    {
-        Set(new Accessor
-        {
-            Type = AccessorType.APIDocumentMetadata,
-            Uuid = uuid
-        }, key, value);
     }
 
     /// <summary>
