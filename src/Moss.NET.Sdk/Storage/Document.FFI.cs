@@ -30,17 +30,6 @@ public partial class Document
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_load_files_from_cache")]
     private static extern void LoadFilesFromCache(ulong accessorPtr);
 
-    private static Metadata GetApiDocumentMetadata(string uuid)
-    {
-        var accessor = new Accessor()
-        {
-            Type = AccessorType.APIDocumentMetadata,
-            Uuid = uuid
-        };
-
-        return StorageFunctions.Get<Metadata>(accessor);
-    }
-
     private static string NewNotebook(string name, string? parent = null)
     {
         var notebook = new DocumentNewNotebook

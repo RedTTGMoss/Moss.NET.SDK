@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Extism;
 using Moss.NET.Sdk.API;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
@@ -12,12 +13,6 @@ namespace Moss.NET.Sdk.Storage;
 //refers to https://redttg.gitbook.io/moss/extensions/host-functions
 public static class StorageFunctions
 {
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_get_all")]
-    private static extern ulong Get(ulong accessorPtr); // -> ConfigGet[T]
-
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_get")]
-    private static extern ulong Get(ulong accessorPtr, ulong keyPtr); // -> ConfigGet[T]
-
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_pdf")]
     private static extern ulong NewPdf(ulong newPdfPtr);
 
@@ -88,33 +83,6 @@ public static class StorageFunctions
         });
 
         DeleteManyDocuments(accessors, callback, unload);
-    }
-
-    public static T GetApiDocumentMetadata<T>(string uuid, string key)
-    {
-        var accessor = new Accessor
-        {
-            Type = AccessorType.APIDocumentMetadata,
-            Uuid = uuid
-        };
-
-        return Get<T>(accessor, key);
-    }
-
-    public static T Get<T>(Accessor accessor)
-    {
-        var resultPtr = Get(accessor.GetPointer());
-        var result = resultPtr.Get<ConfigGetD>();
-
-        return result.value.GetValue<T>();
-    }
-
-    public static T Get<T>(Accessor accessor, string key)
-    {
-        var resultPtr = Get(accessor.GetPointer(), key.GetPointer());
-        var result = resultPtr.Get<ConfigGetD>();
-
-        return result.value.GetValue<T>();
     }
 
     /// <summary>

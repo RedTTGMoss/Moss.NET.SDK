@@ -10,7 +10,7 @@ public partial class Document : StorageItem
     {
         ID = StorageFunctions.NewMetadata(name, RMDocumentType.DocumentType, parent);
         var uuid = NewNotebook(name, parent);
-        Metadata = GetApiDocumentMetadata(uuid);
+        Metadata = Metadata.Get(uuid);
     }
 
     public StandaloneId ID { get; set; }
@@ -22,7 +22,7 @@ public partial class Document : StorageItem
 
     public static Document Get(string uuid)
     {
-        var metadata = GetApiDocumentMetadata(uuid);
+        var metadata = Metadata.Get(uuid);
 
         if (metadata is null)
         {
@@ -81,7 +81,7 @@ public partial class Document : StorageItem
     public void RandomizeUUIDs()
     {
         var newId = RandomizeUuids(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer()).ReadString();
-        Metadata = GetApiDocumentMetadata(newId);
+        Metadata = Metadata.Get(newId);
     }
 
     /// <summary>

@@ -33,7 +33,7 @@ public static class Dispatcher
     public static ulong DispatchEntry()
     {
         var input = Pdk.GetInput();
-        var taskid = BitConverter.ToUInt32(input, 0);
+        var taskid = BitConverter.ToUInt64(input, 0);
 
         Dispatch(taskid);
 
