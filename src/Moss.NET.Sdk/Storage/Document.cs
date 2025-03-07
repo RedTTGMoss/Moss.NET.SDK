@@ -1,4 +1,5 @@
-﻿using Moss.NET.Sdk.Core;
+﻿using System.Collections.Generic;
+using Moss.NET.Sdk.Core;
 
 namespace Moss.NET.Sdk.Storage;
 
@@ -6,9 +7,12 @@ public partial class Document : StorageItem
 {
     public Document(string name, string? parent = null)
     {
+        ID = StorageFunctions.NewMetadata(name, RMDocumentType.DocumentType, parent);
         var uuid = NewNotebook(name, parent);
         Metadata = GetApiDocumentMetadata(uuid);
     }
+
+    public StandaloneId ID { get; set; }
 
     private Document()
     {
@@ -17,7 +21,14 @@ public partial class Document : StorageItem
 
     public static Document Get(string uuid)
     {
-        return new Document { Metadata = GetApiDocumentMetadata(uuid) };
+        var metadata = GetApiDocumentMetadata(uuid);
+
+        if (metadata is null)
+        {
+            throw new KeyNotFoundException($"No Metadata with uuid {uuid} found");
+        }
+
+        return new Document { Metadata = metadata };
     }
 
     /// <summary>
@@ -80,11 +91,17 @@ public partial class Document : StorageItem
 
     public void Delete(string callback, bool unload = false)
     {
-        //StorageFunctions.DeleteNotebook(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer(), callback.GetPointer(), unload ? 1 : 0);
+        StorageFunctions.Delete(new Accessor {
+            Type = AccessorType.APIDocument,
+            Uuid = Metadata.Accessor.Uuid
+        }, callback, unload);
     }
 
-    public void Upload()
+    public void Upload(string callback, bool unload = false)
     {
-        //StorageFunctions.UploadNotebook(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer());
+        StorageFunctions.Upload(new Accessor {
+            Type = AccessorType.APIDocument,
+            Uuid = Metadata.Accessor.Uuid
+        }, callback, unload);
     }
 }

@@ -37,16 +37,25 @@ public static class StorageFunctions
     [DllImport(Functions.DLL, EntryPoint = "moss_api_content_new_epub")]
     private static extern ulong MossNewContentEpub(); // -> int
 
-    //[DllImport(Functions.DLL, EntryPoint = "moss_api_delete")]
-    //private static extern void DeleteNotebook(ulong acessorPtr, ulong callbackPtr, int unload);
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_delete")]
+    private static extern ulong Delete(ulong accessorPtr, ulong callbackPtr, int unload); // ->taskid
 
-    //[DllImport(Functions.DLL, EntryPoint = "moss_api_upload")]
-    //private static extern void UploadNotebook(ulong acessorPtr);
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_upload")]
+    private static extern ulong Upload(ulong accessorPtr, ulong callbackPtr, int unload);
 
+    public static void Delete(Accessor accessor, string callback, bool unload = false)
+    {
+        Delete(accessor.GetPointer(), callback.GetPointer(), unload ? 1 : 0);
+    }
+
+    public static void Upload(Accessor accessor, string callback, bool unload = false)
+    {
+        Upload(accessor.GetPointer(), callback.GetPointer(), unload ? 1 : 0);
+    }
 
     public static T GetApiDocumentMetadata<T>(string uuid, string key)
     {
-        var accessor = new Accessor()
+        var accessor = new Accessor
         {
             Type = AccessorType.APIDocumentMetadata,
             Uuid = uuid
