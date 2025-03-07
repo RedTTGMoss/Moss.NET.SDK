@@ -1,33 +1,41 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Extism;
 
 namespace Moss.NET.Sdk.Core;
 
 public static class Dispatcher
 {
     private static readonly LoggerInstance _logger = Log.GetLogger(nameof(Dispatcher));
-    private static readonly Dictionary<MossEvent, List<Delegate>> _events = new();
+    private static readonly Dictionary<ulong, Delegate> _events = new();
 
-    public static void Register(MossEvent ev, Delegate callback)
+    public static void Register(ulong id, Delegate callback)
     {
-        if (!_events.ContainsKey(ev)) _events[ev] = [];
-
-        _events[ev].Add(callback);
+        _events[id] = callback;
     }
 
-    public static void Dispatch(MossEvent ev, params object[] args)
+    public static void Dispatch(ulong id, params object[] args)
     {
-        if (!_events.TryGetValue(ev, out var value)) return;
+        _logger.Info("Dispatching task with id: " + id);
 
-        foreach (var callback in value) callback.DynamicInvoke(args);
+        if (_events.Count <= 0) return;
+
+        if (!_events.TryGetValue(id, out var callback)) return;
+
+        callback.DynamicInvoke(args);
+
+        //ToDo: not removing fo objects like contextmenu
+        _events.Remove(id);
     }
 
     [UnmanagedCallersOnly(EntryPoint = "dispatch_entry")]
     public static ulong DispatchEntry()
     {
-        //todo: implement event dispatching
-        _logger.Info("dispatching event");
+        var input = Pdk.GetInput();
+        var taskid = BitConverter.ToUInt32(input, 0);
+
+        Dispatch(taskid);
 
         return 0;
     }

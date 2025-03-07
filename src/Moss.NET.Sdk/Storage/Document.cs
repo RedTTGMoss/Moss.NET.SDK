@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Moss.NET.Sdk.Core;
 
 namespace Moss.NET.Sdk.Storage;
@@ -56,9 +57,12 @@ public partial class Document : StorageItem
     /// Calls the callback when the document is finished downloading.
     /// </summary>
     /// <param name="callback"></param>
-    public void EnsureDownload(string callback) //Todo: replace callback with Action if dispatching events works properly
+    public void EnsureDownload(Action callback)
     {
-        EnsureDownload(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer(), callback.GetPointer());
+        EnsureDownload(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer(), "dispatch_entry".GetPointer());
+
+        //Todo: when EnsureDownload returns a taskid add it to the dispatcher
+        //Dispatcher.Register(taskid, callback);
     }
 
     /// <summary>
@@ -89,19 +93,23 @@ public partial class Document : StorageItem
         LoadFilesFromCache(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer());
     }
 
-    public void Delete(string callback, bool unload = false)
+    public void Delete(Action callback, bool unload = false)
     {
-        StorageFunctions.Delete(new Accessor {
+        var taskid = StorageFunctions.Delete(new Accessor {
             Type = AccessorType.APIDocument,
             Uuid = Metadata.Accessor.Uuid
-        }, callback, unload);
+        }, "dispatch_entry", unload);
+
+        Dispatcher.Register(taskid, callback);
     }
 
-    public void Upload(string callback, bool unload = false)
+    public void Upload(Action callback, bool unload = false)
     {
-        StorageFunctions.Upload(new Accessor {
+        var taskid = StorageFunctions.Upload(new Accessor {
             Type = AccessorType.APIDocument,
             Uuid = Metadata.Accessor.Uuid
-        }, callback, unload);
+        }, "dispatch_entry", unload);
+
+        Dispatcher.Register(taskid, callback);
     }
 }
