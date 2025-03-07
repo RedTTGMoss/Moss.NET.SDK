@@ -16,6 +16,26 @@ public static class InternalFunctions
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_export")]
     private static extern void ExportDocument(ulong documentUuidPtr);
 
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_get_root")]
+    private static extern ulong GetRoot(); // -> RootInfo
+
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_new_file_sync_progress")]
+    public static extern ulong NewFileSyncProgress();
+
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_new_document_sync_progress")]
+    private static extern ulong NewDocumentSyncProgress(ulong accessorPtr, ulong documentUuidPtr);
+
+
+    public static ulong NewDocumentSyncProgress(Accessor accessor)
+    {
+        return NewDocumentSyncProgress(accessor.GetPointer(), accessor.Uuid.GetPointer());
+    }
+
+    public static RootInfo GetRootInfo()
+    {
+        return GetRoot().Get<RootInfo>();
+    }
+
     public static void ExportDocument(string documentUuid)
     {
         ExportDocument(GetAccessor(documentUuid).GetPointer());

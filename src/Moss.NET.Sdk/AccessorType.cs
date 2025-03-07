@@ -1,6 +1,6 @@
 ﻿using Ardalis.SmartEnum;
 
-namespace Moss.NET.Sdk.NEW;
+namespace Moss.NET.Sdk;
 
 // using with:
 // [JsonConverter(typeof(SmartEnumNameConverter<AccessorType, int>))]

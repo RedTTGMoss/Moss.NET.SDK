@@ -38,6 +38,10 @@ namespace Moss.NET.Sdk.FFI;
 [JsonSerializable(typeof(RmPage))]
 [JsonSerializable(typeof(RMDocumentType))]
 [JsonSerializable(typeof(Metadata))]
+[JsonSerializable(typeof(RootInfo))]
+[JsonSerializable(typeof(FileSyncProgress))]
+[JsonSerializable(typeof(DocumentSyncProgress))]
+[JsonSerializable(typeof(RmFileList))]
 internal partial class JsonContext : JsonSerializerContext
 {
 
