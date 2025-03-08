@@ -21,9 +21,4 @@ public static class RunOnce
             actionsRun[actionKey] = true;
         }
     }
-
-    public static unsafe void Execute(Action action)
-    {
-        Execute(new IntPtr(Unsafe.AsPointer(ref action)).ToString(), action);
-    }
 }

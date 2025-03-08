@@ -63,7 +63,7 @@ public class SampleExtension : MossExtension
 
         GUI.InvertIcon("swap", "swap_inverted");
 
-        RunOnce.Execute(async () =>
+        RunOnce.Execute("test", async () =>
         {
             var quickSheets = Document.Get("0ba3df9c-8ca0-4347-8d7c-07471101baad");
             _logger.Info($"Metadata: {quickSheets.Metadata.VisibleName} with {quickSheets.Metadata.Hash}");
