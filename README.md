@@ -1,5 +1,6 @@
 # Moss.NET.SDK
 
+[![runs_on](https://img.shields.io/badge/runs_on-Extism-4c30fc.svg?subject=runs_on&status=Extism&color=4c30fc)](https://modsurfer.dylibso.com/module?hash=fa39db232381e9de32a6e5b863edf5dc1552dc0e63682ad655cc72c2e042f9fa)
 ![NuGet Version](https://img.shields.io/nuget/v/Moss.NET.SDK)
 ![NuGet Downloads](https://img.shields.io/nuget/dt/Moss.NET.SDK)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
