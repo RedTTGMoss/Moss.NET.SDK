@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>Moss.Net.Sdk.Templates</PackageId>
-    <PackageVersion>1.0</PackageVersion>
+    <PackageVersion>1.0.3</PackageVersion>
     <Title>Moss.Net.Sdk.Templates</Title>
     <Authors>furesoft</Authors>
     <Description>TODO: fill the package description here</Description>
