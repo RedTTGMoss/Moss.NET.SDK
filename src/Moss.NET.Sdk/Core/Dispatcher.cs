@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Extism;
 
@@ -23,8 +24,6 @@ public static class Dispatcher
 
     public static void Dispatch(ulong id, params object[] args)
     {
-        _logger.Info("Dispatching task with id: " + id);
-
         if (_events.Count <= 0) return;
 
         if (!_events.TryGetValue(id, out var callback)) return;
@@ -39,7 +38,11 @@ public static class Dispatcher
     public static ulong DispatchEntry()
     {
         var input = Pdk.GetInput();
+
+        _logger.Info("raw task id: " + string.Join(' ', input.Select(c => Convert.ToString(c, 16))));
         var taskid = BitConverter.ToUInt64(input, 0);
+
+        _logger.Info("Dispatching task with id: " + taskid);
 
         Dispatch(taskid);
 

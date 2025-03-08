@@ -7,6 +7,11 @@ public class Base64 : Stream
 {
     private MemoryStream strm = new();
 
+    public Base64()
+    {
+
+    }
+
     public Base64(Stream stream)
     {
         stream.CopyTo(strm);
