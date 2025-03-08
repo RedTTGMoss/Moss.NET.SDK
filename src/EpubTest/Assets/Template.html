@@ -1,0 +1,102 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta content="text/html; charset=windows-1252" http-equiv="Content-Type"/>
+    <meta charset="UTF-8"/>
+    <style>
+        .title {
+            text-align: center;
+        }
+
+        .sidebar {
+            float: right;
+            padding-left: 15px;
+        }
+
+        .content {
+            display: block;
+            text-align: justify;
+            margin-right: 15px;
+        }
+
+        .footer {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .footer p {
+            position: relative;
+            display: inline-block;
+        }
+
+        .right {
+            float: right;
+        }
+
+        .left {
+            float: left;
+        }
+
+        .center {
+            left: 50%;
+        / / Sollte das Object nach Rechts schieben sodass es genau bei 50 % anfängt transform: translateX(- 50 %);
+        / / sollte das element um - 50 % von sich selbst nach links schieben um es exakt mittig zu platzieren .
+        }
+
+        .author-widget {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="title">
+    <h1>{{name}}</h1>
+</div>
+
+<div class="sidebar">
+    <img height="200" src="{{_id}}.jpg" width="200">
+
+    <p>{{portions}}</p>
+
+    {{ for ingredients in ingredients_tables }}
+
+    <strong>{{ ingredients.name }}</strong>
+    <table>
+        <tbody>
+        {{ for entry in ingredients.elements }}
+        <tr>
+            <td><strong>{{ entry.measure }}</strong></td>
+
+            <td><p>{{ entry.item }}</p></td>
+        </tr>
+        {{ end }}
+        </tbody>
+    </table>
+    {{ end }}
+
+    <div class="author-widget">
+        Author: <i>{{author}}</i>
+    </div>
+</div>
+
+<div class="content">
+    <p>
+        {{content}}
+    </p>
+
+    <p class="info">
+        {{time}}
+    </p>
+</div>
+
+<div class="footer">
+    <p class="left">{{book.author}}</p>
+    <p class="center">{{name}}</p>
+    <p class="right">{{book.page}} / {{book.pages}}</p>
+</div>
+</body>
+</html>

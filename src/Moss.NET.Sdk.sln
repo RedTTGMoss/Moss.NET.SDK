@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moss.NET.Sdk", "Moss.NET.Sd
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SdkTesterPlugin", "SdkTesterPlugin\SdkTesterPlugin.csproj", "{595374CC-F881-409C-AD8C-59DA6DA798BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpubTest", "EpubTest\EpubTest.csproj", "{742807CB-63AE-4E97-9741-AC8CBFA5C235}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{595374CC-F881-409C-AD8C-59DA6DA798BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{595374CC-F881-409C-AD8C-59DA6DA798BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{595374CC-F881-409C-AD8C-59DA6DA798BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{742807CB-63AE-4E97-9741-AC8CBFA5C235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{742807CB-63AE-4E97-9741-AC8CBFA5C235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{742807CB-63AE-4E97-9741-AC8CBFA5C235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{742807CB-63AE-4E97-9741-AC8CBFA5C235}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

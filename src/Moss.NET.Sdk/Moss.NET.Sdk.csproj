@@ -21,4 +21,8 @@
         <PackageReference Include="Extism.runtime.all" Version="1.9.1"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Formats\" />
+    </ItemGroup>
+
 </Project>

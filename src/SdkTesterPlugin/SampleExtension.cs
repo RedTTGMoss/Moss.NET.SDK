@@ -63,7 +63,7 @@ public class SampleExtension : MossExtension
 
         GUI.InvertIcon("swap", "swap_inverted");
 
-        RunOnce.Execute(() =>
+        RunOnce.Execute(async () =>
         {
             var quickSheets = Document.Get("0ba3df9c-8ca0-4347-8d7c-07471101baad");
             _logger.Info($"Metadata: {quickSheets.Metadata.VisibleName} with {quickSheets.Metadata.Hash}");
@@ -83,11 +83,11 @@ public class SampleExtension : MossExtension
             var epub = new EpubNotebook("test ebook", "extension/Assets/test.epub");
             InternalFunctions.NewContentEpub();
 
-            pdf.Upload(() => _logger.Info("PDF duplicated uploaded"));
+            await pdf.UploadAsync();
 
             InternalFunctions.ExportDocument("0ba3df9c-8ca0-4347-8d7c-07471101baad");
 
-            quickSheets.EnsureDownload();
+            await quickSheets.EnsureDownloadAsync();
             quickSheets.LoadFilesFromCache();
             quickSheets.UnloadFiles();
 
@@ -109,14 +109,14 @@ public class SampleExtension : MossExtension
                 Uuid = quickSheets.Metadata.Accessor.Uuid,
             });*/
 
-            duplicate.EnsureDownload(() => _logger.Info("Downloaded"));
+            await duplicate.EnsureDownloadAsync();
             duplicate.Metadata.Get<string>("visible_name");
 
             duplicate.Metadata.Set("visible_name", "Duplicated QuickSheet");
             duplicate.Metadata.Set("parent", "4dba1a54-93b8-4992-886f-08c0b17f93da");
 
             var k = duplicate.Duplicate();
-            duplicate.Upload(() => _logger.Info("Uploaded"));
+            await duplicate.UploadAsync();
             k.Delete(() => _logger.Info("Deleted"));
 
             var docs = Enumerable.Repeat(0, 2)
