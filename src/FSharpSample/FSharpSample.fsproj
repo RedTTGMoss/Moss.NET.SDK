@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RuntimeIdentifier>wasi-wasm</RuntimeIdentifier>
+        <OutputType>Exe</OutputType>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <RootNamespace>FSharpSample</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
+        <PackageReference Include="Extism.Pdk" Version="1.0.3"/>
+        <PackageReference Include="Moss.NET.Sdk" Version="1.1.0-pre"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Assets/**/**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="Plugin.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Moss.NET.Sdk\Moss.NET.Sdk.csproj" />
+    </ItemGroup>
+
+    <Target Name="Bundle" AfterTargets="PostBuildEvent">
+        <Copy SourceFiles="@(EmbeddedResource)" DestinationFolder="$(OutputPath)AppBundle\Assets\%(RecursiveDir)" SkipUnchangedFiles="true"/>
+    </Target>
+
+</Project>
