@@ -125,4 +125,13 @@ public abstract class StorageItem<TOut> where TOut : StorageItem<TOut>, new()
 
         return Get(newId);
     }
+
+    /// <summary>
+    /// Move the current item to the trash
+    /// </summary>
+    public void MoveToTrash()
+    {
+        Metadata.Set("parent", "trash");
+        Metadata = Metadata.Get(Metadata.Accessor.Uuid);
+    }
 }

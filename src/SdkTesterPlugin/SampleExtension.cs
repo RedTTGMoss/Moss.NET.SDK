@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.Json;
@@ -59,12 +60,19 @@ public class SampleExtension : MossExtension
 
         var cm = ContextMenu.Get("test_cm");
 
-        cm.Open(10, 10);
-
         GUI.InvertIcon("swap", "swap_inverted");
 
         RunOnce.Execute("test", async () =>
         {
+            cm.Open(10, 10);
+
+            ScreenManager.Open<SampleScreen>(new Dictionary<string, object>()
+            {
+                { "hello", true }
+            });
+
+            _logger.Info($"Current Date: {DateTime.Now}");
+
             var quickSheets = Document.Get("0ba3df9c-8ca0-4347-8d7c-07471101baad");
             _logger.Info($"Metadata: {quickSheets.Metadata.VisibleName} with {quickSheets.Metadata.Hash}");
 
@@ -127,11 +135,6 @@ public class SampleExtension : MossExtension
 
             StorageFunctions.UploadManyDocuments(docs);
             StorageFunctions.DeleteManyDocuments(docs);
-
-            ScreenManager.Open<SampleScreen>(new Dictionary<string, object>()
-            {
-                { "hello", true }
-            });
         });
     }
 
