@@ -34,6 +34,14 @@ public static class InternalFunctions
     [DllImport(Functions.DLL, EntryPoint = "moss_api_content_new_notebook")]
     public static extern ulong NewContentNotebook(ulong pageCount); // -> int
 
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_spread_event")]
+    private static extern void SpreadEvent(ulong accessorPtr);
+
+    public static void SpreadEvent(Accessor accessor)
+    {
+        SpreadEvent(accessor.GetPointer());
+    }
+
     public static ulong NewDocumentSyncProgress(Accessor accessor)
     {
         return NewDocumentSyncProgress(accessor.GetPointer(), accessor.Uuid.GetPointer());

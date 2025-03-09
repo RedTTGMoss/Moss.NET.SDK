@@ -123,6 +123,8 @@ public class SampleExtension : MossExtension
                 .Select(_ => k.Duplicate())
                 .ToArray();
 
+            InternalFunctions.SpreadEvent(new Accessor{Type = AccessorType.SyncStage});
+
             StorageFunctions.UploadManyDocuments(docs);
             StorageFunctions.DeleteManyDocuments(docs);
 
