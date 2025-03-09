@@ -28,6 +28,10 @@ public sealed class AccessorType : SmartEnum<AccessorType>
     public static readonly AccessorType FileSyncProgress = new("file_sync_progress", 13);
     public static readonly AccessorType DocumentSyncProgress = new("document_sync_progress", 14);
 
+    public static readonly AccessorType SyncStage = new("sync_stage", 15);
+    public static readonly AccessorType MossFatal = new("moss_fatal", 16);
+    public static readonly AccessorType ApiFatal = new("api_fatal", 17);
+
     private AccessorType(string name, int value) : base(name, value)
     {
     }
