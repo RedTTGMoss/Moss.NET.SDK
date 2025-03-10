@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpubTest", "EpubTest\EpubTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSharpSample", "FSharpSample\FSharpSample.fsproj", "{9C852229-578E-4DE8-9B29-7792E07CE9BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Archiver", "Plugins\Archiver\Archiver.csproj", "{DCF85C61-D42A-4400-9D51-5268AFDD70FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Automate", "Plugins\Automate\Automate.csproj", "{DCF85C61-D42A-4400-9D51-5268AFDD70FC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{058D5F83-3D9D-481B-87EC-93F7C286FAAB}"
 EndProject
