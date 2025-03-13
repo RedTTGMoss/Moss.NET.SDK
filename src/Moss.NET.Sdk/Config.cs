@@ -20,7 +20,7 @@ public static class Config
 
     public static T Get<T>(string key)
     {
-        var ptr = GetConfig(new ConfigGetS(key).GetPointer());
+        var ptr = GetConfig(key.GetPointer());
         return ptr.Get<ConfigGetD>().value.GetValue<T>();
     }
 }
