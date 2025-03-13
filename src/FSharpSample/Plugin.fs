@@ -1,6 +1,6 @@
 ﻿module SamplePlugin.Plugin
 
-open System.Runtime.InteropServices
+open System.Runtime.CompilerServices
 open Moss.NET.Sdk
 
 type SampleExtension() =
@@ -8,10 +8,8 @@ type SampleExtension() =
 
         static let logger: LoggerInstance = Log.GetLogger<SampleExtension>()
 
-        [<UnmanagedCallersOnly(EntryPoint = "moss_extension_register")>]
-        static member Register() : uint64 =
-            SampleExtension.Init<SampleExtension>()
-            0UL
+        [<ModuleInitializer>]
+        static member ModInit() = SampleExtension.Init<SampleExtension>()
 
         static member Main() = ()
 

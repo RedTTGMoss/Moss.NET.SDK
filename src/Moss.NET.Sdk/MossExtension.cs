@@ -7,7 +7,18 @@ namespace Moss.NET.Sdk;
 
 public class MossExtension
 {
-    internal static MossExtension? Instance;
+    private static MossExtension? _instance;
+
+    internal static MossExtension? Instance
+    {
+        get
+        {
+            if (_instance is null) throw new InvalidOperationException("Extension is not initialized.");
+
+            return _instance;
+        }
+        set => _instance = value;
+    }
 
     public virtual void Register(MossState state)
     {
@@ -25,7 +36,7 @@ public class MossExtension
     private static void SetExtensionInfo()
     {
         var input = Pdk.GetInputJson(JsonContext.Default.MossState);
-        Instance!.Register(input!);
+        _instance!.Register(input!);
         var extensionInfo = new ExtensionInfo()
         {
             Files = Assets.Expose()
@@ -41,9 +52,9 @@ public class MossExtension
 
     public static void Init<T>() where T : MossExtension, new()
     {
-        if (Instance is not null) throw new InvalidOperationException("Assembly can only have one extension instance.");
+        if (_instance is not null) throw new InvalidOperationException("Assembly can only have one extension instance.");
 
-        Instance = Activator.CreateInstance<T>();
+        _instance = Activator.CreateInstance<T>();
         SetExtensionInfo();
     }
 }

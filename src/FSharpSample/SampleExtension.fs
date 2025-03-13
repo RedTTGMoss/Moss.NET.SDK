@@ -1,25 +1,26 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Extism;
-using Moss.NET.Sdk;
-using Moss.NET.Sdk.FFI;
+using FSharpSample.NET.Sdk;
+using FSharpSample.NET.Sdk.FFI;
 
 namespace SamplePlugin;
 
-public class SampleExtension : MossExtension
+public class SampleExtension : FSharpSampleExtension
 {
-    [ModuleInitializer]
-    public static void ModInit()
+    [UnmanagedCallersOnly(EntryPoint = "fsharpsample_extension_register")]
+    public static ulong Register()
     {
         Init<SampleExtension>();
+
+        return 0;
     }
 
     public static void Main()
     {
-         
     }
 
-    public override ExtensionInfo Register(MossState state)
+    public override ExtensionInfo Register(FSharpSampleState state)
     {
         Pdk.Log(LogLevel.Info, "Hello world form sample plugin");
 
@@ -28,6 +29,5 @@ public class SampleExtension : MossExtension
 
     public override void Unregister()
     {
-        
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
@@ -19,12 +20,10 @@ public class SampleExtension : MossExtension
     private Document duplicate;
     private static LoggerInstance _logger = Log.GetLogger<SampleExtension>();
 
-    [UnmanagedCallersOnly(EntryPoint = "moss_extension_register")]
-    public static ulong Register()
+    [ModuleInitializer]
+    public static void ModInit()
     {
         Init<SampleExtension>();
-
-        return 0;
     }
 
     public static void Main()
