@@ -29,7 +29,10 @@ public class AutomateExtension : MossExtension
          var context = new Context();
          InitContext(context);
 
-         var test = "on(\"import\").do(md => move(md, Config.inbox))";
+         var test = """
+                    on("import")
+                       .do(md => move(md, Config.inbox))
+                    """;
 
          context.Eval("log('hello from js')");
          context.Eval(test);
