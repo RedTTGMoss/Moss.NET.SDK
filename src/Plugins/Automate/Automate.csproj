@@ -11,7 +11,7 @@
     <ItemGroup>
         <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
         <PackageReference Include="Extism.Pdk" Version="1.0.3"/>
-        <PackageReference Include="Moss.NET.Sdk" Version="1.3.0-pre"/>
+        <ProjectReference Include="..\..\Moss.NET.Sdk\Moss.NET.Sdk.csproj" />
         <PackageReference Include="NiL.JS" Version="2.5.1684" />
     </ItemGroup>
 

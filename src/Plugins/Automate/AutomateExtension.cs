@@ -29,7 +29,7 @@ public class AutomateExtension : MossExtension
          var context = new Context();
          InitContext(context);
 
-         var test = "on(import).do(md => move(md, Config.Inbox))";
+         var test = "on(\"import\").do(md => move(md, Config.inbox))";
 
          context.Eval("log('hello from js')");
          context.Eval(test);
@@ -40,7 +40,10 @@ public class AutomateExtension : MossExtension
         context.DefineConstant("import", "import");
 
         context.DefineVariable("Config").Assign(new ConfigType());
-        context.DefineVariable("move").Assign(JSValue.Marshal(new Action(() => { })));
+        context.DefineVariable("move").Assign(JSValue.Marshal(new Action<object, string>((md, name) =>
+        {
+            _logger.Info("move " + name);
+        })));
 
         context.DefineVariable("log").Assign(JSValue.Marshal(new Action<string>(x => Pdk.Log(LogLevel.Info, x))));
 
@@ -60,6 +63,7 @@ public class AutomateExtension : MossExtension
             {
                 _logger.Info("do ");
                 _logger.Info(c.ToString());
+                c.Call(JSValue.Undefined, new Arguments());
 
                 return obj;
             })));
