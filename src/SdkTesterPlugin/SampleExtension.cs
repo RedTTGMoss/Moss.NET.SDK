@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
-using Extism;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Core;
-using Moss.NET.Sdk.FFI;
-using Moss.NET.Sdk.NEW;
 using Moss.NET.Sdk.Storage;
 using Moss.NET.Sdk.UI;
 
@@ -20,10 +14,12 @@ public class SampleExtension : MossExtension
     private Document duplicate;
     private static LoggerInstance _logger = Log.GetLogger<SampleExtension>();
 
-    [ModuleInitializer]
-    public static void ModInit()
+    [UnmanagedCallersOnly(EntryPoint = "moss_extension_register")]
+    public static ulong Register()
     {
         Init<SampleExtension>();
+
+        return 0;
     }
 
     public static void Main()
