@@ -40,10 +40,36 @@ internal class ScheduleBuilder
 
     private static TimeSpan GetSpan(string span)
     {
+        if (TimeSpan.TryParse(span, out var result))
+        {
+            return result;
+        }
+
+        var unit = span![^1];
+        if (int.TryParse(span[..^1], out var value))
+        {
+            return unit switch
+            {
+                'd' => TimeSpan.FromDays(value),
+                'h' => TimeSpan.FromHours(value),
+                'm' => TimeSpan.FromMinutes(value),
+                's' => TimeSpan.FromSeconds(value),
+                'w' => TimeSpan.FromDays(value * 7),
+                'M' => TimeSpan.FromDays(value * 30),
+                'y' => TimeSpan.FromDays(value * 365),
+                _ => throw new ArgumentOutOfRangeException(nameof(span), span, null)
+            };
+        }
+
         return span switch
         {
             "day" => TimeSpan.FromDays(1),
+            "hour" => TimeSpan.FromHours(1),
+            "minute" => TimeSpan.FromMinutes(1),
             "second" => TimeSpan.FromSeconds(1),
+            "week" => TimeSpan.FromDays(7),
+            "month" => TimeSpan.FromDays(30),
+            "year" => TimeSpan.FromDays(365),
             _ => throw new ArgumentOutOfRangeException(nameof(span), span, null)
         };
     }
