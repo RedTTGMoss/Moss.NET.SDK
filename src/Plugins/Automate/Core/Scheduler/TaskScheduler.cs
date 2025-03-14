@@ -30,8 +30,9 @@ public static class TaskScheduler
             task.Task.Call(JSValue.Undefined, new Arguments());
 
             task.UpdateNextRunTime();
-            SaveTasks();
         }
+
+        SaveTasks();
     }
 
     private static void SaveTasks()
