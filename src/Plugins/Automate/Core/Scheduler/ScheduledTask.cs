@@ -2,25 +2,29 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using NiL.JS.Core;
 
 namespace Automate.Core;
 
 public class ScheduledTask
 {
-    public string Id { get; set; }
-    public string TaskName { get; set; }
     public DateTime NextRunTime { get; set; }
     public TimeSpan Interval { get; set; }
+    public string Name { get; set; }
+
+    public object Data { get; set; }
 
     [JsonIgnore]
-    public Action Task { get; set; }
+    public ICallable Task { get; set; }
+
+    [JsonIgnore]
+    public Predicate<object> Predicate { get; set; }
 
     public ScheduledTask() { }
 
-    public ScheduledTask(string id, string taskName, Action task, DateTime startTime, TimeSpan interval)
+    public ScheduledTask(string name, ICallable task, DateTime startTime, TimeSpan interval)
     {
-        Id = id;
-        TaskName = taskName;
+        Name = name;
         Task = task;
         NextRunTime = startTime;
         Interval = interval;
@@ -33,11 +37,6 @@ public class ScheduledTask
 
     public static string Serialize(List<ScheduledTask> tasks)
     {
-        return JsonSerializer.Serialize(tasks);
-    }
-
-    public static List<ScheduledTask> Deserialize(string json)
-    {
-        return JsonSerializer.Deserialize<List<ScheduledTask>>(json);
+        return JsonSerializer.Serialize(tasks, JsonContext.Default.ListScheduledTask);
     }
 }
