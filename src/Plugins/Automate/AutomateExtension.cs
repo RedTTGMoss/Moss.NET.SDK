@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using Automate.Core;
 using Extism;
@@ -28,20 +29,17 @@ public class AutomateExtension : MossExtension
          var context = new Context();
          InitContext(context);
 
-         var test = """
-                    let counter = 0;
-                    on("import")
-                       .do(md => move(md, Config.inbox));
-                       
-                    every("second")
-                        .where(_ => counter % 2 == 0)
-                        .do(() => log(counter++));
-                    """;
-
-         context.Eval("log('hello from js')");
-         context.Eval(test);
+         EvalScript(context);
 
          TaskScheduler.LoadTaskInformation();
+    }
+
+    private void EvalScript(Context context)
+    {
+        var source = File.ReadAllText("extension/automation.js");
+        context.Eval(source);
+
+        Logger.Info("Automation script loaded");
     }
 
     private static void InitContext(Context context)

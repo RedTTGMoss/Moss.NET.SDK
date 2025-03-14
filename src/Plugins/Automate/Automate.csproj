@@ -22,6 +22,9 @@
         <None Include="*.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="automation.js">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <Target Name="Bundle" AfterTargets="PostBuildEvent">
