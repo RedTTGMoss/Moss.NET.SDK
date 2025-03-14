@@ -4,23 +4,13 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using NiL.JS.Core;
 
-namespace Automate.Core;
+namespace Automate.Core.Scheduler;
 
 public class ScheduledTask
 {
-    public DateTime NextRunTime { get; set; }
-    public TimeSpan Interval { get; set; }
-    public string Name { get; set; }
-
-    public object Data { get; set; }
-
-    [JsonIgnore]
-    public ICallable Task { get; set; }
-
-    [JsonIgnore]
-    public Predicate<object> Predicate { get; set; }
-
-    public ScheduledTask() { }
+    public ScheduledTask()
+    {
+    }
 
     public ScheduledTask(string name, ICallable task, DateTime startTime, TimeSpan interval)
     {
@@ -29,6 +19,16 @@ public class ScheduledTask
         NextRunTime = startTime;
         Interval = interval;
     }
+
+    public DateTime NextRunTime { get; set; }
+    public TimeSpan Interval { get; set; }
+    public string Name { get; set; }
+
+    public object Data { get; set; }
+
+    [JsonIgnore] public ICallable Task { get; set; }
+
+    [JsonIgnore] public Predicate<object> Predicate { get; set; }
 
     public void UpdateNextRunTime()
     {

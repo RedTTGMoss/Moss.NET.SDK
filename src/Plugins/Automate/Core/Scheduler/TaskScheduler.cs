@@ -1,12 +1,11 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using Moss.NET.Sdk;
 using NiL.JS.Core;
 
-namespace Automate.Core;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
+namespace Automate.Core.Scheduler;
 
 public static class TaskScheduler
 {
@@ -14,10 +13,7 @@ public static class TaskScheduler
 
     public static void ScheduleTask(ScheduledTask task)
     {
-        if (task.Name is null)
-        {
-            task.Name = Tasks.Count.ToString();
-        }
+        if (task.Name is null) task.Name = Tasks.Count.ToString();
 
         Tasks.Add(task);
         SaveTasks();
@@ -26,13 +22,11 @@ public static class TaskScheduler
     public static void CheckTasks()
     {
         var now = DateTime.Now;
-        foreach (var task in Tasks.Where(t => t.NextRunTime <= now).ToList())
+        foreach (var task in Tasks
+                     .Where(t => t.NextRunTime <= now)
+                     .Where(task => task.Predicate is null || task.Predicate(task))
+                     .ToArray())
         {
-            if (task.Predicate is not null && !task.Predicate(task))
-            {
-                continue;
-            }
-
             task.Task.Call(JSValue.Undefined, new Arguments());
 
             task.UpdateNextRunTime();
@@ -50,10 +44,7 @@ public static class TaskScheduler
     {
         var taskInfos = JsonSerializer.Deserialize(Config.Get<string>("tasks"), JsonContext.Default.ListScheduledTask);
 
-        if (taskInfos == null)
-        {
-            return;
-        }
+        if (taskInfos == null) return;
 
         // Load task info to appropriate task
         foreach (var taskInfo in taskInfos)

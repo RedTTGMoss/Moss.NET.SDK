@@ -1,10 +1,11 @@
 ﻿using System;
+using Automate.Core.Scheduler;
 using Moss.NET.Sdk;
 using NiL.JS.Core;
 
 namespace Automate.Core;
 
-class ScheduleBuilder
+internal class ScheduleBuilder
 {
     private static readonly LoggerInstance Logger = Log.GetLogger<ScheduleBuilder>();
 
@@ -16,7 +17,7 @@ class ScheduleBuilder
 
         var builder = new ScheduleBuilder
         {
-            _task = new("s",null, DateTime.Now, GetSpan("day"))
+            _task = new ScheduledTask("s", null, DateTime.Now, GetSpan("day"))
         };
         TaskScheduler.ScheduleTask(builder._task);
 
@@ -29,7 +30,7 @@ class ScheduleBuilder
 
         var builder = new ScheduleBuilder
         {
-            _task = new("s",null, DateTime.Now, GetSpan(span))
+            _task = new ScheduledTask("s", null, DateTime.Now, GetSpan(span))
         };
 
         TaskScheduler.ScheduleTask(builder._task);
@@ -49,7 +50,7 @@ class ScheduleBuilder
 
     public ScheduleBuilder @do(ICallable callable)
     {
-        Logger.Info("do "+ callable);
+        Logger.Info("do " + callable);
         _task.Task = callable;
 
         return this;

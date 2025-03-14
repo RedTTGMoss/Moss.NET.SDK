@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using Automate.Core;
+using Automate.Core.Scheduler;
 using Extism;
 using Moss.NET.Sdk;
 using NiL.JS.Core;
@@ -26,12 +27,12 @@ public class AutomateExtension : MossExtension
 
     public override void Register(MossState state)
     {
-         var context = new Context();
-         InitContext(context);
+        var context = new Context();
+        InitContext(context);
 
-         EvalScript(context);
+        EvalScript(context);
 
-         TaskScheduler.LoadTaskInformation();
+        TaskScheduler.LoadTaskInformation();
     }
 
     private void EvalScript(Context context)
@@ -50,9 +51,11 @@ public class AutomateExtension : MossExtension
             Logger.Info("move " + name);
         })));
 
-        context.DefineVariable("log").Assign(JSValue.Marshal(new Action<object>(x => Pdk.Log(LogLevel.Info, x.ToString()))));
+        context.DefineVariable("log")
+            .Assign(JSValue.Marshal(new Action<object>(x => Pdk.Log(LogLevel.Info, x.ToString()))));
         context.DefineVariable("on").Assign(JSValue.Marshal(new Func<string, ScheduleBuilder>(ScheduleBuilder.on)));
-        context.DefineVariable("every").Assign(JSValue.Marshal(new Func<string, ScheduleBuilder>(ScheduleBuilder.every)));
+        context.DefineVariable("every")
+            .Assign(JSValue.Marshal(new Func<string, ScheduleBuilder>(ScheduleBuilder.every)));
     }
 
     public override void ExtensionLoop(MossState state)
