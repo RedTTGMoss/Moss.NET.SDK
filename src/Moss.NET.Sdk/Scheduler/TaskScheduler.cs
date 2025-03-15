@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using Moss.NET.Sdk.FFI;
+using File = System.IO.File;
 
 namespace Moss.NET.Sdk.Scheduler;
 
@@ -37,12 +38,22 @@ public static class TaskScheduler
     private static void SaveTasks()
     {
         var json = ScheduledTask.Serialize(Tasks);
-        Config.Set("tasks", json);
+        File.WriteAllText("extension/.tasks", json);
     }
 
     public static void LoadTaskInformation()
     {
-        var taskInfos = JsonSerializer.Deserialize(Config.Get<string>("tasks"), JsonContext.Default.ListScheduledTask);
+        string json;
+        try
+        {
+            json = File.ReadAllText("extension/.tasks");
+        }
+        catch (Exception)
+        {
+            return;
+        }
+
+        var taskInfos = JsonSerializer.Deserialize(json, JsonContext.Default.ListScheduledTask);
 
         if (taskInfos == null) return;
 
