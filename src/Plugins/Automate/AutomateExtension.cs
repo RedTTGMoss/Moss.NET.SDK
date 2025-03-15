@@ -66,9 +66,4 @@ public class AutomateExtension : MossExtension
 
         context.DefineConstructor(typeof(Automate.Core.Lib.HttpRequest));
     }
-
-    public override void ExtensionLoop(MossState state)
-    {
-        TaskScheduler.CheckTasks();
-    }
 }

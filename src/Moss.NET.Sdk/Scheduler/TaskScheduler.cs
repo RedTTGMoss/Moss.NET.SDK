@@ -18,7 +18,7 @@ public static class TaskScheduler
         SaveTasks();
     }
 
-    public static void CheckTasks()
+    internal static void CheckTasks()
     {
         var now = DateTime.Now;
         foreach (var task in Tasks
