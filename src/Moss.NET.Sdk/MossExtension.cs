@@ -2,6 +2,7 @@
 using System.Text.Json;
 using Extism;
 using Moss.NET.Sdk.FFI;
+using Moss.NET.Sdk.Scheduler;
 
 namespace Moss.NET.Sdk;
 
@@ -56,5 +57,7 @@ public class MossExtension
 
         _instance = Activator.CreateInstance<T>();
         SetExtensionInfo();
+
+        TaskScheduler.LoadTaskInformation();
     }
 }

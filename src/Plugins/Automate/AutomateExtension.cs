@@ -6,7 +6,6 @@ using Extism;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.Formats.Core;
-using Moss.NET.Sdk.Scheduler;
 using Moss.NET.Sdk.Storage;
 using NiL.JS.Core;
 
@@ -34,8 +33,6 @@ public class AutomateExtension : MossExtension
         InitContext(context);
 
         EvalScript(context);
-
-        TaskScheduler.LoadTaskInformation();
     }
 
     private void EvalScript(Context context)
