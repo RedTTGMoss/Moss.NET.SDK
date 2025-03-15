@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Core;
+using Moss.NET.Sdk.Scheduler;
 using Moss.NET.Sdk.Storage;
 using Moss.NET.Sdk.UI;
 
@@ -28,6 +29,8 @@ public class SampleExtension : MossExtension
 
     public override void Register(MossState state)
     {
+        Job.Schedule<TestJob>();
+
         Config.Set("theme", "dark");
         Defaults.SetDefaultValue("OUTLINE_COLOR", Color.Blue);
         Theme.Apply(new DarkTheme());

@@ -13,4 +13,10 @@ public abstract class Job
     {
         TaskScheduler.ScheduleTask(new ScheduledTask(job.Name, job.Run, DateTime.Now, job.Interval));
     }
+
+    public static void Schedule<TJob>()
+        where TJob : Job, new()
+    {
+        Schedule(new TJob());
+    }
 }
