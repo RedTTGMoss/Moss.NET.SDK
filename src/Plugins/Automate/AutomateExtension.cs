@@ -5,6 +5,9 @@ using Automate.Core;
 using Automate.Core.Scheduler;
 using Extism;
 using Moss.NET.Sdk;
+using Moss.NET.Sdk.Core;
+using Moss.NET.Sdk.Formats.Core;
+using Moss.NET.Sdk.Storage;
 using NiL.JS.Core;
 
 namespace Automate;
@@ -56,6 +59,12 @@ public class AutomateExtension : MossExtension
         context.DefineVariable("on").Assign(JSValue.Marshal(new Func<string, ScheduleBuilder>(ScheduleBuilder.on)));
         context.DefineVariable("every")
             .Assign(JSValue.Marshal(new Func<string, ScheduleBuilder>(ScheduleBuilder.every)));
+
+        context.DefineConstructor(typeof(EpubWriter));
+        context.DefineConstructor(typeof(EpubNotebook));
+        context.DefineConstructor(typeof(Base64));
+
+        context.DefineConstructor(typeof(Automate.Core.Lib.HttpRequest));
     }
 
     public override void ExtensionLoop(MossState state)

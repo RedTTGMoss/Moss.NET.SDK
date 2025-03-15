@@ -26,11 +26,9 @@ internal class ScheduleBuilder
 
     public static ScheduleBuilder every(string span)
     {
-        Logger.Info("every ");
-
         var builder = new ScheduleBuilder
         {
-            _task = new ScheduledTask("s", null, DateTime.Now, GetSpan(span))
+            _task = new ScheduledTask(null, null, DateTime.Now, GetSpan(span))
         };
 
         TaskScheduler.ScheduleTask(builder._task);
@@ -76,7 +74,6 @@ internal class ScheduleBuilder
 
     public ScheduleBuilder @do(ICallable callable)
     {
-        Logger.Info("do " + callable);
         _task.Task = callable;
 
         return this;
@@ -84,7 +81,6 @@ internal class ScheduleBuilder
 
     public ScheduleBuilder where(ICallable predicate)
     {
-        Logger.Info("where " + predicate);
         _task.Predicate = o => (bool)predicate.Call(JSValue.Undefined, new Arguments()).Value;
 
         return this;
