@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using NiL.JS.Core;
+using Moss.NET.Sdk.FFI;
 
-namespace Automate.Core.Scheduler;
+namespace Moss.NET.Sdk.Scheduler;
 
 public class ScheduledTask
 {
@@ -12,7 +12,7 @@ public class ScheduledTask
     {
     }
 
-    public ScheduledTask(string name, ICallable task, DateTime startTime, TimeSpan interval)
+    public ScheduledTask(string? name, Action<object>? task, DateTime startTime, TimeSpan interval)
     {
         Name = name;
         Task = task;
@@ -22,13 +22,13 @@ public class ScheduledTask
 
     public DateTime NextRunTime { get; set; }
     public TimeSpan Interval { get; set; }
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
-    public object Data { get; set; }
+    public object? Data { get; set; }
 
-    [JsonIgnore] public ICallable Task { get; set; }
+    [JsonIgnore] public Action<object>? Task { get; set; }
 
-    [JsonIgnore] public Predicate<object> Predicate { get; set; }
+    [JsonIgnore] public Predicate<object>? Predicate { get; set; }
 
     public void UpdateNextRunTime()
     {

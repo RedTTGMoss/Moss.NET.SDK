@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
-using Moss.NET.Sdk;
-using NiL.JS.Core;
+using Moss.NET.Sdk.FFI;
 
-namespace Automate.Core.Scheduler;
+namespace Moss.NET.Sdk.Scheduler;
 
 public static class TaskScheduler
 {
@@ -27,7 +26,7 @@ public static class TaskScheduler
                      .Where(task => task.Predicate is null || task.Predicate(task))
                      .ToArray())
         {
-            task.Task.Call(JSValue.Undefined, new Arguments());
+            task.Task(task.Data);
 
             task.UpdateNextRunTime();
         }

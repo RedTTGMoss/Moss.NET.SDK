@@ -1,6 +1,6 @@
 ﻿using System;
-using Automate.Core.Scheduler;
 using Moss.NET.Sdk;
+using Moss.NET.Sdk.Scheduler;
 using NiL.JS.Core;
 
 namespace Automate.Core;
@@ -74,7 +74,7 @@ internal class ScheduleBuilder
 
     public ScheduleBuilder @do(ICallable callable)
     {
-        _task.Task = callable;
+        _task.Task = _ => callable.Call(JSValue.Undefined, new Arguments { _ });
 
         return this;
     }

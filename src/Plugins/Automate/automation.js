@@ -6,7 +6,7 @@ every("second")
     .where(_ => counter % 2 == 0)
     .do(() => log(counter++));
 
-every("minute")
+every("day")
     .do(function() {
             let formattedDate = new Date().toISOString().split('T')[0].replace(/-/g, "/");
             let url = `https://api.wikimedia.org/feed/v1/wikipedia/en/featured/${formattedDate}`;

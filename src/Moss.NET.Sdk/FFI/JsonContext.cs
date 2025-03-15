@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Moss.NET.Sdk.API;
 using Moss.NET.Sdk.FFI.Dto;
 using Moss.NET.Sdk.NEW;
+using Moss.NET.Sdk.Scheduler;
 using Moss.NET.Sdk.Storage;
 using Moss.NET.Sdk.UI;
 using Screen = Moss.NET.Sdk.FFI.Dto.Screen;
@@ -43,6 +44,8 @@ namespace Moss.NET.Sdk.FFI;
 [JsonSerializable(typeof(FileSyncProgress))]
 [JsonSerializable(typeof(DocumentSyncProgress))]
 [JsonSerializable(typeof(RmFileList))]
+
+[JsonSerializable(typeof(List<ScheduledTask>))]
 internal partial class JsonContext : JsonSerializerContext
 {
 
