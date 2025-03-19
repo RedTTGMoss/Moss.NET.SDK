@@ -5,7 +5,6 @@
         <RuntimeIdentifier>wasi-wasm</RuntimeIdentifier>
         <OutputType>Exe</OutputType>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <RootNamespace>Automate</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

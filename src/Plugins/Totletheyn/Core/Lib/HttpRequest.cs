@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Extism;
 
-namespace Automate.Core.Lib;
+namespace Totletheyn.Core.Lib;
 
 public class HttpRequest(string url)
 {

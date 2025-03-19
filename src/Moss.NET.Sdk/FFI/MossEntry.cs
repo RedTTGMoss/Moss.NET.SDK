@@ -9,6 +9,7 @@ internal class MossEntry
     [UnmanagedCallersOnly(EntryPoint = "moss_extension_unregister")]
     public static ulong Unregister()
     {
+        TaskScheduler.SaveTasks();
         MossExtension.Instance?.Unregister();
 
         return 0;

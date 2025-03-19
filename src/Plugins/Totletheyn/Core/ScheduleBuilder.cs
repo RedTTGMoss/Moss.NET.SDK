@@ -3,7 +3,7 @@ using Moss.NET.Sdk;
 using Moss.NET.Sdk.Scheduler;
 using NiL.JS.Core;
 
-namespace Automate.Core;
+namespace Totletheyn.Core;
 
 internal class ScheduleBuilder
 {
@@ -17,7 +17,7 @@ internal class ScheduleBuilder
 
         var builder = new ScheduleBuilder
         {
-            _task = new ScheduledTask("s", null, DateTime.Now, GetSpan("day"))
+            _task = new ScheduledTask("s", null, DateTimeOffset.UtcNow, GetSpan("day"))
         };
         TaskScheduler.ScheduleTask(builder._task);
 
@@ -28,7 +28,7 @@ internal class ScheduleBuilder
     {
         var builder = new ScheduleBuilder
         {
-            _task = new ScheduledTask(null, null, DateTime.Now, GetSpan(span))
+            _task = new ScheduledTask(null, null, DateTimeOffset.UtcNow, GetSpan(span))
         };
 
         TaskScheduler.ScheduleTask(builder._task);

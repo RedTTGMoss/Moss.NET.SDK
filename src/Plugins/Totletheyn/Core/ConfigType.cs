@@ -2,7 +2,7 @@
 using NiL.JS.Core;
 using NiL.JS.Core.Interop;
 
-namespace Automate.Core;
+namespace Totletheyn.Core;
 
 public class ConfigType : CustomType
 {

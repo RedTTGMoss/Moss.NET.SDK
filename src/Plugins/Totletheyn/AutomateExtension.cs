@@ -1,15 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using Automate.Core;
 using Extism;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.Formats.Core;
 using Moss.NET.Sdk.Storage;
 using NiL.JS.Core;
+using Totletheyn.Core;
+using HttpRequest = Totletheyn.Core.Lib.HttpRequest;
 
-namespace Automate;
+namespace Totletheyn;
 
 public class AutomateExtension : MossExtension
 {
@@ -46,10 +47,6 @@ public class AutomateExtension : MossExtension
     private static void InitContext(Context context)
     {
         context.DefineVariable("Config").Assign(new ConfigType());
-        context.DefineVariable("move").Assign(JSValue.Marshal(new Action<object, string>((md, name) =>
-        {
-            Logger.Info("move " + name);
-        })));
 
         context.DefineVariable("log")
             .Assign(JSValue.Marshal(new Action<object>(x => Pdk.Log(LogLevel.Info, x.ToString()))));
@@ -58,9 +55,12 @@ public class AutomateExtension : MossExtension
             .Assign(JSValue.Marshal(new Func<string, ScheduleBuilder>(ScheduleBuilder.every)));
 
         context.DefineConstructor(typeof(EpubWriter));
-        context.DefineConstructor(typeof(EpubNotebook));
         context.DefineConstructor(typeof(Base64));
 
-        context.DefineConstructor(typeof(Automate.Core.Lib.HttpRequest));
+        context.DefineVariable("newEpub").Assign(JSValue.Marshal(new Func<string, Base64, EpubNotebook>((name, data) => new EpubNotebook(name, data))));
+
+        context.DefineConstructor(typeof(EpubNotebook));
+        context.DefineConstructor(typeof(HttpRequest));
+        context.DefineConstructor(typeof(Metadata));
     }
 }
