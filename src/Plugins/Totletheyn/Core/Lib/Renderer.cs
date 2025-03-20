@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Extism;
 using NiL.JS.Core;
 using Scriban;
 using Scriban.Runtime;
@@ -9,12 +10,16 @@ public static class Renderer
 {
     public static string RenderObject(JSObject sobj, string content)
     {
+        Pdk.Log(LogLevel.Error, "Before render Content: " + content);
+
         var context = new TemplateContext();
         context.PushGlobal(BuildScriptObject(sobj));
         context.EnableRelaxedMemberAccess = true;
 
         var template = Template.Parse(content);
         var result = template.Render(context);
+
+        Pdk.Log(LogLevel.Error, "Rendered Result: " + result);
 
         return result;
     }

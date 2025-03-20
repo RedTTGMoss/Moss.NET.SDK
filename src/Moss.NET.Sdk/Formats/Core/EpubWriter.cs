@@ -194,12 +194,12 @@ public class EpubWriter
         format.Opf.Metadata.Titles.Add(title);
     }
 
-    public EpubChapter AddChapter(string title, string html, string fileId = null)
+    public EpubChapter AddChapter(string title, string html)
     {
         if (string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(nameof(title));
         if (html == null) throw new ArgumentNullException(nameof(html));
 
-        fileId = fileId ?? Guid.NewGuid().ToString("N");
+        var fileId = Guid.NewGuid().ToString("N");
         var file = new EpubTextFile
         {
             AbsolutePath = fileId + ".html",
