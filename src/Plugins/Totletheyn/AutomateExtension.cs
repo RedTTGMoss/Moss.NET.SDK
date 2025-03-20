@@ -8,6 +8,7 @@ using Moss.NET.Sdk.Formats.Core;
 using Moss.NET.Sdk.Storage;
 using NiL.JS.Core;
 using Totletheyn.Core;
+using Totletheyn.Core.Lib;
 using HttpRequest = Totletheyn.Core.Lib.HttpRequest;
 
 namespace Totletheyn;
@@ -53,6 +54,8 @@ public class AutomateExtension : MossExtension
         context.DefineVariable("on").Assign(JSValue.Marshal(new Func<string, ScheduleBuilder>(ScheduleBuilder.on)));
         context.DefineVariable("every")
             .Assign(JSValue.Marshal(new Func<string, ScheduleBuilder>(ScheduleBuilder.every)));
+
+        context.DefineVariable("render").Assign(JSValue.Marshal(new Func<JSObject, string, string>(Renderer.RenderObject)));
 
         context.DefineConstructor(typeof(EpubWriter));
         context.DefineConstructor(typeof(Base64));

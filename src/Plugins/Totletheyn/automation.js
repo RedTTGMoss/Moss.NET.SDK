@@ -11,6 +11,8 @@
         var output = new Base64();
         var writer = new EpubWriter();
 
+        writer.AddChapter("Chapter 1", render({hello: "world"}), "some '{{hello}}' text");
+
         writer.Write(output);
 
         var notebook = newEpub(result.json.title, output);
