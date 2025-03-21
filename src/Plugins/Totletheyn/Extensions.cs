@@ -1,5 +1,5 @@
 ﻿using System;
-using NiL.JS.Core;
+using Totletheyn.Core.Js.Core;
 
 namespace Totletheyn;
 

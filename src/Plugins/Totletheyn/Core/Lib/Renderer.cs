@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using Extism;
-using NiL.JS.Core;
 using Scriban;
 using Scriban.Runtime;
+using Totletheyn.Core.Js.BaseLibrary;
+using Totletheyn.Core.Js.Core;
 
 namespace Totletheyn.Core.Lib;
 
@@ -17,14 +18,11 @@ public static class Renderer
         context.EnableRelaxedMemberAccess = true;
 
         var template = Template.Parse(content);
-        var result = template.Render(context);
 
-        Pdk.Log(LogLevel.Error, "Rendered Result: " + result);
-
-        return result;
+        return template.Render(context);
     }
 
-    public static ScriptObject BuildScriptObject(JSValue obj)
+    private static ScriptObject BuildScriptObject(JSValue obj)
     {
         var sobj = new ScriptObject();
 
@@ -36,7 +34,7 @@ public static class Renderer
             {
                 sobj.Add(renamedKey, BuildScriptObject(value));
             }
-            else if (kv.Value is NiL.JS.BaseLibrary.Array arr)
+            else if (kv.Value is Array arr)
             {
                 var items = new List<object>();
 

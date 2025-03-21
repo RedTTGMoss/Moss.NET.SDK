@@ -1,7 +1,7 @@
 ﻿using System;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Scheduler;
-using NiL.JS.Core;
+using Totletheyn.Core.Js.Core;
 
 namespace Totletheyn.Core;
 

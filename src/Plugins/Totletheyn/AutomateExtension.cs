@@ -6,8 +6,9 @@ using Moss.NET.Sdk;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.Formats.Core;
 using Moss.NET.Sdk.Storage;
-using NiL.JS.Core;
 using Totletheyn.Core;
+using Totletheyn.Core.CustomSyntax;
+using Totletheyn.Core.Js.Core;
 using Totletheyn.Core.Lib;
 using HttpRequest = Totletheyn.Core.Lib.HttpRequest;
 
@@ -31,6 +32,9 @@ public class AutomateExtension : MossExtension
 
     public override void Register(MossState state)
     {
+        Parser.DefineCustomCodeFragment(typeof(EveryStatement));
+        Parser.DefineCustomCodeFragment(typeof(OnStatement));
+
         var context = new Context();
         InitContext(context);
 
@@ -51,8 +55,8 @@ public class AutomateExtension : MossExtension
 
         context.DefineFunction("log", new Action<object>(x => Pdk.Log(LogLevel.Info, x.ToString())));
         context.DefineFunction("render", Renderer.RenderObject);
-        context.DefineVariable("on").Assign(JSValue.Marshal(new Func<string, ScheduleBuilder>(ScheduleBuilder.on)));
-        context.DefineVariable("every")
+        context.DefineVariable("_on").Assign(JSValue.Marshal(new Func<string, ScheduleBuilder>(ScheduleBuilder.on)));
+        context.DefineVariable("_every")
             .Assign(JSValue.Marshal(new Func<string, ScheduleBuilder>(ScheduleBuilder.every)));
 
         context.DefineConstructor(typeof(EpubWriter));

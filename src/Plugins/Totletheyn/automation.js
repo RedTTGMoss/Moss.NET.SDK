@@ -1,6 +1,8 @@
-﻿every("minute")
-    .name("wiki")
-    .do(function() {
+﻿every "minute" do {
+        log("hello from custom syntax");
+} as log;
+
+every "minute" do {
         var url = `https://en.wikipedia.org/api/rest_v1/page/random/summary`;
 
         log("Fetching article of the day from " + url);
@@ -18,4 +20,4 @@
         var notebook = newEpub(result.json.title, output);
         notebook.MoveTo(Config.inbox);
         notebook.Upload();
-    });
+} as wiki;

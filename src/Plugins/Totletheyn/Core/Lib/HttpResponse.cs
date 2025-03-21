@@ -1,6 +1,6 @@
 ﻿using Extism;
-using NiL.JS.BaseLibrary;
-using NiL.JS.Core;
+using Totletheyn.Core.Js.BaseLibrary;
+using Totletheyn.Core.Js.Core;
 
 namespace Totletheyn.Core.Lib;
 
