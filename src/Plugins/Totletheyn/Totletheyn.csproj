@@ -28,6 +28,10 @@
         </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Core\RSS\" />
+    </ItemGroup>
+
     <Target Name="Bundle" AfterTargets="PostBuildEvent">
         <Copy SourceFiles="@(Asset)" DestinationFolder="$(OutputPath)AppBundle\Assets\%(RecursiveDir)" SkipUnchangedFiles="true"/>
         <Copy SourceFiles="@(None)" DestinationFolder="$(OutputPath)AppBundle\%(RecursiveDir)" SkipUnchangedFiles="true"/>

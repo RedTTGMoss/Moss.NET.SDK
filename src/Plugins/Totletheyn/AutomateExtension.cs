@@ -55,15 +55,14 @@ public class AutomateExtension : MossExtension
 
         context.DefineFunction("log", new Action<object>(x => Pdk.Log(LogLevel.Info, x.ToString())));
         context.DefineFunction("render", Renderer.RenderObject);
-        context.DefineVariable("_on").Assign(JSValue.Marshal(new Func<string, ScheduleBuilder>(ScheduleBuilder.on)));
-        context.DefineVariable("_every")
-            .Assign(JSValue.Marshal(new Func<string, ScheduleBuilder>(ScheduleBuilder.every)));
+        context.DefineFunction("_on", ScheduleBuilder.on);
+        context.DefineFunction("_every", ScheduleBuilder.every);
 
         context.DefineConstructor(typeof(EpubWriter));
         context.DefineConstructor(typeof(Guid));
         context.DefineConstructor(typeof(Base64));
 
-        context.DefineVariable("newEpub").Assign(JSValue.Marshal(new Func<string, Base64, EpubNotebook>((name, data) => new EpubNotebook(name, data))));
+        context.DefineFunction("newEpub", new Func<string, Base64, EpubNotebook>((name, data) => new EpubNotebook(name, data)));
 
         context.DefineConstructor(typeof(EpubNotebook));
         context.DefineConstructor(typeof(HttpRequest));
