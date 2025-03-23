@@ -12,7 +12,7 @@ public class AutomateExtension : MossExtension
     [UnmanagedCallersOnly(EntryPoint = "moss_extension_register")]
     public static ulong Register()
     {
-        TaskScheduler.Activator.Register<WikiJob>("wiki");
+        TaskScheduler.Activator.Register<RssJob>("rss");
 
         Init<AutomateExtension>();
 

@@ -20,7 +20,7 @@ internal static class MossEntry
     {
         var state = Pdk.GetInputJson(JsonContext.Default.MossState)!;
 
-        TaskScheduler.CheckJobs();
+        TaskScheduler.RunJobs();
         MossExtension.Instance?.ExtensionLoop(state);
 
         return 0;

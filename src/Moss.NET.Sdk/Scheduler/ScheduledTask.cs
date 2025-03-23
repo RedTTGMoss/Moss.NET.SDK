@@ -31,7 +31,7 @@ public class ScheduledTask
 
     public string? Name { get; set; }
 
-    public object? Data { get; set; }
+    public object? Data { get; set; } = new();
 
     [JsonIgnore] public Job Job { get; }
 

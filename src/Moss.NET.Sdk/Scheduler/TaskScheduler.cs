@@ -23,7 +23,7 @@ public static class TaskScheduler
         Jobs.Add(task);
     }
 
-    internal static void CheckJobs()
+    internal static void RunJobs()
     {
         var now = DateTime.UtcNow;
 
@@ -49,6 +49,7 @@ public static class TaskScheduler
         foreach (var job in Jobs)
         {
             job.Data = job.Job.Data;
+            job.Job.Shutdown();
         }
 
         var json = ScheduledTask.Serialize(Jobs);
@@ -82,7 +83,7 @@ public static class TaskScheduler
             job.Interval = GetSpan(interval);
             job.Name = name;
             job.Options = new JobConfig(options);
-            job.OnInit();
+            job.Init();
 
             Pdk.Log(LogLevel.Debug, $"Scheduling task '{name}' every {interval} using class {cls}");
             ScheduleTask(new ScheduledTask(job.Name, job, DateTime.UtcNow, job.Interval, options));
@@ -141,13 +142,13 @@ public static class TaskScheduler
 
         return span switch
         {
-            "day" => TimeSpan.FromDays(1),
-            "hour" => TimeSpan.FromHours(1),
-            "minute" => TimeSpan.FromMinutes(1),
-            "second" => TimeSpan.FromSeconds(1),
-            "week" => TimeSpan.FromDays(7),
-            "month" => TimeSpan.FromDays(30),
-            "year" => TimeSpan.FromDays(365),
+            "daily" => TimeSpan.FromDays(1),
+            "hourly" => TimeSpan.FromHours(1),
+            "minutely" => TimeSpan.FromMinutes(1),
+            "secondly" => TimeSpan.FromSeconds(1),
+            "weekly" => TimeSpan.FromDays(7),
+            "monthly" => TimeSpan.FromDays(30),
+            "yearly" => TimeSpan.FromDays(365),
             _ => throw new ArgumentOutOfRangeException(nameof(span), span, null)
         };
     }
