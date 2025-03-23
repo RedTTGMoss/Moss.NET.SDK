@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Extism;
+using Hocon;
 using Moss.NET.Sdk.Core.Converters;
 using Moss.NET.Sdk.FFI;
 
@@ -14,21 +15,25 @@ public class ScheduledTask
     {
     }
 
-    public ScheduledTask(string? name, Action<object?>? task, DateTimeOffset? startTime, TimeSpan interval)
+    public ScheduledTask(string? name, Action<object> task, DateTimeOffset? startTime, TimeSpan interval, HoconObject options)
     {
         Name = name;
         Task = task;
         NextRunTime = startTime;
         Interval = interval;
+        Options = options;
     }
 
     public DateTimeOffset? NextRunTime { get; set; }
-    public TimeSpan Interval { get; set; }
+    [JsonIgnore] public TimeSpan Interval { get; set; }
+
+    [JsonIgnore] public HoconObject Options { get; set; }
+
     public string? Name { get; set; }
 
     public object? Data { get; set; }
 
-    [JsonIgnore] public Action<object?>? Task { get; set; }
+    [JsonIgnore] public Action<object> Task { get; set; } = null!;
 
     [JsonIgnore] public Predicate<object>? Predicate { get; set; }
 

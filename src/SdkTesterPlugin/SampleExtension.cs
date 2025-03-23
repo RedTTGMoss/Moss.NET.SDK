@@ -13,11 +13,13 @@ namespace SdkTesterPlugin;
 public class SampleExtension : MossExtension
 {
     private Document duplicate;
-    private static LoggerInstance _logger = Log.GetLogger<SampleExtension>();
+    private static readonly LoggerInstance _logger = Log.GetLogger<SampleExtension>();
 
     [UnmanagedCallersOnly(EntryPoint = "moss_extension_register")]
     public static ulong Register()
     {
+        TaskScheduler.Activator.Register<TestJob>("test");
+
         Init<SampleExtension>();
 
         return 0;
@@ -29,9 +31,7 @@ public class SampleExtension : MossExtension
 
     public override void Register(MossState state)
     {
-        Job.Schedule<TestJob>();
-
-        Config.Set("theme", "dark");
+        MossConfig.Set("theme", "dark");
         Defaults.SetDefaultValue("OUTLINE_COLOR", Color.Blue);
         Theme.Apply(new DarkTheme());
 
@@ -53,7 +53,7 @@ public class SampleExtension : MossExtension
         Defaults.GetDefaultColor("BACKGROUND");
         Defaults.GetDefaultTextColor("TEXT_COLOR");
         Defaults.GetDefaultValue<string>("LOG_FILE");
-        Config.Get<string>("theme");
+        MossConfig.Get<string>("theme");
         Moss.NET.Sdk.Moss.GetState();
 
         var cm = ContextMenu.Get("test_cm");

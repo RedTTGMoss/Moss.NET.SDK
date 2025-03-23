@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Extism;
+using Hocon;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.Scheduler;
 
@@ -34,15 +36,26 @@ public class MossExtension
     {
     }
 
+    public static void PreInitExtension()
+    {
+        var configSource = System.IO.File.ReadAllText("extension/automation.conf");
+        Config = HoconParser.Parse(configSource);
+
+        TaskScheduler.Init();
+    }
+
+    public static HoconRoot Config { get; set; }
+
     public static void Init<T>() where T : MossExtension, new()
     {
         if (_instance is not null) throw new InvalidOperationException("Assembly can only have one extension instance.");
 
+        PreInitExtension();
         _instance = Activator.CreateInstance<T>();
 
         var input = Pdk.GetInputJson(JsonContext.Default.MossState);
         _instance!.Register(input!);
-        var extensionInfo = new ExtensionInfo()
+        var extensionInfo = new ExtensionInfo
         {
             Files = Assets.Expose()
         };
@@ -51,7 +64,6 @@ public class MossExtension
 #if DEBUG
         Pdk.Log(LogLevel.Info, "output: " + output);
 #endif
-        TaskScheduler.LoadTaskInformation();
 
         Pdk.SetOutput(output);
     }

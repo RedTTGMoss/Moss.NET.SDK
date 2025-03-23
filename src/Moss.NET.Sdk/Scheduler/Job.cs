@@ -1,22 +1,14 @@
 ﻿using System;
+using Hocon;
 
 namespace Moss.NET.Sdk.Scheduler;
 
 public abstract class Job
 {
-    public abstract TimeSpan Interval { get; }
-    public virtual string Name { get; }
+    public TimeSpan Interval { get; internal set; }
+    public string Name { get; internal set; }
+
+    protected internal dynamic Options;
 
     public abstract void Run(object data);
-
-    public static void Schedule(Job job)
-    {
-        TaskScheduler.ScheduleTask(new ScheduledTask(job.Name, job.Run, DateTime.Now, job.Interval));
-    }
-
-    public static void Schedule<TJob>()
-        where TJob : Job, new()
-    {
-        Schedule(new TJob());
-    }
 }
