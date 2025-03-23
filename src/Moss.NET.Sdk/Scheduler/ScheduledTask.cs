@@ -15,10 +15,10 @@ public class ScheduledTask
     {
     }
 
-    public ScheduledTask(string? name, Action<object> task, DateTimeOffset? startTime, TimeSpan interval, HoconObject options)
+    public ScheduledTask(string? name, Job job, DateTimeOffset? startTime, TimeSpan interval, HoconObject options)
     {
         Name = name;
-        Task = task;
+        Job = job;
         NextRunTime = startTime;
         Interval = interval;
         Options = options;
@@ -33,7 +33,7 @@ public class ScheduledTask
 
     public object? Data { get; set; }
 
-    [JsonIgnore] public Action<object> Task { get; set; } = null!;
+    [JsonIgnore] public Job Job { get; }
 
     [JsonIgnore] public Predicate<object>? Predicate { get; set; }
 

@@ -10,5 +10,5 @@ public abstract class Job
 
     protected internal dynamic Options;
 
-    public abstract void Run(object data);
+    public abstract void Run(ref object data);
 }

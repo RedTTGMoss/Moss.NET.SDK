@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Extism;
 using Hocon;
@@ -36,7 +37,7 @@ public static class TaskScheduler
                 $"NextRun={task.NextRunTime:O} " +
                 $"Interval={task.Interval}");
 
-            task.Task(task.Data!);
+            task.Job.Run(ref Unsafe.AsRef(task.Data!));
 
             task.UpdateNextRunTime();
         }
@@ -77,7 +78,7 @@ public static class TaskScheduler
             job.Options = new JobConfig(options);
 
             Pdk.Log(LogLevel.Debug, $"Scheduling task '{name}' every {interval} using class {cls}");
-            ScheduleTask(new ScheduledTask(job.Name, job.Run, DateTime.UtcNow, job.Interval, options));
+            ScheduleTask(new ScheduledTask(job.Name, job, DateTime.UtcNow, job.Interval, options));
         }
 
         AssociateJobInfo(json);
