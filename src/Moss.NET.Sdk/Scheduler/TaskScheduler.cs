@@ -13,21 +13,21 @@ namespace Moss.NET.Sdk.Scheduler;
 public static class TaskScheduler
 {
     private static HoconObject _config = null!;
-    private static readonly List<ScheduledTask> Tasks = [];
+    private static readonly List<ScheduledTask> Jobs = [];
     public static readonly JobActivator Activator = new();
 
     public static void ScheduleTask(ScheduledTask task)
     {
-        task.Name ??= Tasks.Count.ToString();
+        task.Name ??= Jobs.Count.ToString();
 
-        Tasks.Add(task);
+        Jobs.Add(task);
     }
 
-    internal static void CheckTasks()
+    internal static void CheckJobs()
     {
         var now = DateTime.UtcNow;
 
-        foreach (var task in Tasks
+        foreach (var task in Jobs
                      .Where(t => t.NextRunTime <= now)
                      .Where(task => task.Predicate is null || task.Predicate(task))
                      .ToArray())
@@ -37,7 +37,8 @@ public static class TaskScheduler
                 $"NextRun={task.NextRunTime:O} " +
                 $"Interval={task.Interval}");
 
-            task.Job.Run(ref Unsafe.AsRef(task.Data!));
+            task.Job.Data = task.Data!;
+            task.Job.Run();
 
             task.UpdateNextRunTime();
         }
@@ -45,7 +46,12 @@ public static class TaskScheduler
 
     public static void SaveTasks()
     {
-        var json = ScheduledTask.Serialize(Tasks);
+        foreach (var job in Jobs)
+        {
+            job.Data = job.Job.Data;
+        }
+
+        var json = ScheduledTask.Serialize(Jobs);
         File.WriteAllText("extension/.tasks", json);
     }
 
@@ -76,6 +82,7 @@ public static class TaskScheduler
             job.Interval = GetSpan(interval);
             job.Name = name;
             job.Options = new JobConfig(options);
+            job.OnInit();
 
             Pdk.Log(LogLevel.Debug, $"Scheduling task '{name}' every {interval} using class {cls}");
             ScheduleTask(new ScheduledTask(job.Name, job, DateTime.UtcNow, job.Interval, options));
@@ -93,7 +100,7 @@ public static class TaskScheduler
         // Load task info to appropriate job
         foreach (var taskInfo in taskInfos)
         {
-            var task = Tasks.FirstOrDefault(t => t.Name == taskInfo.Name);
+            var task = Jobs.FirstOrDefault(t => t.Name == taskInfo.Name);
 
             if (task is null)
             {

@@ -7,7 +7,7 @@ public class TestJob : Job
 {
     private static readonly LoggerInstance Logger = Log.GetLogger<TestJob>();
 
-    public override void Run(ref object data)
+    public override void Run()
     {
         Logger.Info("TestJob running");
     }

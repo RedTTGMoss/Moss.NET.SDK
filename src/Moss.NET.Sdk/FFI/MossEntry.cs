@@ -4,7 +4,7 @@ using Moss.NET.Sdk.Scheduler;
 
 namespace Moss.NET.Sdk.FFI;
 
-internal class MossEntry
+internal static class MossEntry
 {
     [UnmanagedCallersOnly(EntryPoint = "moss_extension_unregister")]
     public static ulong Unregister()
@@ -20,7 +20,7 @@ internal class MossEntry
     {
         var state = Pdk.GetInputJson(JsonContext.Default.MossState)!;
 
-        TaskScheduler.CheckTasks();
+        TaskScheduler.CheckJobs();
         MossExtension.Instance?.ExtensionLoop(state);
 
         return 0;
