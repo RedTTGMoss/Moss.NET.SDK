@@ -23,7 +23,7 @@ public class RssJob : Job
     public override void Run()
     {
         _lastUpdated = DateTimeOffset.UtcNow;
-        _logger.Info($"Running WikiJob with language '{Options.language}'");
+        _logger.Info($"Running RssJob with '{Options.feeds.Length}' feeds.");
 
         var output = new Base64();
         var writer = new EpubWriter();
