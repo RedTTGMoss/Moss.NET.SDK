@@ -72,11 +72,11 @@ public static class TaskScheduler
 
         foreach (var jobInfo in _config.GetObject("jobs"))
         {
-            var name = jobInfo.Key;
+            var cls = jobInfo.Key;
             var obj = jobInfo.Value.GetObject();
 
             var interval = obj["interval"].GetString();
-            var cls = obj["class"].GetString();
+            var name = obj["name"].GetString();
             var options = obj["options"].GetObject();
 
             var job = Activator.Create(cls);
