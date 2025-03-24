@@ -274,11 +274,6 @@ public class EpubWriter
         }
     }
 
-    //public void InsertChapter(string title, string html, int index, EpubChapter parent = null)
-    //{
-    //    throw new NotImplementedException("Implement me!");
-    //}
-
     public void RemoveCover()
     {
         var path = format.Opf.FindAndRemoveCover();

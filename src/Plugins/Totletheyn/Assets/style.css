@@ -1,0 +1,123 @@
+﻿body {
+    font-family: 'Noticia Text', serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    padding: 0 12px 0 12px;
+    text-align: center;
+    font-weight: 400;
+    font-style: normal;
+    font-family: 'Jaini', serif;
+    display: grid;
+    align-items: center;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+header h1 {
+    font-size: 66px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+header h4 {
+    margin: -10px 0 0;
+    font-size: 1.2em;
+    text-align: center;
+    font-family: 'Times New Roman', Courier, monospace;
+}
+
+header section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    width: 100%;
+}
+
+header section p.left {
+    text-align: left;
+    grid-column: 1;
+    margin-left: 8px;
+}
+
+header section p.center {
+    text-align: center;
+    grid-column: 2;
+}
+
+header section p.right {
+    text-align: right;
+    grid-column: 3;
+    margin-right: 8px;
+}
+
+.rss {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    margin: 0 auto;
+    flex: 1;
+}
+
+.sidebar, .main-content, .extra-content {
+    background: white;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2, .main-content h2, .extra-content h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    margin-top: auto;
+}
+
+.main-content p, .sidebar p, .extra-content p {
+    line-height: 1.8;
+    text-align: justify;
+}
+
+article {
+    margin-bottom: 20px;
+}
+
+article h3 {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+}
+
+article p {
+    font-size: 1em;
+    overflow: hidden;
+    display: block;
+    max-height: 4.8em;
+    position: relative;
+    text-overflow: ellipsis;
+}
+
+article img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+article a {
+    display: block;
+    text-align: right;
+    color: blue;
+    text-decoration: none;
+}

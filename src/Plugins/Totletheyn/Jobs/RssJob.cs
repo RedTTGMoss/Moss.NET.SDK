@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.Formats.Core;
+using Moss.NET.Sdk.Formats.Core.Format;
 using Moss.NET.Sdk.Scheduler;
 using Moss.NET.Sdk.Storage;
 using Totletheyn.Core.RSS;
@@ -31,8 +33,13 @@ public class RssJob : Job
         writer.SetTitle(_lastUpdated.ToString());
         writer.AddAuthor(Options.author ?? "Totletheyn");
 
-        writer.AddChapter("Chapter 1", "This is the first chapter");
-        writer.AddChapter("Chapter 2", "This is the second chapter");
+        writer.AddChapter("Cover", File.ReadAllText("extension/Assets/cover_template.html"));
+
+        writer.AddFile("fonts.css", File.ReadAllBytes("extension/Assets/fonts.css"), EpubContentType.Css);
+        writer.AddFile("style.css", File.ReadAllBytes("extension/Assets/style.css"), EpubContentType.Css);
+
+        writer.AddFile("fonts/Jaini-Regular.ttf", File.ReadAllBytes("extension/Assets/fonts/Jaini-Regular.ttf"), EpubContentType.FontTruetype);
+        writer.AddFile("fonts/NoticiaText-Regular.ttf", File.ReadAllBytes("extension/Assets/fonts/NoticiaText-Regular.ttf"), EpubContentType.FontTruetype);
 
         foreach (string url in Options.feeds)
         {
