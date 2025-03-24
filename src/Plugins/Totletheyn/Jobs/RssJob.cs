@@ -34,11 +34,11 @@ public class RssJob : Job
         writer.AddChapter("Chapter 1", "This is the first chapter");
         writer.AddChapter("Chapter 2", "This is the second chapter");
 
-        foreach (string feed in Options.feeds)
+        foreach (string url in Options.feeds)
         {
-            var reader = FeedReader.Read(feed);
+            var feed = FeedReader.Read(url);
 
-            foreach (var item in reader.Items)
+            foreach (var item in feed.Items)
             {
                 if (item.PublishingDate > _lastUpdated)
                 {
