@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Book Newspaper #1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noticia+Text:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jaini&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Noticia Text', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 12px;
+            text-align: center;
+            font-weight: 400;
+            font-style: normal;
+            font-family: 'Jaini';
+        }
+
+        header {
+            display: grid;
+            align-items: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 5em;
+            text-align: center;
+        }
+
+        header h4 {
+            margin: 5px 0 0;
+            font-size: 1.2em;
+            text-align: center;
+            font-family: 'Times New Roman', Courier, monospace;
+        }
+
+        header section {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            align-items: center;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            margin-top: 25px;
+            width: 100%;
+        }
+
+        header section p.left {
+            text-align: left;
+            grid-column: 1;
+            margin-left: 8px;
+        }
+
+        header section p.center {
+            text-align: center;
+            grid-column: 2;
+        }
+
+        header section p.right {
+            text-align: right;
+            grid-column: 3;
+            margin-right: 8px;
+        }
+
+        .rss {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            margin: 25px;
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        .sidebar, .main-content, .extra-content {
+            background: white;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h2, .main-content h2, .extra-content h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .main-content p, .sidebar p, .extra-content p {
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        article {
+            margin-bottom: 20px;
+        }
+
+        article h3 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        article p {
+            font-size: 1em;
+            overflow: hidden;
+            display: block;
+            max-height: 4.8em;
+            position: relative;
+            text-overflow: ellipsis;
+        }
+
+        article img {
+            width: 100%; 
+            height: auto; 
+            margin-bottom: 10px;
+        }
+
+        article a {
+            display: block; 
+            text-align: right; 
+            color: blue; 
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Daily E-Book Times</h1>
+        <h4>News for everyone</h4>
+
+    
+        <section>
+            <p class="left">#1</p>
+            <p class="center">Wednesday, March 24, 2025</p>
+            <p class="right">
+                <svg class="rss" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455.731 455.731" xml:space="preserve" fill="#000000" stroke="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <rect x="0" y="0" style="fill:#ababab;" width="455.731" height="455.731"></rect> <g> <path style="fill:#FFFFFF;" d="M296.208,159.16C234.445,97.397,152.266,63.382,64.81,63.382v64.348 c70.268,0,136.288,27.321,185.898,76.931c49.609,49.61,76.931,115.63,76.931,185.898h64.348 C391.986,303.103,357.971,220.923,296.208,159.16z"></path> <path style="fill:#FFFFFF;" d="M64.143,172.273v64.348c84.881,0,153.938,69.056,153.938,153.939h64.348 C282.429,270.196,184.507,172.273,64.143,172.273z"></path> <circle style="fill:#FFFFFF;" cx="109.833" cy="346.26" r="46.088"></circle> </g> </g> </g></svg>
+                From 12 Sources 
+            </p>
+        </section>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>Sidebar</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+            <p>Additional sidebar content can go here.</p>
+        </div>
+        <div class="main-content">
+            <h2>Main Articles</h2>
+            <article>
+                <h3>Breaking News: Market Trends</h3>
+                <img src="market-trends.jpg" alt="Market Trends">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                </p>
+                <a href="market-trends.html">Read more &raquo;</a>
+            </article>
+
+            <article>
+                <h3>Technology: The Future of AI</h3>
+
+                <img src="future-ai.jpg" alt="Future of AI">
+                <p>
+                    Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam.
+                    Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam.
+                </p>
+
+                <a href="future-ai.html">Read more &raquo;</a>
+            </article>
+
+            <article>
+                <h3>Sports: Championship Highlights</h3>
+                <img src="championship.jpg" alt="Championship Highlights">
+                <p>
+                    In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor.
+                    In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor.
+                </p>
+                <a href="championship.html">Read more &raquo;</a>
+            </article>
+        </div>
+        <div class="extra-content">
+            <h2>Extra Content</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+            <p>More extra content can go here.</p>
+        </div>
+    </div>
+</body>
+</html>
