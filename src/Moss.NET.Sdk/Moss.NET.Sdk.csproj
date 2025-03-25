@@ -16,7 +16,7 @@
     <ItemGroup>
         <PackageReference Include="Ardalis.SmartEnum" Version="8.2.0" />
         <PackageReference Include="Ardalis.SmartEnum.SystemTextJson" Version="8.1.0" />
-        <PackageReference Include="Extism.Pdk" Version="1.0.3"/>
+        <PackageReference Include="Extism.Pdk" Version="1.1.1" />
         <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
         <PackageReference Include="Extism.runtime.all" Version="1.9.1"/>
         <PackageReference Include="Hocon" Version="2.0.4" />
