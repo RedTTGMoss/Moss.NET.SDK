@@ -82,7 +82,7 @@ public static class TaskScheduler
             var job = Activator.Create(cls);
             job.Interval = GetSpan(interval);
             job.Name = name;
-            job.Options = new JobConfig(options);
+            job.Options = new Options(options);
             job.Init();
 
             Pdk.Log(LogLevel.Debug, $"Scheduling task '{name}' every {interval} using class {cls}");

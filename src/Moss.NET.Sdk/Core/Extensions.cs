@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using Extism;
+using Hocon;
 using Moss.NET.Sdk.FFI;
 
 namespace Moss.NET.Sdk.Core;
@@ -51,4 +52,9 @@ public static class Extensions
 
     public static MemoryBlock Find(this ulong ptr) => MemoryBlock.Find(ptr);
     public static string ReadString(this ulong ptr) => MemoryBlock.Find(ptr).ReadString();
+
+    public static dynamic Get(this HoconRoot root, string path)
+    {
+        return new Options(root.GetObject(path));
+    }
 }

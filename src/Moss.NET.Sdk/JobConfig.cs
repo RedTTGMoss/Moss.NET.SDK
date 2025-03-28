@@ -1,11 +1,10 @@
-﻿using System.Linq;
-
-namespace Moss.NET.Sdk.Scheduler;
-
-using System.Dynamic;
+﻿using System.Dynamic;
+using System.Linq;
 using Hocon;
 
-public class JobConfig(HoconObject hoconObject) : DynamicObject
+namespace Moss.NET.Sdk;
+
+public class Options(HoconObject hoconObject) : DynamicObject
 {
     public override bool TryGetMember(GetMemberBinder binder, out object result)
     {
@@ -23,7 +22,7 @@ public class JobConfig(HoconObject hoconObject) : DynamicObject
     {
         return hoconValue.Type switch
         {
-            HoconType.Object => new JobConfig(hoconValue.GetObject()),
+            HoconType.Object => new Options(hoconValue.GetObject()),
             HoconType.Array => hoconValue.GetArray().Select(ConvertHoconValue).ToArray(),
             HoconType.String => hoconValue.GetString(),
             HoconType.Boolean => hoconValue.GetBoolean(),

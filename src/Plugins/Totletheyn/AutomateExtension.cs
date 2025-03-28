@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using Moss.NET.Sdk;
+using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.Scheduler;
 using Totletheyn.Jobs;
 
@@ -25,6 +26,6 @@ public class AutomateExtension : MossExtension
 
     public override void Register(MossState state)
     {
-
+        var eventConfig = Config.Get("events");
     }
 }
