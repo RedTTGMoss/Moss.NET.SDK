@@ -68,6 +68,16 @@ public static class TaskScheduler
             // ignored
         }
 
+        ReadJobConfig(json);
+    }
+
+    private static void ReadJobConfig(string json)
+    {
+        if (MossExtension.Config is null)
+        {
+            return;
+        }
+
         _config = MossExtension.Config.GetObject("scheduler");
 
         foreach (var jobInfo in _config.GetObject("jobs"))

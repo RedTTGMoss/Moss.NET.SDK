@@ -60,7 +60,7 @@ public class SampleExtension : MossExtension
 
         GUI.InvertIcon("swap", "swap_inverted");
 
-        RunOnce.Execute("test", async () =>
+        RunOnce.Execute("test", void () =>
         {
             cm.Open(10, 10);
 
@@ -89,11 +89,11 @@ public class SampleExtension : MossExtension
             var epub = new EpubNotebook("test ebook", "extension/Assets/test.epub");
             InternalFunctions.NewContentEpub();
 
-            await pdf.UploadAsync();
+            pdf.Upload();
 
             InternalFunctions.ExportDocument("0ba3df9c-8ca0-4347-8d7c-07471101baad");
 
-            await quickSheets.EnsureDownloadAsync();
+            quickSheets.EnsureDownload();
             quickSheets.LoadFilesFromCache();
             quickSheets.UnloadFiles();
 
@@ -115,14 +115,14 @@ public class SampleExtension : MossExtension
                 Uuid = quickSheets.Metadata.Accessor.Uuid,
             });*/
 
-            await duplicate.EnsureDownloadAsync();
+            duplicate.EnsureDownload();
             duplicate.Metadata.Get<string>("visible_name");
 
             duplicate.Metadata.Set("visible_name", "Duplicated QuickSheet");
             duplicate.Metadata.Set("parent", "4dba1a54-93b8-4992-886f-08c0b17f93da");
 
             var k = duplicate.Duplicate();
-            await duplicate.UploadAsync();
+            duplicate.Upload();
             k.Delete(() => _logger.Info("Deleted"));
 
             var docs = Enumerable.Repeat(0, 2)
