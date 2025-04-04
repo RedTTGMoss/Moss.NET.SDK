@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Diagnostics.Metrics;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Extism;
 using Hocon;
+using Moss.NET.Sdk.Core;
+using Moss.NET.Sdk.Core.Instrumentation;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.Scheduler;
 
@@ -11,6 +14,9 @@ namespace Moss.NET.Sdk;
 public class MossExtension
 {
     private static MossExtension? _instance;
+
+    public Meter Meter;
+    public IMeterListener MeterListener;
 
     internal static MossExtension? Instance
     {
@@ -48,7 +54,7 @@ public class MossExtension
         TaskScheduler.Init();
     }
 
-    public static HoconRoot Config { get; set; }
+    public static HoconRoot? Config { get; set; }
 
     public static void Init<T>() where T : MossExtension, new()
     {
@@ -58,7 +64,21 @@ public class MossExtension
         _instance = Activator.CreateInstance<T>();
 
         var input = Pdk.GetInputJson(JsonContext.Default.MossState);
-        _instance!.Register(input!);
+
+#if DEBUG
+        _instance.Meter = new Meter("Moss.NET.Sdk");
+        _instance.MeterListener = new FileMeterListener("extension/instrumentation.txt");
+        _instance.MeterListener.Init();
+
+        Extensions.Measure("extension.register", () =>
+        {
+#endif
+            _instance!.Register(input!);
+#if DEBUG
+        });
+#endif
+
+
         var extensionInfo = new ExtensionInfo
         {
             Files = Assets.Expose()

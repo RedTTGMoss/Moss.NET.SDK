@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="9.0.3" />
         <ProjectReference Include="..\Moss.NET.Sdk\Moss.NET.Sdk.csproj"/>
         <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
         <PackageReference Include="Extism.Pdk" Version="1.1.1" />

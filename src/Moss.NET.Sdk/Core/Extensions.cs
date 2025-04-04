@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Metrics;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using Extism;
@@ -56,5 +57,16 @@ public static class Extensions
     public static dynamic Get(this HoconRoot root, string path)
     {
         return new Options(root.GetObject(path));
+    }
+
+    public static void Measure(string name, Action method)
+    {
+        var meter = MossExtension.Instance!.Meter;
+        var methodDuration = meter.CreateHistogram<double>(name + "_duration", "ms", "Method duration in milliseconds");
+
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        method();
+        stopwatch.Stop();
+        methodDuration.Record(stopwatch.Elapsed.TotalMilliseconds);
     }
 }
