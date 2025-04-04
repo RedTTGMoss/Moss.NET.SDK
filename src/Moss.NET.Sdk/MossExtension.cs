@@ -38,8 +38,12 @@ public class MossExtension
 
     public static void PreInitExtension()
     {
-        var configSource = System.IO.File.ReadAllText("extension/automation.conf");
-        Config = HoconParser.Parse(configSource);
+        var configPath = "extension/automation.conf";
+
+        if (System.IO.File.Exists(configPath)) {
+            var configSource = System.IO.File.ReadAllText(configPath);
+            Config = HoconParser.Parse(configSource);
+        }
 
         TaskScheduler.Init();
     }
