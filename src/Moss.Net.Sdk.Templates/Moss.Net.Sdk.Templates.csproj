@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <PackageId>Moss.Net.Sdk.Templates</PackageId>
-    <PackageVersion>1.0.3</PackageVersion>
+    <PackageVersion>1.0.5</PackageVersion>
     <Title>Moss.Net.Sdk.Templates</Title>
     <Authors>furesoft</Authors>
-    <Description>TODO: fill the package description here</Description>
+    <Description>Templates to create moss extensions</Description>
     <PackageTags>Moss</PackageTags>
     <PackageProjectUrl>https://github.com/RedTTGMoss/Moss.NET.SDK</PackageProjectUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

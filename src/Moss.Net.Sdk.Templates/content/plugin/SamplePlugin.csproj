@@ -8,8 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Extism.runtime.all" Version="1.9.1"/>
         <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
-        <PackageReference Include="Extism.Pdk" Version="1.0.3"/>
+        <PackageReference Include="Extism.Pdk" Version="1.1.1"/>
         <PackageReference Include="Moss.NET.Sdk" Version="1.5.0-pre" />
     </ItemGroup>
 
