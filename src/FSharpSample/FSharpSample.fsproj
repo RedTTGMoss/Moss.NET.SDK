@@ -10,9 +10,9 @@
 
     <ItemGroup>
         <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
-        <PackageReference Include="Extism.Pdk" Version="1.1.1" />
-        <PackageReference Include="Moss.NET.Sdk" Version="1.3.0-pre" />
-        <PackageReference Update="FSharp.Core" Version="9.0.201" />
+        <PackageReference Include="Extism.Pdk" Version="1.1.1"/>
+        <PackageReference Include="Moss.NET.Sdk" Version="1.3.0-pre"/>
+        <PackageReference Update="FSharp.Core" Version="9.0.201"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -22,11 +22,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Include="Plugin.fs" />
+        <Compile Include="Plugin.fs"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Moss.NET.Sdk\Moss.NET.Sdk.csproj" />
+        <ProjectReference Include="..\Moss.NET.Sdk\Moss.NET.Sdk.csproj"/>
     </ItemGroup>
 
     <Target Name="Bundle" AfterTargets="PostBuildEvent">

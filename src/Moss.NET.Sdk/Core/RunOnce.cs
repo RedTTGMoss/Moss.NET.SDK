@@ -1,7 +1,7 @@
-﻿namespace Moss.NET.Sdk.Core;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+
+namespace Moss.NET.Sdk.Core;
 
 public static class RunOnce
 {

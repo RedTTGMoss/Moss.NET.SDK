@@ -25,10 +25,7 @@ public static class TaskScheduler
 
     internal static void RunJobs()
     {
-        if (!IsEnabled)
-        {
-            return;
-        }
+        if (!IsEnabled) return;
 
         var now = DateTime.UtcNow;
 
@@ -51,10 +48,7 @@ public static class TaskScheduler
 
     public static void SaveTasks()
     {
-        if (!IsEnabled)
-        {
-            return;
-        }
+        if (!IsEnabled) return;
 
         foreach (var job in Jobs)
         {
@@ -68,10 +62,7 @@ public static class TaskScheduler
 
     public static void Init()
     {
-        if (!IsEnabled)
-        {
-            return;
-        }
+        if (!IsEnabled) return;
 
         var json = "[]";
         try
@@ -88,10 +79,7 @@ public static class TaskScheduler
 
     private static void ReadJobConfig(string json)
     {
-        if (MossExtension.Config is null)
-        {
-            return;
-        }
+        if (MossExtension.Config is null) return;
 
         _config = MossExtension.Config.GetObject("scheduler");
 
@@ -144,14 +132,10 @@ public static class TaskScheduler
 
     private static TimeSpan GetSpan(string span)
     {
-        if (TimeSpan.TryParse(span, out var result))
-        {
-            return result;
-        }
+        if (TimeSpan.TryParse(span, out var result)) return result;
 
         var unit = span![^1];
         if (int.TryParse(span[..^1], out var value))
-        {
             return unit switch
             {
                 'd' => TimeSpan.FromDays(value),
@@ -163,7 +147,6 @@ public static class TaskScheduler
                 'y' => TimeSpan.FromDays(value * 365),
                 _ => throw new ArgumentOutOfRangeException(nameof(span), span, null)
             };
-        }
 
         return span switch
         {

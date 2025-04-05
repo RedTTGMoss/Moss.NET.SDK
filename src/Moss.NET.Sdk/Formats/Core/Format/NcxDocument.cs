@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
+
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
 namespace Moss.NET.Sdk.Formats.Core.Format;
@@ -24,7 +25,7 @@ internal static class NcxElements
 }
 
 /// <summary>
-/// DAISY’s Navigation Center eXtended (NCX)
+///     DAISY’s Navigation Center eXtended (NCX)
 /// </summary>
 public class NcxDocument
 {
@@ -38,22 +39,22 @@ public class NcxDocument
 
 public class NcxMeta
 {
+    public string Name { get; internal set; }
+    public string Content { get; internal set; }
+    public string Scheme { get; internal set; }
+
     internal static class Attributes
     {
         public static readonly XName Name = "name";
         public static readonly XName Content = "content";
         public static readonly XName Scheme = "scheme";
     }
-
-    public string Name { get; internal set; }
-    public string Content { get; internal set; }
-    public string Scheme { get; internal set; }
 }
 
 public class NcxNapMap
 {
     /// <summary>
-    /// Populated only when an EPUB with NCX is read.
+    ///     Populated only when an EPUB with NCX is read.
     /// </summary>
     public XElement Dom { get; internal set; }
 
@@ -62,14 +63,6 @@ public class NcxNapMap
 
 public class NcxNavPoint
 {
-    internal static class Attributes
-    {
-        public static readonly XName Id = "id";
-        public static readonly XName Class = "class";
-        public static readonly XName PlayOrder = "playOrder";
-        public static readonly XName ContentSrc = "src";
-    }
-
     public string Id { get; internal init; }
     public string Class { get; internal init; }
     public int? PlayOrder { get; internal init; }
@@ -84,6 +77,14 @@ public class NcxNavPoint
     public override string ToString()
     {
         return $"Id: {Id}, ContentSource: {ContentSrc}";
+    }
+
+    internal static class Attributes
+    {
+        public static readonly XName Id = "id";
+        public static readonly XName Class = "class";
+        public static readonly XName PlayOrder = "playOrder";
+        public static readonly XName ContentSrc = "src";
     }
 }
 
@@ -109,6 +110,13 @@ public class NcxNavInfo
 
 public class NcxPageTarget
 {
+    public string Id { get; internal init; }
+    public int? Value { get; internal init; }
+    public string Class { get; internal init; }
+    public NcxPageTargetType? Type { get; internal init; }
+    public string NavLabelText { get; internal init; }
+    public string ContentSrc { get; internal init; }
+
     internal static class Attributes
     {
         public static readonly XName Id = "id";
@@ -117,13 +125,6 @@ public class NcxPageTarget
         public static readonly XName Value = "value";
         public static readonly XName ContentSrc = "src";
     }
-
-    public string Id { get; internal init; }
-    public int? Value { get; internal init; }
-    public string Class { get; internal init; }
-    public NcxPageTargetType? Type { get; internal init; }
-    public string NavLabelText { get; internal init; }
-    public string ContentSrc { get; internal init; }
 }
 
 public class NcxNavList

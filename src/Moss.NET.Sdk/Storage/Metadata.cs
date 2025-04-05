@@ -4,6 +4,7 @@ using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.Core.Converters;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.FFI.Dto;
+
 // ReSharper disable MemberCanBePrivate.Global
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
@@ -11,14 +12,13 @@ namespace Moss.NET.Sdk.Storage;
 
 public class Metadata
 {
-    [JsonPropertyName("hash")] public string Hash { get; init;}
+    [JsonPropertyName("hash")] public string Hash { get; init; }
 
     [JsonPropertyName("type")]
     [JsonConverter(typeof(EnumTypeConverter<RMDocumentType>))]
     public RMDocumentType Type { get; init; }
 
-    [JsonPropertyName("accessor")]
-    public Accessor Accessor { get; init;}
+    [JsonPropertyName("accessor")] public Accessor Accessor { get; init; }
 
     [JsonPropertyName("parent")] public string? Parent { get; init; }
 
@@ -57,7 +57,7 @@ public class Metadata
 
     public void Set(Accessor accessor, string key, object value)
     {
-        Set(accessor.GetPointer(),new ConfigSet(key, value).GetPointer());
+        Set(accessor.GetPointer(), new ConfigSet(key, value).GetPointer());
     }
 
     public T Get<T>(string key)
@@ -89,7 +89,7 @@ public class Metadata
 
     public static Metadata Get(string uuid)
     {
-        var accessor = new Accessor()
+        var accessor = new Accessor
         {
             Type = AccessorType.APIDocumentMetadata,
             Uuid = uuid

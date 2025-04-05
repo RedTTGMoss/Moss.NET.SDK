@@ -10,9 +10,9 @@
     <ItemGroup>
         <ProjectReference Include="..\Moss.NET.Sdk\Moss.NET.Sdk.csproj"/>
         <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
-        <PackageReference Include="Extism.Pdk" Version="1.1.1" />
+        <PackageReference Include="Extism.Pdk" Version="1.1.1"/>
     </ItemGroup>
-    
+
     <ItemGroup>
         <Asset Include="Assets/**/**">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <Target Name="Bundle" AfterTargets="PostBuildEvent">
-        <Copy SourceFiles="@(Asset)" DestinationFolder="$(OutputPath)AppBundle\Assets\%(RecursiveDir)" SkipUnchangedFiles="true" />
-        <Copy SourceFiles="@(None)" DestinationFolder="$(OutputPath)AppBundle\%(RecursiveDir)" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="@(Asset)" DestinationFolder="$(OutputPath)AppBundle\Assets\%(RecursiveDir)" SkipUnchangedFiles="true"/>
+        <Copy SourceFiles="@(None)" DestinationFolder="$(OutputPath)AppBundle\%(RecursiveDir)" SkipUnchangedFiles="true"/>
     </Target>
 </Project>

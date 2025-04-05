@@ -7,15 +7,16 @@ using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.Core.Instrumentation;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.Scheduler;
+using File = System.IO.File;
 
 namespace Moss.NET.Sdk;
 
 public class MossExtension
 {
     private static MossExtension? _instance;
+    private IMeterListener? _meterListener;
 
     public Meter? Meter;
-    private IMeterListener? _meterListener;
 
     internal static MossExtension? Instance
     {
@@ -28,9 +29,10 @@ public class MossExtension
         set => _instance = value;
     }
 
+    public static HoconRoot Config { get; set; } = HoconParser.Parse("");
+
     public virtual void Register(MossState state)
     {
-
     }
 
     public virtual void Unregister()
@@ -45,19 +47,19 @@ public class MossExtension
     {
         var configPath = "extension/plugin.conf";
 
-        if (System.IO.File.Exists(configPath)) {
-            var configSource = System.IO.File.ReadAllText(configPath);
+        if (File.Exists(configPath))
+        {
+            var configSource = File.ReadAllText(configPath);
             Config = HoconParser.Parse(configSource);
         }
 
         TaskScheduler.Init();
     }
 
-    public static HoconRoot Config { get; set; } = HoconParser.Parse("");
-
     public static void Init<T>() where T : MossExtension, new()
     {
-        if (_instance is not null) throw new InvalidOperationException("Assembly can only have one extension instance.");
+        if (_instance is not null)
+            throw new InvalidOperationException("Assembly can only have one extension instance.");
 
         PreInitExtension();
         _instance = Activator.CreateInstance<T>();
@@ -71,10 +73,7 @@ public class MossExtension
             _instance._meterListener.Init();
         }
 
-        Extensions.Measure("extension.register", () =>
-        {
-            _instance!.Register(input!);
-        });
+        Extensions.Measure("extension.register", () => { _instance!.Register(input!); });
 
 
         var extensionInfo = new ExtensionInfo

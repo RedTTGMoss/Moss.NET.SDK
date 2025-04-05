@@ -9,7 +9,7 @@ namespace EpubTest;
 
 public class SampleExtension : MossExtension
 {
-    private static LoggerInstance _logger = Log.GetLogger<SampleExtension>();
+    private static readonly LoggerInstance _logger = Log.GetLogger<SampleExtension>();
 
     [UnmanagedCallersOnly(EntryPoint = "moss_extension_register")]
     public static ulong Register()

@@ -14,13 +14,14 @@ public abstract class MeterListener<T> : IMeterListener
 {
     private readonly MeterListener _listener = new();
 
-    protected abstract void OnMeasurementRecorded(Instrument instrument, T measurement, ReadOnlySpan<KeyValuePair<string, object?>> tags,
-        object? state);
-
     public void Init()
     {
         _listener.InstrumentPublished = (instrument, listener) => listener.EnableMeasurementEvents(instrument);
         _listener.SetMeasurementEventCallback<T>(OnMeasurementRecorded);
         _listener.Start();
     }
+
+    protected abstract void OnMeasurementRecorded(Instrument instrument, T measurement,
+        ReadOnlySpan<KeyValuePair<string, object?>> tags,
+        object? state);
 }

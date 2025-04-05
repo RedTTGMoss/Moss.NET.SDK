@@ -14,7 +14,7 @@ public class SampleScreen : Screen
 
     public override void PreLoop()
     {
-        _hello = new Label("Hello, World!", 12, 100,100);
+        _hello = new Label("Hello, World!", 12, 100, 100);
         _rectangle = new Rectangle(Color.Red, 10, 10, 10, 10);
 
         _hello.FontSize = 12;
@@ -30,6 +30,5 @@ public class SampleScreen : Screen
 
     protected override void OnLoop()
     {
-
     }
 }

@@ -44,12 +44,6 @@ public enum EpubVersion
 
 public class OpfDocument
 {
-    internal static class Attributes
-    {
-        public static readonly XName UniqueIdentifier = "unique-identifier";
-        public static readonly XName Version = "version";
-    }
-
     public string UniqueIdentifier { get; internal set; }
     public EpubVersion EpubVersion { get; internal set; }
     public OpfMetadata Metadata { get; internal set; } = new();
@@ -63,10 +57,7 @@ public class OpfDocument
         if (coverMetaItem != null)
         {
             var item = Manifest.Items.FirstOrDefault(e => e.Id == coverMetaItem.Text);
-            if (item != null)
-            {
-                return item.Href;
-            }
+            if (item != null) return item.Href;
         }
 
         var coverItem = Manifest.FindCoverItem();
@@ -99,10 +90,7 @@ public class OpfDocument
             if (!string.IsNullOrWhiteSpace(Spine.Toc))
             {
                 var tocItem = Manifest.Items.FirstOrDefault(e => e.Id == Spine.Toc);
-                if (tocItem != null)
-                {
-                    path = tocItem.Href;
-                }
+                if (tocItem != null) path = tocItem.Href;
             }
         }
 
@@ -113,6 +101,12 @@ public class OpfDocument
     {
         var navItem = Manifest.Items.FirstOrDefault(e => e.Properties.Contains("nav"));
         return navItem?.Href;
+    }
+
+    internal static class Attributes
+    {
+        public static readonly XName UniqueIdentifier = "unique-identifier";
+        public static readonly XName Version = "version";
     }
 }
 
@@ -151,49 +145,56 @@ public class OpfMetadata
 
 public class OpfMetadataDate
 {
+    public string Text { get; internal set; }
+
+    /// <summary>
+    ///     i.e. "modification"
+    /// </summary>
+    public string? Event { get; internal set; }
+
     internal static class Attributes
     {
         public static readonly XName Event = Constants.OpfNamespace + "event";
     }
-
-    public string Text { get; internal set; }
-
-    /// <summary>
-    /// i.e. "modification"
-    /// </summary>
-    public string? Event { get; internal set; }
 }
 
 public class OpfMetadataCreator
 {
+    public string Text { get; internal set; }
+    public string Role { get; internal set; }
+    public string FileAs { get; internal set; }
+    public string AlternateScript { get; internal set; }
+
     internal static class Attributes
     {
         public static readonly XName Role = Constants.OpfNamespace + "role";
         public static readonly XName FileAs = Constants.OpfNamespace + "file-as";
         public static readonly XName AlternateScript = Constants.OpfNamespace + "alternate-script";
     }
-
-    public string Text { get; internal set; }
-    public string Role { get; internal set; }
-    public string FileAs { get; internal set; }
-    public string AlternateScript { get; internal set; }
 }
 
 public class OpfMetadataIdentifier
 {
+    public string Id { get; internal set; }
+    public string Scheme { get; internal set; }
+    public string Text { get; internal set; }
+
     internal static class Attributes
     {
         public static readonly XName Id = "id";
         public static readonly XName Scheme = "scheme";
     }
-
-    public string Id { get; internal set; }
-    public string Scheme { get; internal set; }
-    public string Text { get; internal set; }
 }
 
 public class OpfMetadataMeta
 {
+    public string Name { get; internal set; }
+    public string Id { get; internal set; }
+    public string Refines { get; internal set; }
+    public string Property { get; internal set; }
+    public string Scheme { get; internal set; }
+    public string? Text { get; internal set; }
+
     internal static class Attributes
     {
         public static readonly XName Id = "id";
@@ -203,13 +204,6 @@ public class OpfMetadataMeta
         public static readonly XName Property = "property";
         public static readonly XName Content = "content";
     }
-
-    public string Name { get; internal set; }
-    public string Id { get; internal set; }
-    public string Refines { get; internal set; }
-    public string Property { get; internal set; }
-    public string Scheme { get; internal set; }
-    public string? Text { get; internal set; }
 }
 
 public class OpfManifest
@@ -226,27 +220,12 @@ public class OpfManifest
     internal void DeleteCoverItem(string? id = null)
     {
         var item = id != null ? Items.FirstOrDefault(e => e.Id == id) : FindCoverItem();
-        if (item != null)
-        {
-            Items.Remove(item);
-        }
+        if (item != null) Items.Remove(item);
     }
 }
 
 public class OpfManifestItem
 {
-    internal static class Attributes
-    {
-        public static readonly XName Fallback = "fallback";
-        public static readonly XName FallbackStyle = "fallback-style";
-        public static readonly XName Href = "href";
-        public static readonly XName Id = "id";
-        public static readonly XName MediaType = "media-type";
-        public static readonly XName Properties = "properties";
-        public static readonly XName RequiredModules = "required-modules";
-        public static readonly XName RequiredNamespace = "required-namespace";
-    }
-
     public string Id { get; internal set; }
     public string? Href { get; internal set; }
     public IList<string> Properties { get; internal set; } = new List<string>();
@@ -260,29 +239,33 @@ public class OpfManifestItem
     {
         return $"Id: {Id}, Href = {Href}, MediaType = {MediaType}";
     }
+
+    internal static class Attributes
+    {
+        public static readonly XName Fallback = "fallback";
+        public static readonly XName FallbackStyle = "fallback-style";
+        public static readonly XName Href = "href";
+        public static readonly XName Id = "id";
+        public static readonly XName MediaType = "media-type";
+        public static readonly XName Properties = "properties";
+        public static readonly XName RequiredModules = "required-modules";
+        public static readonly XName RequiredNamespace = "required-namespace";
+    }
 }
 
 public class OpfSpine
 {
+    public string Toc { get; internal set; }
+    public IList<OpfSpineItemRef> ItemRefs { get; internal set; } = new List<OpfSpineItemRef>();
+
     internal static class Attributes
     {
         public static readonly XName Toc = "toc";
     }
-
-    public string Toc { get; internal set; }
-    public IList<OpfSpineItemRef> ItemRefs { get; internal set; } = new List<OpfSpineItemRef>();
 }
 
 public class OpfSpineItemRef
 {
-    internal static class Attributes
-    {
-        public static readonly XName IdRef = "idref";
-        public static readonly XName Linear = "linear";
-        public static readonly XName Id = "id";
-        public static readonly XName Properties = "properties";
-    }
-
     public string IdRef { get; internal set; }
     public bool Linear { get; internal set; }
     public string Id { get; internal set; }
@@ -291,6 +274,14 @@ public class OpfSpineItemRef
     public override string ToString()
     {
         return "IdRef: " + IdRef;
+    }
+
+    internal static class Attributes
+    {
+        public static readonly XName IdRef = "idref";
+        public static readonly XName Linear = "linear";
+        public static readonly XName Id = "id";
+        public static readonly XName Properties = "properties";
     }
 }
 
@@ -301,13 +292,6 @@ public class OpfGuide
 
 public class OpfGuideReference
 {
-    internal static class Attributes
-    {
-        public static readonly XName Title = "title";
-        public static readonly XName Type = "type";
-        public static readonly XName Href = "href";
-    }
-
     public string Type { get; internal set; }
     public string Title { get; internal set; }
     public string Href { get; internal set; }
@@ -315,5 +299,12 @@ public class OpfGuideReference
     public override string ToString()
     {
         return $"Type: {Type}, Href: {Href}";
+    }
+
+    internal static class Attributes
+    {
+        public static readonly XName Title = "title";
+        public static readonly XName Type = "type";
+        public static readonly XName Href = "href";
     }
 }

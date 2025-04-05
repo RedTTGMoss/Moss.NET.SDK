@@ -6,20 +6,22 @@ namespace Moss.NET.Sdk.Formats.Core.Format;
 
 public class OcfDocument
 {
+    private OcfRootFile rootFile;
     public IList<OcfRootFile> RootFiles { get; internal set; } = new List<OcfRootFile>();
 
-    private OcfRootFile rootFile;
-    public string? RootFilePath => rootFile?.FullPath ?? (rootFile = RootFiles.FirstOrDefault(e => e.MediaType == Constants.OcfMediaType))?.FullPath;
+    public string? RootFilePath => rootFile?.FullPath ??
+                                   (rootFile = RootFiles.FirstOrDefault(e => e.MediaType == Constants.OcfMediaType))
+                                   ?.FullPath;
 }
 
 public class OcfRootFile
 {
+    public string? FullPath { get; internal set; }
+    public string MediaType { get; internal set; }
+
     internal static class Attributes
     {
         public static readonly XName FullPath = "full-path";
         public static readonly XName MediaType = "media-type";
     }
-
-    public string? FullPath { get; internal set; }
-    public string MediaType { get; internal set; }
 }

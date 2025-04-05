@@ -30,12 +30,10 @@ namespace Moss.NET.Sdk.FFI;
 [JsonSerializable(typeof(Dictionary<string, object>))]
 [JsonSerializable(typeof(Screen))]
 [JsonSerializable(typeof(Accessor))]
-
 [JsonSerializable(typeof(DocumentNewNotebook))]
 [JsonSerializable(typeof(DocumentNewPdf))]
 [JsonSerializable(typeof(DocumentNewEpub))]
 [JsonSerializable(typeof(MetadataNew))]
-
 [JsonSerializable(typeof(RmPage))]
 [JsonSerializable(typeof(RMDocumentType))]
 [JsonSerializable(typeof(Metadata))]
@@ -43,7 +41,6 @@ namespace Moss.NET.Sdk.FFI;
 [JsonSerializable(typeof(FileSyncProgress))]
 [JsonSerializable(typeof(DocumentSyncProgress))]
 [JsonSerializable(typeof(RmFileList))]
-
 [JsonSerializable(typeof(List<ScheduledTask>))]
 internal partial class JsonContext : JsonSerializerContext
 {

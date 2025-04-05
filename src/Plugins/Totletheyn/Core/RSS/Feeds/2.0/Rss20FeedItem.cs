@@ -4,115 +4,113 @@ using System.Linq;
 using System.Xml.Linq;
 using Totletheyn.Core.RSS.Feeds.Base;
 
-namespace Totletheyn.Core.RSS.Feeds._2._0
+namespace Totletheyn.Core.RSS.Feeds._2._0;
+
+/// <summary>
+///     RSS 2.0 feed item accoring to specification: https://validator.w3.org/feed/docs/rss2.html
+/// </summary>
+public class Rss20FeedItem : BaseFeedItem
 {
     /// <summary>
-    /// RSS 2.0 feed item accoring to specification: https://validator.w3.org/feed/docs/rss2.html
+    ///     Initializes a new instance of the <see cref="Rss20FeedItem" /> class.
+    ///     default constructor (for serialization)
     /// </summary>
-    public class Rss20FeedItem : BaseFeedItem
+    public Rss20FeedItem()
     {
-        /// <summary>
-        /// The "description" field of the feed item
-        /// </summary>
-        public string Description { get; set; }
+    }
 
-        /// <summary>
-        /// The "author" field of the feed item
-        /// </summary>
-        public string Author { get; set; }
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="Rss20FeedItem" /> class.
+    ///     Reads a new feed item element based on the given xml item
+    /// </summary>
+    /// <param name="item">the xml containing the feed item</param>
+    public Rss20FeedItem(XElement item)
+        : base(item)
+    {
+        Comments = item.GetValue("comments");
+        Author = item.GetValue("author");
+        Enclosure = new FeedItemEnclosure(item.GetElement("enclosure"));
+        PublishingDateString = item.GetValue("pubDate");
+        PublishingDate = Helpers.TryParseDateTime(PublishingDateString);
+        DC = new DublinCore(item);
+        Source = new FeedItemSource(item.GetElement("source"));
 
-        /// <summary>
-        /// The "comments" field of the feed item
-        /// </summary>
-        public string Comments { get; set; }
+        var categories = item.GetElements("category");
+        Categories = categories.Select(x => x.GetValue()).ToList();
 
-        /// <summary>
-        /// The "enclosure" field
-        /// </summary>
-        public FeedItemEnclosure Enclosure { get; set; }
+        Guid = item.GetValue("guid");
+        Description = item.GetValue("description");
+        Content = item.GetValue("content:encoded")?.HtmlDecode();
+    }
 
-        /// <summary>
-        /// The "guid" field
-        /// </summary>
-        public string Guid { get; set; }
+    /// <summary>
+    ///     The "description" field of the feed item
+    /// </summary>
+    public string Description { get; set; }
 
-        /// <summary>
-        /// The "pubDate" field
-        /// </summary>
-        public string PublishingDateString { get; set; }
+    /// <summary>
+    ///     The "author" field of the feed item
+    /// </summary>
+    public string Author { get; set; }
 
-        /// <summary>
-        /// The "pubDate" field as DateTime. Null if parsing failed or pubDate is empty.
-        /// </summary>
-        public DateTime? PublishingDate { get; set; }
+    /// <summary>
+    ///     The "comments" field of the feed item
+    /// </summary>
+    public string Comments { get; set; }
 
-        /// <summary>
-        /// The "source" field
-        /// </summary>
-        public FeedItemSource Source { get; set; }
+    /// <summary>
+    ///     The "enclosure" field
+    /// </summary>
+    public FeedItemEnclosure Enclosure { get; set; }
 
-        /// <summary>
-        /// All entries "category" entries
-        /// </summary>
-        public ICollection<string> Categories { get; set; }
+    /// <summary>
+    ///     The "guid" field
+    /// </summary>
+    public string Guid { get; set; }
 
-        /// <summary>
-        /// The "content:encoded" field
-        /// </summary>
-        public string Content { get; set; }
+    /// <summary>
+    ///     The "pubDate" field
+    /// </summary>
+    public string PublishingDateString { get; set; }
 
-        /// <summary>
-        /// All elements starting with "dc:"
-        /// </summary>
-        public DublinCore DC { get; set; }
+    /// <summary>
+    ///     The "pubDate" field as DateTime. Null if parsing failed or pubDate is empty.
+    /// </summary>
+    public DateTime? PublishingDate { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Rss20FeedItem"/> class.
-        /// default constructor (for serialization)
-        /// </summary>
-        public Rss20FeedItem()
-            : base()
+    /// <summary>
+    ///     The "source" field
+    /// </summary>
+    public FeedItemSource Source { get; set; }
+
+    /// <summary>
+    ///     All entries "category" entries
+    /// </summary>
+    public ICollection<string> Categories { get; set; }
+
+    /// <summary>
+    ///     The "content:encoded" field
+    /// </summary>
+    public string Content { get; set; }
+
+    /// <summary>
+    ///     All elements starting with "dc:"
+    /// </summary>
+    public DublinCore DC { get; set; }
+
+    /// <inheritdoc />
+    internal override FeedItem ToFeedItem()
+    {
+        var fi = new FeedItem(this)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Rss20FeedItem"/> class.
-        /// Reads a new feed item element based on the given xml item
-        /// </summary>
-        /// <param name="item">the xml containing the feed item</param>
-        public Rss20FeedItem(XElement item)
-            : base(item)
-        {
-            this.Comments = item.GetValue("comments");
-            this.Author = item.GetValue("author");
-            this.Enclosure = new FeedItemEnclosure(item.GetElement("enclosure"));
-            this.PublishingDateString = item.GetValue("pubDate");
-            this.PublishingDate = Helpers.TryParseDateTime(this.PublishingDateString);
-            this.DC = new DublinCore(item);
-            this.Source = new FeedItemSource(item.GetElement("source"));
-
-            var categories = item.GetElements("category");
-            this.Categories = categories.Select(x => x.GetValue()).ToList();
-
-            this.Guid = item.GetValue("guid");
-            this.Description = item.GetValue("description");
-            this.Content = item.GetValue("content:encoded")?.HtmlDecode();
-        }
-
-        /// <inheritdoc/>
-        internal override FeedItem ToFeedItem()
-        {
-            FeedItem fi = new FeedItem(this)
-            {
-                Author = this.Author,
-                Categories = this.Categories,
-                Content = this.Content,
-                Description = this.Description,
-                Id = this.Guid,
-                PublishingDate = this.PublishingDate,
-                PublishingDateString = this.PublishingDateString
-            };
-            return fi;
-        }
+            Author = Author,
+            Categories = Categories,
+            Content = Content,
+            Description = Description,
+            Id = Guid,
+            PublishingDate = PublishingDate,
+            PublishingDateString = PublishingDateString
+        };
+        return fi;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using Extism;
@@ -20,7 +21,8 @@ public static class Extensions
             JsonValueKind.Number when typeof(T) == typeof(decimal) => (T)(object)element.GetDecimal(),
             JsonValueKind.True or JsonValueKind.False => (T)(object)element.GetBoolean(),
             JsonValueKind.Null => default,
-            JsonValueKind.Object => JsonSerializer.Deserialize(element.GetRawText(), ((JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T))!)!),
+            JsonValueKind.Object => JsonSerializer.Deserialize(element.GetRawText(),
+                ((JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T))!)!),
             _ => throw new InvalidOperationException($"Unsupported value kind: {element.ValueKind}")
         })!;
     }
@@ -50,8 +52,15 @@ public static class Extensions
         return Get(ptr, (JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T))!)!;
     }
 
-    public static MemoryBlock Find(this ulong ptr) => MemoryBlock.Find(ptr);
-    public static string ReadString(this ulong ptr) => MemoryBlock.Find(ptr).ReadString();
+    public static MemoryBlock Find(this ulong ptr)
+    {
+        return MemoryBlock.Find(ptr);
+    }
+
+    public static string ReadString(this ulong ptr)
+    {
+        return MemoryBlock.Find(ptr).ReadString();
+    }
 
     public static dynamic Get(this HoconRoot root, string path)
     {
@@ -69,7 +78,7 @@ public static class Extensions
 
         var methodDuration = meter.CreateHistogram<double>(name + "_duration", "ms", "Method duration in milliseconds");
 
-        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        var stopwatch = Stopwatch.StartNew();
         method();
         stopwatch.Stop();
         methodDuration.Record(stopwatch.Elapsed.TotalMilliseconds);

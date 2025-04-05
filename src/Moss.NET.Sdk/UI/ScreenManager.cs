@@ -15,7 +15,9 @@ public static class ScreenManager
     private static extern void RegisterScreen(ulong keyPtr);
 
     [DllImport(Functions.DLL, EntryPoint = "_moss_pe_open_screen")]
-    private static extern ulong OpenScreen(ulong keyPtr, ulong initial_valuesPtr); // initial_valuesPtr = dict of values, could be any object that is non primitive
+    private static extern ulong
+        OpenScreen(ulong keyPtr,
+            ulong initial_valuesPtr); // initial_valuesPtr = dict of values, could be any object that is non primitive
 
     //pe_close_screen
     [DllImport(Functions.DLL, EntryPoint = "moss_pe_close_screen")]
@@ -75,14 +77,8 @@ public static class ScreenManager
 
     public static void Close()
     {
-        if (OpenedScreens.TryPop(out var screen))
-        {
-            screen.Close();
-        }
+        if (OpenedScreens.TryPop(out var screen)) screen.Close();
 
-        if (OpenedScreens.Count == 0)
-        {
-            CloseMossScreen();
-        }
+        if (OpenedScreens.Count == 0) CloseMossScreen();
     }
 }

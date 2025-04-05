@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using Moss.NET.Sdk.Formats.Core.Format;
 using Moss.NET.Sdk.Formats.Core.Misc;
+
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
@@ -13,7 +14,7 @@ public class EpubBook
     internal const string AuthorsSeparator = ", ";
 
     /// <summary>
-    /// Read-only raw epub format structures.
+    ///     Read-only raw epub format structures.
     /// </summary>
     public EpubFormat Format { get; internal set; }
 
@@ -22,12 +23,12 @@ public class EpubBook
     public IEnumerable<string> Authors => Format.Opf.Metadata.Creators.Select(creator => creator.Text);
 
     /// <summary>
-    /// All files within the EPUB.
+    ///     All files within the EPUB.
     /// </summary>
     public EpubResources Resources { get; internal set; } = null!;
 
     /// <summary>
-    /// EPUB format specific resources.
+    ///     EPUB format specific resources.
     /// </summary>
     public EpubSpecialResources SpecialResources { get; internal set; }
 
@@ -43,6 +44,7 @@ public class EpubBook
             builder.Append(Html.GetContentAsPlainText(html.TextContent));
             builder.Append('\n');
         }
+
         return builder.ToString().Trim();
     }
 }
@@ -75,7 +77,7 @@ public class EpubResources
     public IList<EpubFile> Other { get; internal set; } = new List<EpubFile>();
 
     /// <summary>
-    /// This is a concatination of all the resources files in the epub: html, css, images, etc.
+    ///     This is a concatination of all the resources files in the epub: html, css, images, etc.
     /// </summary>
     public IList<EpubFile> All { get; } = new List<EpubFile>();
 }
@@ -113,7 +115,8 @@ public class EpubByteFile : EpubFile
 
 public class EpubTextFile : EpubFile
 {
-    public string TextContent {
+    public string TextContent
+    {
         get => Constants.DefaultEncoding!.GetString(Content, 0, Content.Length);
         init => Content = Constants.DefaultEncoding!.GetBytes(value);
     }

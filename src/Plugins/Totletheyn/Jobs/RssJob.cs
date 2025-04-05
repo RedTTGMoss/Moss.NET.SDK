@@ -38,20 +38,18 @@ public class RssJob : Job
         writer.AddFile("fonts.css", File.ReadAllBytes("extension/Assets/fonts.css"), EpubContentType.Css);
         writer.AddFile("style.css", File.ReadAllBytes("extension/Assets/style.css"), EpubContentType.Css);
 
-        writer.AddFile("fonts/Jaini-Regular.ttf", File.ReadAllBytes("extension/Assets/fonts/Jaini-Regular.ttf"), EpubContentType.FontTruetype);
-        writer.AddFile("fonts/NoticiaText-Regular.ttf", File.ReadAllBytes("extension/Assets/fonts/NoticiaText-Regular.ttf"), EpubContentType.FontTruetype);
+        writer.AddFile("fonts/Jaini-Regular.ttf", File.ReadAllBytes("extension/Assets/fonts/Jaini-Regular.ttf"),
+            EpubContentType.FontTruetype);
+        writer.AddFile("fonts/NoticiaText-Regular.ttf",
+            File.ReadAllBytes("extension/Assets/fonts/NoticiaText-Regular.ttf"), EpubContentType.FontTruetype);
 
         foreach (string url in Options.feeds)
         {
             var feed = FeedReader.Read(url);
 
             foreach (var item in feed.Items)
-            {
                 if (item.PublishingDate > _lastUpdated)
-                {
                     writer.AddChapter(item.Title, item.Description);
-                }
-            }
         }
 
         writer.Write(output);

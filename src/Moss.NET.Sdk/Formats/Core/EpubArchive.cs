@@ -14,10 +14,7 @@ public class EpubArchive
     {
         if (filePath == null) throw new ArgumentNullException(nameof(filePath));
 
-        if (!File.Exists(filePath))
-        {
-            throw new FileNotFoundException("Specified epub file not found.", filePath);
-        }
+        if (!File.Exists(filePath)) throw new FileNotFoundException("Specified epub file not found.", filePath);
 
         archive = Open(File.Open(filePath, FileMode.Open, FileAccess.Read), false);
     }
@@ -38,7 +35,7 @@ public class EpubArchive
     }
 
     /// <summary>
-    /// Returns an archive entry or null if not found.
+    ///     Returns an archive entry or null if not found.
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>

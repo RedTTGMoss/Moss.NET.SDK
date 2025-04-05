@@ -6,10 +6,17 @@ namespace Moss.NET.Sdk.Formats.Core.Misc;
 
 internal static partial class Html
 {
-    private static readonly RegexOptions RegexOptions = RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture;
+    private static readonly RegexOptions RegexOptions = RegexOptions.CultureInvariant |
+                                                        RegexOptions.IgnorePatternWhitespace |
+                                                        RegexOptions.ExplicitCapture;
+
     private static readonly RegexOptions RegexOptionsIgnoreCase = RegexOptions.IgnoreCase | RegexOptions;
-    private static readonly RegexOptions RegexOptionsIgnoreCaseSingleLine = RegexOptions.Singleline | RegexOptionsIgnoreCase;
-    private static readonly RegexOptions RegexOptionsIgnoreCaseMultiLine = RegexOptions.Multiline | RegexOptionsIgnoreCase;
+
+    private static readonly RegexOptions RegexOptionsIgnoreCaseSingleLine =
+        RegexOptions.Singleline | RegexOptionsIgnoreCase;
+
+    private static readonly RegexOptions RegexOptionsIgnoreCaseMultiLine =
+        RegexOptions.Multiline | RegexOptionsIgnoreCase;
 
     public static string GetContentAsPlainText(string html)
     {
@@ -38,13 +45,17 @@ internal static partial class Html
 
     private static string? ReplaceBlockTagsWithNewLines(string? text)
     {
-        return text == null ? null : Regex.Replace(text, @"(?<!^\s*)<(p|div|h1|h2|h3|h4|h5|h6)[^>]*>", "\n", RegexOptionsIgnoreCaseMultiLine);
+        return text == null
+            ? null
+            : Regex.Replace(text, @"(?<!^\s*)<(p|div|h1|h2|h3|h4|h5|h6)[^>]*>", "\n", RegexOptionsIgnoreCaseMultiLine);
     }
 
     private static string? DecodeHtmlSymbols(string? text)
     {
         if (text == null) return null;
-        var regex = new Regex(@"(?<defined>(&nbsp|&quot|&mdash|&ldquo|&rdquo|\&\#8211|\&\#8212|&\#8230|\&\#171|&laquo|&raquo|&amp);?)|(?<other>\&\#\d+;?)", RegexOptionsIgnoreCase);
+        var regex = new Regex(
+            @"(?<defined>(&nbsp|&quot|&mdash|&ldquo|&rdquo|\&\#8211|\&\#8212|&\#8230|\&\#171|&laquo|&raquo|&amp);?)|(?<other>\&\#\d+;?)",
+            RegexOptionsIgnoreCase);
         text = Regex.Replace(regex.Replace(text, SpecialSymbolsEvaluator), @"\ {2,}", " ", RegexOptions);
         text = WebUtility.HtmlDecode(text);
         return text;

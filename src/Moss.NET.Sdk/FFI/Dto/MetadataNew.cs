@@ -6,11 +6,9 @@ namespace Moss.NET.Sdk.FFI.Dto;
 
 internal class MetadataNew
 {
-    [JsonPropertyName("name")]
-    public string Name { get; set; } = null!;
+    [JsonPropertyName("name")] public string Name { get; set; } = null!;
 
-    [JsonPropertyName("parent")]
-    public string? Parent { get; set; }
+    [JsonPropertyName("parent")] public string? Parent { get; set; }
 
     [JsonPropertyName("document_type")]
     [JsonConverter(typeof(EnumTypeConverter<RMDocumentType>))]

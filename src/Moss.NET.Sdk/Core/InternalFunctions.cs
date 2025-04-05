@@ -61,5 +61,8 @@ public static class InternalFunctions
         return LoaderProgress().Get<ConfigGetD>().value.GetValue<double>();
     }
 
-    internal static Accessor GetAccessor(string uuid) => new() { Type = AccessorType.APIDocument, Uuid = uuid};
+    internal static Accessor GetAccessor(string uuid)
+    {
+        return new Accessor { Type = AccessorType.APIDocument, Uuid = uuid };
+    }
 }

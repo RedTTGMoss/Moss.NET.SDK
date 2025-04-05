@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace Moss.NET.Sdk.Core.Instrumentation;
-
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.IO;
+
+namespace Moss.NET.Sdk.Core.Instrumentation;
 
 internal class FileMeterListener : MeterListener<double>
 {
@@ -14,21 +13,17 @@ internal class FileMeterListener : MeterListener<double>
     {
         _filePath = filePath;
 
-        if (!File.Exists(_filePath))
-        {
-            File.Create(filePath);
-        }
+        if (!File.Exists(_filePath)) File.Create(filePath);
     }
 
-    protected override void OnMeasurementRecorded(Instrument instrument, double measurement, ReadOnlySpan<KeyValuePair<string, object?>> tags, object? state)
+    protected override void OnMeasurementRecorded(Instrument instrument, double measurement,
+        ReadOnlySpan<KeyValuePair<string, object?>> tags, object? state)
     {
         var tagList = new List<string>();
-        foreach (var tag in tags)
-        {
-            tagList.Add($"{tag.Key}: {tag.Value}");
-        }
+        foreach (var tag in tags) tagList.Add($"{tag.Key}: {tag.Value}");
 
-        using var writer = new StreamWriter(_filePath, append: true);
-        writer.WriteLine($"{DateTime.UtcNow:O} - {instrument.Name}, Measurement: {measurement}{instrument.Unit}, Tags: {string.Join(", ", tagList)}");
+        using var writer = new StreamWriter(_filePath, true);
+        writer.WriteLine(
+            $"{DateTime.UtcNow:O} - {instrument.Name}, Measurement: {measurement}{instrument.Unit}, Tags: {string.Join(", ", tagList)}");
     }
 }

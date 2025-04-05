@@ -12,8 +12,8 @@ namespace SdkTesterPlugin;
 
 public class SampleExtension : MossExtension
 {
-    private Document duplicate;
     private static readonly LoggerInstance _logger = Log.GetLogger<SampleExtension>();
+    private Document duplicate;
 
     [UnmanagedCallersOnly(EntryPoint = "moss_extension_register")]
     public static ulong Register()
@@ -64,7 +64,7 @@ public class SampleExtension : MossExtension
         {
             cm.Open(10, 10);
 
-            ScreenManager.Open<SampleScreen>(new Dictionary<string, object>()
+            ScreenManager.Open<SampleScreen>(new Dictionary<string, object>
             {
                 { "hello", true }
             });
@@ -107,13 +107,13 @@ public class SampleExtension : MossExtension
             var kid = InternalFunctions.NewFileSyncProgress();
             _logger.Info("FileSyncProgress: " + kid);
 
-           /* doesn't work yet
-            InternalFunctions.NewDocumentSyncProgress(new Accessor
-            {
-                Type = AccessorType.FileSyncProgress,
-                Id = kid,
-                Uuid = quickSheets.Metadata.Accessor.Uuid,
-            });*/
+            /* doesn't work yet
+             InternalFunctions.NewDocumentSyncProgress(new Accessor
+             {
+                 Type = AccessorType.FileSyncProgress,
+                 Id = kid,
+                 Uuid = quickSheets.Metadata.Accessor.Uuid,
+             });*/
 
             duplicate.EnsureDownload();
             duplicate.Metadata.Get<string>("visible_name");
@@ -129,7 +129,7 @@ public class SampleExtension : MossExtension
                 .Select(_ => k.Duplicate())
                 .ToArray();
 
-            InternalFunctions.SpreadEvent(new Accessor{Type = AccessorType.SyncStage});
+            InternalFunctions.SpreadEvent(new Accessor { Type = AccessorType.SyncStage });
 
             StorageFunctions.UploadManyDocuments(docs);
             StorageFunctions.DeleteManyDocuments(docs);

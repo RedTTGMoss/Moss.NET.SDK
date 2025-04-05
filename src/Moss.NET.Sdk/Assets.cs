@@ -17,10 +17,7 @@ public static class Assets
 
     public static void Add(string path)
     {
-        if (AlreadyExposed)
-        {
-            throw new InvalidOperationException("Assets can only be added upon extension registration");
-        }
+        if (AlreadyExposed) throw new InvalidOperationException("Assets can only be added upon extension registration");
 
         Add(Path.GetFileNameWithoutExtension(path), path);
     }

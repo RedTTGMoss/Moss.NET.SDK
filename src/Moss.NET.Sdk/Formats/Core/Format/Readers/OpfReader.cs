@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 using Moss.NET.Sdk.Formats.Core.Extensions;
+
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
 #pragma warning disable CS8601 // Possible null reference assignment.
 
@@ -57,7 +58,9 @@ internal static class OpfReader
                     Refines = (string)elem.Attribute(OpfMetadataMeta.Attributes.Refines),
                     Scheme = (string)elem.Attribute(OpfMetadataMeta.Attributes.Scheme),
                     Property = (string)elem.Attribute(OpfMetadataMeta.Attributes.Property),
-                    Text = epubVersion == EpubVersion.Epub2 ? (string)elem.Attribute(OpfMetadataMeta.Attributes.Content) : elem.Value
+                    Text = epubVersion == EpubVersion.Epub2
+                        ? (string)elem.Attribute(OpfMetadataMeta.Attributes.Content)
+                        : elem.Value
                 }),
                 Publishers = metadata?.Elements(OpfElements.Publisher).AsStringList(),
                 Relations = metadata?.Elements(OpfElements.Relation).AsStringList(),
@@ -67,28 +70,32 @@ internal static class OpfReader
                 Titles = metadata?.Elements(OpfElements.Title).AsStringList(),
                 Types = metadata?.Elements(OpfElements.Type).AsStringList()
             },
-            Guide = guide == null ? null : new OpfGuide
-            {
-                References = guide.Elements(OpfElements.Reference).AsObjectList(elem => new OpfGuideReference
+            Guide = guide == null
+                ? null
+                : new OpfGuide
                 {
-                    Title = (string)elem.Attribute(OpfGuideReference.Attributes.Title),
-                    Type = (string)elem.Attribute(OpfGuideReference.Attributes.Type),
-                    Href = (string)elem.Attribute(OpfGuideReference.Attributes.Href)
-                })
-            },
+                    References = guide.Elements(OpfElements.Reference).AsObjectList(elem => new OpfGuideReference
+                    {
+                        Title = (string)elem.Attribute(OpfGuideReference.Attributes.Title),
+                        Type = (string)elem.Attribute(OpfGuideReference.Attributes.Type),
+                        Href = (string)elem.Attribute(OpfGuideReference.Attributes.Href)
+                    })
+                },
             Manifest = new OpfManifest
             {
-                Items = xml.Root.Element(OpfElements.Manifest)?.Elements(OpfElements.Item).AsObjectList(elem => new OpfManifestItem
-                {
-                    Fallback = (string)elem.Attribute(OpfManifestItem.Attributes.Fallback),
-                    FallbackStyle = (string)elem.Attribute(OpfManifestItem.Attributes.FallbackStyle),
-                    Href = (string)elem.Attribute(OpfManifestItem.Attributes.Href),
-                    Id = (string)elem.Attribute(OpfManifestItem.Attributes.Id),
-                    MediaType = (string)elem.Attribute(OpfManifestItem.Attributes.MediaType),
-                    Properties = ((string)elem.Attribute(OpfManifestItem.Attributes.Properties))?.Split(' ') ?? new string[0],
-                    RequiredModules = (string)elem.Attribute(OpfManifestItem.Attributes.RequiredModules),
-                    RequiredNamespace = (string)elem.Attribute(OpfManifestItem.Attributes.RequiredNamespace)
-                })
+                Items = xml.Root.Element(OpfElements.Manifest)?.Elements(OpfElements.Item).AsObjectList(elem =>
+                    new OpfManifestItem
+                    {
+                        Fallback = (string)elem.Attribute(OpfManifestItem.Attributes.Fallback),
+                        FallbackStyle = (string)elem.Attribute(OpfManifestItem.Attributes.FallbackStyle),
+                        Href = (string)elem.Attribute(OpfManifestItem.Attributes.Href),
+                        Id = (string)elem.Attribute(OpfManifestItem.Attributes.Id),
+                        MediaType = (string)elem.Attribute(OpfManifestItem.Attributes.MediaType),
+                        Properties = ((string)elem.Attribute(OpfManifestItem.Attributes.Properties))?.Split(' ') ??
+                                     new string[0],
+                        RequiredModules = (string)elem.Attribute(OpfManifestItem.Attributes.RequiredModules),
+                        RequiredNamespace = (string)elem.Attribute(OpfManifestItem.Attributes.RequiredNamespace)
+                    })
             },
             Spine = new OpfSpine
             {
@@ -97,7 +104,8 @@ internal static class OpfReader
                     IdRef = (string)elem.Attribute(OpfSpineItemRef.Attributes.IdRef),
                     Linear = (string)elem.Attribute(OpfSpineItemRef.Attributes.Linear) != "no",
                     Id = (string)elem.Attribute(OpfSpineItemRef.Attributes.Id),
-                    Properties = ((string)elem.Attribute(OpfSpineItemRef.Attributes.Properties))?.Split(' ').ToList() ?? []
+                    Properties = ((string)elem.Attribute(OpfSpineItemRef.Attributes.Properties))?.Split(' ').ToList() ??
+                                 []
                 }),
                 Toc = spine?.Attribute(OpfSpine.Attributes.Toc)?.Value
             }
@@ -110,14 +118,8 @@ internal static class OpfReader
     {
         if (string.IsNullOrWhiteSpace(version)) throw new ArgumentNullException(nameof(version));
 
-        if (version == "2.0")
-        {
-            return EpubVersion.Epub2;
-        }
-        if (version == "3.0" || version == "3.0.1" || version == "3.1")
-        {
-            return EpubVersion.Epub3;
-        }
+        if (version == "2.0") return EpubVersion.Epub2;
+        if (version == "3.0" || version == "3.0.1" || version == "3.1") return EpubVersion.Epub3;
 
         throw new Exception($"Unsupported EPUB version: {version}.");
     }

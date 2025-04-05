@@ -14,7 +14,8 @@ internal class OcfWriter
         container.Add(new XAttribute("version", "1.0"));
 
         var rootfiles = new XElement(OcfElements.RootFiles);
-        rootfiles.Add(new XElement(OcfElements.RootFile, new XAttribute(OcfRootFile.Attributes.FullPath, opfPath), new XAttribute(OcfRootFile.Attributes.MediaType, Constants.OcfMediaType)));
+        rootfiles.Add(new XElement(OcfElements.RootFile, new XAttribute(OcfRootFile.Attributes.FullPath, opfPath),
+            new XAttribute(OcfRootFile.Attributes.MediaType, Constants.OcfMediaType)));
 
         container.Add(rootfiles);
 

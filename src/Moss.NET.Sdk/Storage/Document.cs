@@ -7,6 +7,20 @@ namespace Moss.NET.Sdk.Storage;
 
 public class Document : StorageItem<Document>
 {
+    public Document(string name, string? parent = null)
+    {
+        ID = StorageFunctions.NewMetadata(name, RMDocumentType.DocumentType, parent);
+
+        var uuid = NewNotebook(name, parent);
+        Metadata = Metadata.Get(uuid);
+    }
+
+    public Document()
+    {
+    }
+
+    public StandaloneId ID { get; set; }
+
     [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_notebook")]
     private static extern ulong NewNotebook(ulong newDocPtr);
 
@@ -24,20 +38,5 @@ public class Document : StorageItem<Document>
         };
 
         return NewNotebook(notebook.GetPointer()).ReadString();
-    }
-
-    public Document(string name, string? parent = null)
-    {
-        ID = StorageFunctions.NewMetadata(name, RMDocumentType.DocumentType, parent);
-
-        var uuid = NewNotebook(name, parent);
-        Metadata = Metadata.Get(uuid);
-    }
-
-    public StandaloneId ID { get; set; }
-
-    public Document()
-    {
-
     }
 }

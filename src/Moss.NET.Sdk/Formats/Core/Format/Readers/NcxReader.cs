@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Moss.NET.Sdk.Formats.Core.Extensions;
+
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
 #pragma warning disable CS8601 // Possible null reference assignment.
 
@@ -32,35 +33,46 @@ internal static class NcxReader
             NavMap = new NcxNapMap
             {
                 Dom = navMap,
-                NavPoints = navMap == null ? new List<NcxNavPoint>() : navMap.Elements(NcxElements.NavPoint).AsObjectList(ReadNavPoint)
+                NavPoints = navMap == null
+                    ? new List<NcxNavPoint>()
+                    : navMap.Elements(NcxElements.NavPoint).AsObjectList(ReadNavPoint)
             },
-            PageList = pageList == null ? null : new NcxPageList
-            {
-                NavInfo = navInfo == null ? null : new NcxNavInfo { Text = navInfo.Element(NcxElements.Text)?.Value },
-                PageTargets = pageList.Elements(NcxElements.PageTarget).AsObjectList(elem => new NcxPageTarget
+            PageList = pageList == null
+                ? null
+                : new NcxPageList
                 {
-                    Id = (string)elem.Attribute(NcxPageTarget.Attributes.Id),
-                    Class = (string)elem.Attribute(NcxPageTarget.Attributes.Class),
-                    Value = (int?)elem.Attribute(NcxPageTarget.Attributes.Value),
-                    Type = (NcxPageTargetType?)(elem.Attribute(NcxPageTarget.Attributes.Type) == null ? null : Enum.Parse(typeof(NcxPageTargetType), (string)elem.Attribute("type"), true)),
-                    NavLabelText = elem.Element(NcxElements.NavLabel)?.Element(NcxElements.Text)?.Value,
-                    ContentSrc = (string)elem.Element(NcxElements.Content)?.Attribute(NcxPageTarget.Attributes.ContentSrc)
-                })
-            },
-            NavList = navList == null ? null : new NcxNavList
-            {
-                Id = (string)navList.Attribute("id"),
-                Class = (string)navList.Attribute("class"),
-                Label = navList.Element(NcxElements.NavLabel)?.Element(NcxElements.Text)?.Value,
-                NavTargets = navList.Elements(NcxElements.NavTarget).AsObjectList(elem => new NcxNavTarget
+                    NavInfo = navInfo == null
+                        ? null
+                        : new NcxNavInfo { Text = navInfo.Element(NcxElements.Text)?.Value },
+                    PageTargets = pageList.Elements(NcxElements.PageTarget).AsObjectList(elem => new NcxPageTarget
+                    {
+                        Id = (string)elem.Attribute(NcxPageTarget.Attributes.Id),
+                        Class = (string)elem.Attribute(NcxPageTarget.Attributes.Class),
+                        Value = (int?)elem.Attribute(NcxPageTarget.Attributes.Value),
+                        Type = (NcxPageTargetType?)(elem.Attribute(NcxPageTarget.Attributes.Type) == null
+                            ? null
+                            : Enum.Parse(typeof(NcxPageTargetType), (string)elem.Attribute("type"), true)),
+                        NavLabelText = elem.Element(NcxElements.NavLabel)?.Element(NcxElements.Text)?.Value,
+                        ContentSrc = (string)elem.Element(NcxElements.Content)
+                            ?.Attribute(NcxPageTarget.Attributes.ContentSrc)
+                    })
+                },
+            NavList = navList == null
+                ? null
+                : new NcxNavList
                 {
-                    Id = (string)elem.Attribute("id"),
-                    Class = (string)elem.Attribute("class"),
+                    Id = (string)navList.Attribute("id"),
+                    Class = (string)navList.Attribute("class"),
                     Label = navList.Element(NcxElements.NavLabel)?.Element(NcxElements.Text)?.Value,
-                    PlayOrder = (int?)elem.Attribute("playOrder"),
-                    ContentSource = (string)elem.Element(NcxElements.Content)?.Attribute("src")
-                })
-            }
+                    NavTargets = navList.Elements(NcxElements.NavTarget).AsObjectList(elem => new NcxNavTarget
+                    {
+                        Id = (string)elem.Attribute("id"),
+                        Class = (string)elem.Attribute("class"),
+                        Label = navList.Element(NcxElements.NavLabel)?.Element(NcxElements.Text)?.Value,
+                        PlayOrder = (int?)elem.Attribute("playOrder"),
+                        ContentSource = (string)elem.Element(NcxElements.Content)?.Attribute("src")
+                    })
+                }
         };
 
         return ncx;
@@ -69,7 +81,8 @@ internal static class NcxReader
     private static NcxNavPoint ReadNavPoint(XElement element)
     {
         if (element == null) throw new ArgumentNullException(nameof(element));
-        if (element.Name != NcxElements.NavPoint) throw new ArgumentException("The element is not <navPoint>", nameof(element));
+        if (element.Name != NcxElements.NavPoint)
+            throw new ArgumentException("The element is not <navPoint>", nameof(element));
 
         return new NcxNavPoint
         {

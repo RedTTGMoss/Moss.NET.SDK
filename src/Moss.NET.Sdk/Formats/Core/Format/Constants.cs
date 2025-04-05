@@ -5,6 +5,10 @@ namespace Moss.NET.Sdk.Formats.Core.Format;
 
 internal class Constants
 {
+    public const string? OcfPath = "META-INF/container.xml";
+    public const string OcfMediaType = "application/oebps-package+xml";
+
+    public const string DefaultOpfUniqueIdentifier = "uuid_id";
     public static readonly string Html5Doctype = "<!DOCTYPE html>";
 
     public static readonly string XmlDeclarationPrefix = "<?xml";
@@ -18,11 +22,6 @@ internal class Constants
     public static readonly XNamespace OpfNamespace = "http://www.idpf.org/2007/opf";
     public static readonly XNamespace OpfMetadataNamespace = "http://purl.org/dc/elements/1.1/";
     public static readonly XNamespace OpsNamespace = "http://www.idpf.org/2007/ops";
-
-    public const string? OcfPath = "META-INF/container.xml";
-    public const string OcfMediaType = "application/oebps-package+xml";
-
-    public const string DefaultOpfUniqueIdentifier = "uuid_id";
 
     public static readonly Encoding DefaultEncoding = Encoding.UTF8;
 }

@@ -7,10 +7,10 @@ namespace Moss.NET.Sdk.UI;
 
 public class ContextMenuBuilder(string name)
 {
+    private readonly List<ContextButton> _buttons = [];
+
     [DllImport(Functions.DLL, EntryPoint = "moss_gui_register_context_menu")]
     private static extern void RegisterContextMenu(ulong ptr);
-
-    private readonly List<ContextButton> _buttons = [];
 
     public ContextMenuBuilder AddButton(string text, string icon, string contextIcon, string action)
     {

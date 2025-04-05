@@ -6,7 +6,7 @@ public class RmPage
 {
     [JsonPropertyName("id")] public string Id { get; set; } = null!;
 
-    [JsonPropertyName("index")] public RMTimestampedValue Index { get; set; }= null!;
+    [JsonPropertyName("index")] public RMTimestampedValue Index { get; set; } = null!;
 
     [JsonPropertyName("redirect")] public RMTimestampedValue? Redirect { get; set; }
 

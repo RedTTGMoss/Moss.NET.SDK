@@ -1,9 +1,8 @@
 ﻿using Totletheyn.Core.RSS.Feeds.Base;
 
-namespace Totletheyn.Core.RSS.Parser
+namespace Totletheyn.Core.RSS.Parser;
+
+internal interface IFeedParser
 {
-    internal interface IFeedParser
-    {
-        BaseFeed Parse(string feedXml);
-    }
+    BaseFeed Parse(string feedXml);
 }

@@ -9,15 +9,15 @@ namespace Moss.NET.Sdk.UI;
 //ToDo: implement custom screen management to avoid using names
 public abstract class Screen
 {
+    public abstract string Name { get; }
+
+    public WidgetCollection Widgets { get; } = new();
+
     [DllImport(Functions.DLL, EntryPoint = "moss_pe_get_screen_value")]
     private static extern ulong GetScreenValue(ulong keyPtr); //-> ConfigGet
 
     [DllImport(Functions.DLL, EntryPoint = "_moss_pe_set_screen_value")]
     private static extern void SetScreenValue(ulong configSetPtr);
-
-    public abstract string Name { get; }
-
-    public WidgetCollection Widgets { get; } = new();
 
     protected abstract void OnLoop();
 
@@ -57,10 +57,7 @@ public abstract class Screen
 
         var value = Utils.Deserialize(valuePtr, JsonContext.Default.ConfigGetD)?.value;
 
-        if (!value.HasValue)
-        {
-            return default;
-        }
+        if (!value.HasValue) return default;
 
         return value.Value.GetValue<T>();
     }

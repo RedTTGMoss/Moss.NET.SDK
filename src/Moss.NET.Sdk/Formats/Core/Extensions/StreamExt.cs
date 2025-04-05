@@ -46,14 +46,12 @@ internal static class StreamExt
                 buffer = new byte[totalBytesRead];
                 Buffer.BlockCopy(readBuffer, 0, buffer, 0, totalBytesRead);
             }
+
             return buffer;
         }
         finally
         {
-            if (stream.CanSeek)
-            {
-                stream.Position = originalPosition;
-            }
+            if (stream.CanSeek) stream.Position = originalPosition;
         }
     }
 }

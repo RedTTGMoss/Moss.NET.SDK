@@ -23,15 +23,12 @@ public static class ZipArchiveExt
     }
 
     /// <summary>
-    /// ZIP's are slash-side sensitive and ZIP's created on Windows and Linux can contain their own variation.
+    ///     ZIP's are slash-side sensitive and ZIP's created on Windows and Linux can contain their own variation.
     /// </summary>
     public static ZipArchiveEntry GetEntryImproved(this ZipArchive archive, string? entryName)
     {
         var entry = archive.TryGetEntryImproved(entryName);
-        if (entry == null)
-        {
-            throw new EpubParseException($"{entryName} file not found in archive.");
-        }
+        if (entry == null) throw new EpubParseException($"{entryName} file not found in archive.");
         return entry;
     }
 
@@ -41,10 +38,7 @@ public static class ZipArchiveExt
         // That is, they should not include a leading '/' character.
         // Therefore for performance reasons to maximize a match on first attempt
         // exclude it initially and try with a leading slash in the later attempts.
-        if (entryName.StartsWith("/") || entryName.StartsWith("\\"))
-        {
-            entryName = entryName.Substring(1);
-        }
+        if (entryName.StartsWith("/") || entryName.StartsWith("\\")) entryName = entryName.Substring(1);
 
         var entry = archive.GetEntry(entryName);
 
@@ -62,10 +56,10 @@ public static class ZipArchiveExt
             // Such epubs aren't common, but zip archives created on windows uses backslashes.
             // That could happen if an epub is re-archived manually.
             foreach (var newName in new[]
-            {
-                entryName.Replace(@"\", "/"),
-                entryName.Replace("/", @"\")
-            }.Where(newName => newName != entryName))
+                     {
+                         entryName.Replace(@"\", "/"),
+                         entryName.Replace("/", @"\")
+                     }.Where(newName => newName != entryName))
             {
                 namesToTry.Add(newName);
                 namesToTry.Add(Uri.UnescapeDataString(newName));
@@ -74,10 +68,7 @@ public static class ZipArchiveExt
             foreach (var newName in namesToTry)
             {
                 entry = archive.GetEntry(newName);
-                if (entry != null)
-                {
-                    break;
-                }
+                if (entry != null) break;
             }
         }
 

@@ -5,11 +5,10 @@ namespace Moss.NET.Sdk.Core;
 
 public class Base64 : Stream
 {
-    private MemoryStream strm = new();
+    private readonly MemoryStream strm = new();
 
     public Base64()
     {
-
     }
 
     public Base64(Stream stream)
@@ -27,16 +26,6 @@ public class Base64 : Stream
         strm = new MemoryStream(Convert.FromBase64String(base64));
     }
 
-    public override void Flush() => strm.Flush();
-
-    public override int Read(byte[] buffer, int offset, int count) => strm.Read(buffer, offset, count);
-
-    public override long Seek(long offset, SeekOrigin origin) => strm.Seek(offset, origin);
-
-    public override void SetLength(long value) => strm.SetLength(value);
-
-    public override void Write(byte[] buffer, int offset, int count) => strm.Write(buffer, offset, count);
-
     public override bool CanRead => strm.CanRead;
     public override bool CanSeek => strm.CanSeek;
     public override bool CanWrite => strm.CanWrite;
@@ -46,6 +35,31 @@ public class Base64 : Stream
     {
         get => strm.Position;
         set => strm.Position = value;
+    }
+
+    public override void Flush()
+    {
+        strm.Flush();
+    }
+
+    public override int Read(byte[] buffer, int offset, int count)
+    {
+        return strm.Read(buffer, offset, count);
+    }
+
+    public override long Seek(long offset, SeekOrigin origin)
+    {
+        return strm.Seek(offset, origin);
+    }
+
+    public override void SetLength(long value)
+    {
+        strm.SetLength(value);
+    }
+
+    public override void Write(byte[] buffer, int offset, int count)
+    {
+        strm.Write(buffer, offset, count);
     }
 
     public static implicit operator Base64(MemoryStream ms)

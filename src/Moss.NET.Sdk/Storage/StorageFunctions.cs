@@ -46,7 +46,8 @@ public static class StorageFunctions
         return DeleteManyDocuments(accessors.ToArray().GetPointer(), callback.GetPointer(), unload ? 1 : 0);
     }
 
-    public static void UploadManyDocuments(IEnumerable<Document> documents, Action? callback = null, bool unload = false)
+    public static void UploadManyDocuments(IEnumerable<Document> documents, Action? callback = null,
+        bool unload = false)
     {
         var accessors = documents.Select(d => new Accessor
         {
@@ -58,7 +59,8 @@ public static class StorageFunctions
         Dispatcher.Register(taskid, callback);
     }
 
-    public static void DeleteManyDocuments(IEnumerable<Document> documents, Action? callback = null, bool unload = false)
+    public static void DeleteManyDocuments(IEnumerable<Document> documents, Action? callback = null,
+        bool unload = false)
     {
         var accessors = documents.Select(d => new Accessor
         {
@@ -71,7 +73,7 @@ public static class StorageFunctions
     }
 
     /// <summary>
-    /// Create a new metadata object
+    ///     Create a new metadata object
     /// </summary>
     /// <param name="name">The visible name</param>
     /// <param name="type">Does this metadata corresponds to a notebook or a collection?</param>

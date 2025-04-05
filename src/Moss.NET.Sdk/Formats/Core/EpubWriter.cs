@@ -12,7 +12,10 @@ namespace Moss.NET.Sdk.Formats.Core;
 
 public enum ImageFormat
 {
-    Gif, Png, Jpeg, Svg
+    Gif,
+    Png,
+    Jpeg,
+    Svg
 }
 
 public class EpubWriter
@@ -32,9 +35,11 @@ public class EpubWriter
         };
 
         opf.UniqueIdentifier = Constants.DefaultOpfUniqueIdentifier;
-        opf.Metadata.Identifiers.Add(new OpfMetadataIdentifier { Id = Constants.DefaultOpfUniqueIdentifier, Scheme = "uuid", Text = Guid.NewGuid().ToString("D") });
+        opf.Metadata.Identifiers.Add(new OpfMetadataIdentifier
+            { Id = Constants.DefaultOpfUniqueIdentifier, Scheme = "uuid", Text = Guid.NewGuid().ToString("D") });
         opf.Metadata.Dates.Add(new OpfMetadataDate { Text = DateTimeOffset.UtcNow.ToString("o") });
-        opf.Manifest.Items.Add(new OpfManifestItem { Id = "ncx", Href = "toc.ncx", MediaType = ContentType.ContentTypeToMimeType[EpubContentType.DtbookNcx] });
+        opf.Manifest.Items.Add(new OpfManifestItem
+            { Id = "ncx", Href = "toc.ncx", MediaType = ContentType.ContentTypeToMimeType[EpubContentType.DtbookNcx] });
         opf.Spine.Toc = "ncx";
 
         format = new EpubFormat
@@ -48,8 +53,8 @@ public class EpubWriter
         format.Nav.Body.Dom =
             new XElement(
                 NavElements.Body,
-                    new XElement(NavElements.Nav, new XAttribute(NavNav.Attributes.Type, NavNav.Attributes.TypeValues.Toc),
-                        new XElement(NavElements.Ol)));
+                new XElement(NavElements.Nav, new XAttribute(NavNav.Attributes.Type, NavNav.Attributes.TypeValues.Toc),
+                    new XElement(NavElements.Ol)));
 
         resources = new EpubResources();
     }
@@ -93,7 +98,7 @@ public class EpubWriter
     }
 
     /// <summary>
-    /// Clones the book instance by writing and reading it from memory.
+    ///     Clones the book instance by writing and reading it from memory.
     /// </summary>
     /// <param name="book"></param>
     /// <returns></returns>
@@ -177,9 +182,7 @@ public class EpubWriter
     {
         if (string.IsNullOrWhiteSpace(author)) throw new ArgumentNullException(nameof(author));
         foreach (var entity in format.Opf.Metadata.Creators.Where(e => e.Text == author).ToList())
-        {
             format.Opf.Metadata.Creators.Remove(entity);
-        }
     }
 
     public void RemoveTitle()
@@ -221,7 +224,8 @@ public class EpubWriter
         var spineItem = new OpfSpineItemRef { IdRef = manifestItem.Id, Linear = true };
         format.Opf.Spine.ItemRefs.Add(spineItem);
 
-        FindNavTocOl()?.Add(new XElement(NavElements.Li, new XElement(NavElements.A, new XAttribute("href", file.Href), title)));
+        FindNavTocOl()?.Add(new XElement(NavElements.Li,
+            new XElement(NavElements.A, new XAttribute("href", file.Href), title)));
 
         format.Ncx?.NavMap.NavPoints.Add(new NcxNavPoint
         {
@@ -241,7 +245,8 @@ public class EpubWriter
 
     public void ClearChapters()
     {
-        var spineItems = format.Opf.Spine.ItemRefs.Select(spine => format.Opf.Manifest.Items.Single(e => e.Id == spine.IdRef));
+        var spineItems =
+            format.Opf.Spine.ItemRefs.Select(spine => format.Opf.Manifest.Items.Single(e => e.Id == spine.IdRef));
         var otherItems = format.Opf.Manifest.Items.Where(e => !spineItems.Contains(e)).ToList();
 
         foreach (var item in spineItems)
@@ -265,7 +270,8 @@ public class EpubWriter
         // Remove all images except the cover.
         // I can't think of a case where this is a bad idea.
         var coverPath = format.Opf.FindCoverPath();
-        foreach (var item in format.Opf.Manifest.Items.Where(e => e.MediaType.StartsWith("image/") && e.Href != coverPath).ToList())
+        foreach (var item in format.Opf.Manifest.Items
+                     .Where(e => e.MediaType.StartsWith("image/") && e.Href != coverPath).ToList())
         {
             format.Opf.Manifest.Items.Remove(item);
 
@@ -280,10 +286,7 @@ public class EpubWriter
         if (path == null) return;
 
         var resource = resources.Images.SingleOrDefault(e => e.Href == path);
-        if (resource != null)
-        {
-            resources.Images.Remove(resource);
-        }
+        if (resource != null) resources.Images.Remove(resource);
     }
 
     public void SetCover(byte[] data, ImageFormat imageFormat)
@@ -362,10 +365,7 @@ public class EpubWriter
         archive.CreateEntry(Constants.OcfPath, OcfWriter.Format(opfPath));
         archive.CreateEntry(opfPath, OpfWriter.Format(format.Opf));
 
-        if (format.Ncx != null)
-        {
-            archive.CreateEntry(ncxPath, NcxWriter.Format(format.Ncx));
-        }
+        if (format.Ncx != null) archive.CreateEntry(ncxPath, NcxWriter.Format(format.Ncx));
 
         var allFiles = new[]
         {
@@ -385,34 +385,28 @@ public class EpubWriter
 
     private XElement FindNavTocOl()
     {
-        if (format.Nav == null)
-        {
-            return null;
-        }
+        if (format.Nav == null) return null;
 
         var ns = format.Nav.Body.Dom.Name.Namespace;
         var element = format.Nav.Body.Dom.Descendants(ns + NavElements.Nav)
             .SingleOrDefault(e => (string)e.Attribute(NavNav.Attributes.Type) == NavNav.Attributes.TypeValues.Toc)
             ?.Element(ns + NavElements.Ol);
 
-        if (element == null)
-        {
-            throw new EpubWriteException(@"Missing ol: <nav type=""toc""><ol/></nav>");
-        }
+        if (element == null) throw new EpubWriteException(@"Missing ol: <nav type=""toc""><ol/></nav>");
 
         return element;
     }
 
     // Old code to add toc.ncx
     /*
-			if (opf.Spine.Toc != null)
-			{
-				var ncxPath = opf.FindNcxPath();
-				if (ncxPath == null)
-				{
-					throw new EpubWriteException("Spine TOC is set, but NCX path is not.");
-				}
-				manifest.Add(new XElement(OpfElements.Item, new XAttribute(OpfManifestItem.Attributes.Id, "ncx"), new XAttribute(OpfManifestItem.Attributes.MediaType, ContentType.ContentTypeToMimeType[EpubContentType.DtbookNcx]), new XAttribute(OpfManifestItem.Attributes.Href, ncxPath)));
-			}
-		 */
+            if (opf.Spine.Toc != null)
+            {
+                var ncxPath = opf.FindNcxPath();
+                if (ncxPath == null)
+                {
+                    throw new EpubWriteException("Spine TOC is set, but NCX path is not.");
+                }
+                manifest.Add(new XElement(OpfElements.Item, new XAttribute(OpfManifestItem.Attributes.Id, "ncx"), new XAttribute(OpfManifestItem.Attributes.MediaType, ContentType.ContentTypeToMimeType[EpubContentType.DtbookNcx]), new XAttribute(OpfManifestItem.Attributes.Href, ncxPath)));
+            }
+         */
 }

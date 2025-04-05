@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
+
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
@@ -30,7 +31,7 @@ public class NavDocument
 public class NavHead
 {
     /// <summary>
-    /// Instantiated only when the EPUB was read.
+    ///     Instantiated only when the EPUB was read.
     /// </summary>
     internal XElement Dom { get; set; }
 
@@ -41,6 +42,13 @@ public class NavHead
 
 public class NavHeadLink
 {
+    public string Href { get; internal set; }
+    public string Rel { get; internal set; }
+    public string Type { get; internal set; }
+    public string Class { get; internal set; }
+    public string Title { get; internal set; }
+    public string Media { get; internal set; }
+
     internal static class Attributes
     {
         public static readonly XName Href = "href";
@@ -50,33 +58,26 @@ public class NavHeadLink
         public static readonly XName Title = "title";
         public static readonly XName Media = "media";
     }
-
-    public string Href { get; internal set; }
-    public string Rel { get; internal set; }
-    public string Type { get; internal set; }
-    public string Class { get; internal set; }
-    public string Title { get; internal set; }
-    public string Media { get; internal set; }
 }
 
 public class NavMeta
 {
+    public string Name { get; internal set; }
+    public string Content { get; internal set; }
+    public string Charset { get; internal set; }
+
     internal static class Attributes
     {
         public static readonly XName Name = "name";
         public static readonly XName Content = "content";
         public static readonly XName Charset = "charset";
     }
-
-    public string Name { get; internal set; }
-    public string Content { get; internal set; }
-    public string Charset { get; internal set; }
 }
 
 public class NavBody
 {
     /// <summary>
-    /// Instantiated only when the EPUB was read.
+    ///     Instantiated only when the EPUB was read.
     /// </summary>
     internal XElement Dom { get; set; }
 
@@ -85,6 +86,16 @@ public class NavBody
 
 public class NavNav
 {
+    /// <summary>
+    ///     Instantiated only when the EPUB was read.
+    /// </summary>
+    internal XElement Dom { get; init; }
+
+    public string Type { get; internal init; }
+    public string Id { get; internal set; }
+    public string Class { get; internal set; }
+    public string Hidden { get; internal set; }
+
     internal static class Attributes
     {
         public static readonly XName Id = "id";
@@ -99,14 +110,4 @@ public class NavNav
             public const string PageList = "page-list";
         }
     }
-
-    /// <summary>
-    /// Instantiated only when the EPUB was read.
-    /// </summary>
-    internal XElement Dom { get; init; }
-
-    public string Type { get; internal init; }
-    public string Id { get; internal set; }
-    public string Class { get; internal set; }
-    public string Hidden { get; internal set; }
 }

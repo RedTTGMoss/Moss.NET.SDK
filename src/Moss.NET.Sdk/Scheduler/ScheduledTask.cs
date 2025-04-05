@@ -40,7 +40,7 @@ public class ScheduledTask
     {
         NextRunTime = NextRunTime?.Add(Interval);
 
-        Pdk.Log(LogLevel.Error, "next: "+ NextRunTime);
+        Pdk.Log(LogLevel.Error, "next: " + NextRunTime);
     }
 
     public static string Serialize(List<ScheduledTask> tasks)

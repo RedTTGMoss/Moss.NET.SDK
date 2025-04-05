@@ -19,10 +19,7 @@ public static class EpubReader
         if (filePath == null) throw new ArgumentNullException(nameof(filePath));
         if (encoding == null) encoding = Constants.DefaultEncoding;
 
-        if (!File.Exists(filePath))
-        {
-            throw new FileNotFoundException("Specified epub file not found.", filePath);
-        }
+        if (!File.Exists(filePath)) throw new FileNotFoundException("Specified epub file not found.", filePath);
 
         return Read(File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read), false, encoding);
     }
@@ -44,10 +41,7 @@ public static class EpubReader
         format.Paths.OcfAbsolutePath = Constants.OcfPath;
 
         format.Paths.OpfAbsolutePath = format.Ocf.RootFilePath;
-        if (format.Paths.OpfAbsolutePath == null)
-        {
-            throw new EpubParseException("Epub OCF doesn't specify a root file.");
-        }
+        if (format.Paths.OpfAbsolutePath == null) throw new EpubParseException("Epub OCF doesn't specify a root file.");
 
         format.Opf = OpfReader.Read(archive.LoadXml(format.Paths.OpfAbsolutePath));
 
@@ -79,10 +73,7 @@ public static class EpubReader
         if (book.Format == null) throw new ArgumentNullException(nameof(book.Format));
 
         var coverPath = book.Format.Opf.FindCoverPath();
-        if (coverPath == null)
-        {
-            return null;
-        }
+        if (coverPath == null) return null;
 
         var coverImageFile = book.Resources.Images.SingleOrDefault(e => e.Href == coverPath);
         return coverImageFile?.Content;
@@ -93,21 +84,17 @@ public static class EpubReader
         if (book.Format.Nav != null)
         {
             var tocNav = book.Format.Nav.Body.Navs.SingleOrDefault(e => e.Type == NavNav.Attributes.TypeValues.Toc);
-            if (tocNav != null)
-            {
-                return LoadChaptersFromNav(book.Format.Paths.NavAbsolutePath, tocNav.Dom);
-            }
+            if (tocNav != null) return LoadChaptersFromNav(book.Format.Paths.NavAbsolutePath, tocNav.Dom);
         }
 
         if (book.Format.Ncx != null)
-        {
             return LoadChaptersFromNcx(book.Format.Paths.NcxAbsolutePath, book.Format.Ncx.NavMap.NavPoints);
-        }
 
         return [];
     }
 
-    private static List<EpubChapter> LoadChaptersFromNav(string? navAbsolutePath, XElement element, EpubChapter? parentChapter = null)
+    private static List<EpubChapter> LoadChaptersFromNav(string? navAbsolutePath, XElement element,
+        EpubChapter? parentChapter = null)
     {
         if (element == null) throw new ArgumentNullException(nameof(element));
         var ns = element.Name.Namespace;
@@ -134,10 +121,7 @@ public static class EpubReader
             if (link != null)
             {
                 var id = link.Attribute("id")?.Value;
-                if (id != null)
-                {
-                    chapter.Id = id;
-                }
+                if (id != null) chapter.Id = id;
 
                 var url = link.Attribute("href")?.Value;
                 if (url != null)
@@ -149,15 +133,10 @@ public static class EpubReader
                 }
 
                 var titleTextElement = li.Descendants().FirstOrDefault(e => !string.IsNullOrWhiteSpace(e.Value));
-                if (titleTextElement != null)
-                {
-                    chapter.Title = titleTextElement.Value;
-                }
+                if (titleTextElement != null) chapter.Title = titleTextElement.Value;
 
                 if (li.Element(ns + NavElements.Ol) != null)
-                {
                     chapter.SubChapters = LoadChaptersFromNav(navAbsolutePath, li, chapter);
-                }
                 result.Add(chapter);
 
                 previous = chapter.SubChapters.Any() ? chapter.SubChapters.Last() : chapter;
@@ -167,7 +146,8 @@ public static class EpubReader
         return result;
     }
 
-    private static List<EpubChapter> LoadChaptersFromNcx(string? ncxAbsolutePath, IEnumerable<NcxNavPoint> navigationPoints, EpubChapter? parentChapter = null)
+    private static List<EpubChapter> LoadChaptersFromNcx(string? ncxAbsolutePath,
+        IEnumerable<NcxNavPoint> navigationPoints, EpubChapter? parentChapter = null)
     {
         var result = new List<EpubChapter>();
         var previous = parentChapter;
@@ -193,6 +173,7 @@ public static class EpubReader
 
             previous = chapter.SubChapters.Any() ? chapter.SubChapters.Last() : chapter;
         }
+
         return result;
     }
 
@@ -205,14 +186,8 @@ public static class EpubReader
             var path = item.Href.ToAbsolutePath(book.Format.Paths.OpfAbsolutePath);
             var entry = epubArchive.GetEntryImproved(path);
 
-            if (entry == null)
-            {
-                throw new EpubParseException($"file {path} not found in archive.");
-            }
-            if (entry.Length > int.MaxValue)
-            {
-                throw new EpubParseException($"file {path} is bigger than 2 Gb.");
-            }
+            if (entry == null) throw new EpubParseException($"file {path} not found in archive.");
+            if (entry.Length > int.MaxValue) throw new EpubParseException($"file {path} is bigger than 2 Gb.");
 
             var href = item.Href;
             var mimeType = item.MediaType;
@@ -231,84 +206,85 @@ public static class EpubReader
                 case EpubContentType.Xml:
                 case EpubContentType.Dtbook:
                 case EpubContentType.DtbookNcx:
+                {
+                    var file = new EpubTextFile
                     {
-                        var file = new EpubTextFile
-                        {
-                            AbsolutePath = path,
-                            Href = href,
-                            MimeType = mimeType,
-                            ContentType = contentType
-                        };
+                        AbsolutePath = path,
+                        Href = href,
+                        MimeType = mimeType,
+                        ContentType = contentType
+                    };
 
-                        resources.All.Add(file);
+                    resources.All.Add(file);
 
-                        using (var stream = entry.Open())
-                        {
-                            file.Content = stream.ReadToEnd();
-                        }
-
-                        switch (contentType)
-                        {
-                            case EpubContentType.Xhtml11:
-                                resources.Html.Add(file);
-                                break;
-
-                            case EpubContentType.Css:
-                                resources.Css.Add(file);
-                                break;
-
-                            default:
-                                resources.Other.Add(file);
-                                break;
-                        }
-                        break;
+                    using (var stream = entry.Open())
+                    {
+                        file.Content = stream.ReadToEnd();
                     }
+
+                    switch (contentType)
+                    {
+                        case EpubContentType.Xhtml11:
+                            resources.Html.Add(file);
+                            break;
+
+                        case EpubContentType.Css:
+                            resources.Css.Add(file);
+                            break;
+
+                        default:
+                            resources.Other.Add(file);
+                            break;
+                    }
+
+                    break;
+                }
                 default:
+                {
+                    var file = new EpubByteFile
                     {
-                        var file = new EpubByteFile
+                        AbsolutePath = path,
+                        Href = href,
+                        MimeType = mimeType,
+                        ContentType = contentType
+                    };
+
+                    resources.All.Add(file);
+
+                    using (var stream = entry.Open())
+                    {
+                        if (stream == null)
+                            throw new EpubException(
+                                $"Incorrect EPUB file: content file \"{href}\" specified in manifest is not found");
+
+                        using (var memoryStream = new MemoryStream((int)entry.Length))
                         {
-                            AbsolutePath = path,
-                            Href = href,
-                            MimeType = mimeType,
-                            ContentType = contentType
-                        };
-
-                        resources.All.Add(file);
-
-                        using (var stream = entry.Open())
-                        {
-                            if (stream == null)
-                            {
-                                throw new EpubException($"Incorrect EPUB file: content file \"{href}\" specified in manifest is not found");
-                            }
-
-                            using (var memoryStream = new MemoryStream((int)entry.Length))
-                            {
-                                stream.CopyTo(memoryStream);
-                                file.Content = memoryStream.ToArray();
-                            }
+                            stream.CopyTo(memoryStream);
+                            file.Content = memoryStream.ToArray();
                         }
-
-                        switch (contentType)
-                        {
-                            case EpubContentType.ImageGif:
-                            case EpubContentType.ImageJpeg:
-                            case EpubContentType.ImagePng:
-                            case EpubContentType.ImageSvg:
-                                resources.Images.Add(file);
-                                break;
-
-                            case EpubContentType.FontTruetype:
-                            case EpubContentType.FontOpentype:
-                                resources.Fonts.Add(file);
-                                break;
-
-                            default:
-                                resources.Other.Add(file);
-                                break;
-                        }
-                        break;
                     }
+
+                    switch (contentType)
+                    {
+                        case EpubContentType.ImageGif:
+                        case EpubContentType.ImageJpeg:
+                        case EpubContentType.ImagePng:
+                        case EpubContentType.ImageSvg:
+                            resources.Images.Add(file);
+                            break;
+
+                        case EpubContentType.FontTruetype:
+                        case EpubContentType.FontOpentype:
+                            resources.Fonts.Add(file);
+                            break;
+
+                        default:
+                            resources.Other.Add(file);
+                            break;
+                    }
+
+                    break;
+                }
             }
         }
 
@@ -339,21 +315,16 @@ public static class EpubReader
         };
 
         var htmlFiles = book.Format.Opf.Manifest.Items
-            .Where(item => ContentType.MimeTypeToContentType.ContainsKey(item.MediaType) && ContentType.MimeTypeToContentType[item.MediaType] == EpubContentType.Xhtml11)
+            .Where(item => ContentType.MimeTypeToContentType.ContainsKey(item.MediaType) &&
+                           ContentType.MimeTypeToContentType[item.MediaType] == EpubContentType.Xhtml11)
             .ToDictionary(item => item.Id, item => item.Href);
 
         foreach (var item in book.Format.Opf.Spine.ItemRefs)
         {
-            if (!htmlFiles.TryGetValue(item.IdRef, out var href))
-            {
-                continue;
-            }
+            if (!htmlFiles.TryGetValue(item.IdRef, out var href)) continue;
 
             var html = book.Resources.Html.SingleOrDefault(e => e.Href == href);
-            if (html != null)
-            {
-                result.HtmlInReadingOrder.Add(html);
-            }
+            if (html != null) result.HtmlInReadingOrder.Add(html);
         }
 
         return result;

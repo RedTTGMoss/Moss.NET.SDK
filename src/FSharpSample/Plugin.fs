@@ -4,18 +4,17 @@ open System.Runtime.InteropServices
 open Moss.NET.Sdk
 
 type SampleExtension() =
-        inherit MossExtension()
+    inherit MossExtension()
 
-        static let logger: LoggerInstance = Log.GetLogger<SampleExtension>()
+    static let logger: LoggerInstance = Log.GetLogger<SampleExtension>()
 
-        [<UnmanagedCallersOnly(EntryPoint = "moss_extension_register")>]
-        static member Register() : uint64 =
-            SampleExtension.Init<SampleExtension>()
-            0UL
+    [<UnmanagedCallersOnly(EntryPoint = "moss_extension_register")>]
+    static member Register() : uint64 =
+        SampleExtension.Init<SampleExtension>()
+        0UL
 
-        static member Main() = ()
+    static member Main() = ()
 
-        override this.Register(state: MossState)  =
-            logger.Info("Hello world from f#")
+    override this.Register(state: MossState) = logger.Info("Hello world from f#")
 
-        override this.Unregister() = ()
+    override this.Unregister() = ()

@@ -1,12 +1,13 @@
 ﻿using System;
+
 #pragma warning disable CS8618, CS9264
 
 namespace Moss.NET.Sdk.Formats.Core.Misc;
 
 internal class Href
 {
-    public readonly string? Path;
     public readonly string HashLocation;
+    public readonly string? Path;
 
     public Href(string? href)
     {

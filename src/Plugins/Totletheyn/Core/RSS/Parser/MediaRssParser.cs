@@ -2,16 +2,15 @@
 using Totletheyn.Core.RSS.Feeds.Base;
 using Totletheyn.Core.RSS.Feeds.MediaRSS;
 
-namespace Totletheyn.Core.RSS.Parser
+namespace Totletheyn.Core.RSS.Parser;
+
+internal class MediaRssParser : AbstractXmlFeedParser
 {
-    internal class MediaRssParser : AbstractXmlFeedParser
+    public override BaseFeed Parse(string feedXml, XDocument feedDoc)
     {
-        public override BaseFeed Parse(string feedXml, XDocument feedDoc)
-        {
-            var rss = feedDoc.Root;
-            var channel = rss.GetElement("channel");
-            MediaRssFeed feed = new MediaRssFeed(feedXml, channel);
-            return feed;
-        }
+        var rss = feedDoc.Root;
+        var channel = rss.GetElement("channel");
+        var feed = new MediaRssFeed(feedXml, channel);
+        return feed;
     }
 }

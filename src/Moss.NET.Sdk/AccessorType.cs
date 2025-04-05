@@ -11,7 +11,7 @@ public sealed class AccessorType : SmartEnum<AccessorType>
 
     public static readonly AccessorType APICollectionMetadata = new("api_collection_metadata", 3);
 
-    public static readonly AccessorType APIDocument = new( "api_document", 4);
+    public static readonly AccessorType APIDocument = new("api_document", 4);
     public static readonly AccessorType APICollection = new("api_collection", 5);
 
     public static readonly AccessorType StandaloneDocumentMetadata = new("document_metadata", 6);
@@ -36,5 +36,8 @@ public sealed class AccessorType : SmartEnum<AccessorType>
     {
     }
 
-    public static implicit operator string(AccessorType accessorType) => accessorType.Name;
+    public static implicit operator string(AccessorType accessorType)
+    {
+        return accessorType.Name;
+    }
 }

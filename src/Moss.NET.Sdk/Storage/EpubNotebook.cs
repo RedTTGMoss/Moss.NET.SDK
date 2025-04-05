@@ -7,9 +7,6 @@ namespace Moss.NET.Sdk.Storage;
 
 public class EpubNotebook : StorageItem<EpubNotebook>
 {
-    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_epub")]
-    private static extern ulong NewEpub(ulong newEpPtr);
-    
     public EpubNotebook(string name, string file, string? parent = null)
     {
         var uuid = NewEpub(name, file, parent);
@@ -21,12 +18,14 @@ public class EpubNotebook : StorageItem<EpubNotebook>
         var uuid = NewEpub(name, data, parent);
         Metadata = Metadata.Get(uuid);
     }
-    
+
     public EpubNotebook()
     {
-        
     }
-    
+
+    [DllImport(Functions.DLL, EntryPoint = "moss_api_document_new_epub")]
+    private static extern ulong NewEpub(ulong newEpPtr);
+
     private static string NewEpub(string name, string file, string? parent = null)
     {
         var notebook = new DocumentNewEpub
