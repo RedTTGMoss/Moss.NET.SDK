@@ -15,6 +15,7 @@ public static class TaskScheduler
     private static HoconObject _config = null!;
     private static readonly List<ScheduledTask> Jobs = [];
     public static readonly JobActivator Activator = new();
+    public static bool IsEnabled => MossExtension.Config.GetBoolean("scheduler.enabled", true);
 
     public static void ScheduleTask(ScheduledTask task)
     {
@@ -25,6 +26,11 @@ public static class TaskScheduler
 
     internal static void RunJobs()
     {
+        if (!IsEnabled)
+        {
+            return;
+        }
+
         var now = DateTime.UtcNow;
 
         foreach (var task in Jobs
@@ -46,6 +52,11 @@ public static class TaskScheduler
 
     public static void SaveTasks()
     {
+        if (!IsEnabled)
+        {
+            return;
+        }
+
         foreach (var job in Jobs)
         {
             job.Data = job.Job.Data;
@@ -58,6 +69,11 @@ public static class TaskScheduler
 
     public static void Init()
     {
+        if (!IsEnabled)
+        {
+            return;
+        }
+
         var json = "[]";
         try
         {

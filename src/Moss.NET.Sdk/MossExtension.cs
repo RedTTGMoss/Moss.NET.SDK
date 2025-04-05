@@ -15,7 +15,7 @@ public class MossExtension
 {
     private static MossExtension? _instance;
 
-    public Meter Meter;
+    public Meter? Meter;
     public IMeterListener MeterListener;
 
     internal static MossExtension? Instance
@@ -44,7 +44,7 @@ public class MossExtension
 
     public static void PreInitExtension()
     {
-        var configPath = "extension/automation.conf";
+        var configPath = "extension/plugin.conf";
 
         if (System.IO.File.Exists(configPath)) {
             var configSource = System.IO.File.ReadAllText(configPath);
@@ -54,7 +54,7 @@ public class MossExtension
         TaskScheduler.Init();
     }
 
-    public static HoconRoot? Config { get; set; }
+    public static HoconRoot Config { get; set; } = HoconParser.Parse("");
 
     public static void Init<T>() where T : MossExtension, new()
     {
@@ -65,18 +65,17 @@ public class MossExtension
 
         var input = Pdk.GetInputJson(JsonContext.Default.MossState);
 
-#if DEBUG
-        _instance.Meter = new Meter("Moss.NET.Sdk");
-        _instance.MeterListener = new FileMeterListener("extension/instrumentation.txt");
-        _instance.MeterListener.Init();
+        if (Config!.GetBoolean("instrumentation.enabled", true))
+        {
+            _instance.Meter = new Meter("Moss.NET.Sdk");
+            _instance.MeterListener = new FileMeterListener("extension/instrumentation.txt");
+            _instance.MeterListener.Init();
+        }
 
         Extensions.Measure("extension.register", () =>
         {
-#endif
             _instance!.Register(input!);
-#if DEBUG
         });
-#endif
 
 
         var extensionInfo = new ExtensionInfo

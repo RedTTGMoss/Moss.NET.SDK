@@ -62,6 +62,12 @@ public static class Extensions
     public static void Measure(string name, Action method)
     {
         var meter = MossExtension.Instance!.Meter;
+        if (meter is null)
+        {
+            method();
+            return;
+        }
+
         var methodDuration = meter.CreateHistogram<double>(name + "_duration", "ms", "Method duration in milliseconds");
 
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
