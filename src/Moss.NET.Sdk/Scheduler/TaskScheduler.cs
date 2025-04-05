@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using Extism;
 using Hocon;
+using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
 using File = System.IO.File;
 
@@ -86,6 +87,18 @@ public static class TaskScheduler
         foreach (var jobInfo in _config.GetObject("jobs"))
         {
             var obj = jobInfo.Value.GetObject();
+
+            if (!obj["enabled"].GetBoolean())
+            {
+                Pdk.Log(LogLevel.Debug, $"Task '{jobInfo.Key}' is disabled");
+                continue;
+            }
+
+            if (obj["class"] == null)
+            {
+                Pdk.Log(LogLevel.Error, $"Task '{jobInfo.Key}' has no class");
+                continue;
+            }
 
             var cls = obj["class"].GetString();
             var interval = obj["interval"].GetString();

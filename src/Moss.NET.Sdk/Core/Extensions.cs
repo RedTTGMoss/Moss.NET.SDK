@@ -67,6 +67,11 @@ public static class Extensions
         return new Options(root.GetObject(path));
     }
 
+    public static bool GetBoolean(this HoconField root)
+    {
+        return root.Value.GetBoolean();
+    }
+
     public static void Measure(string name, Action method)
     {
         var meter = MossExtension.Instance!.Meter;
