@@ -12,6 +12,7 @@
         <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
         <PackageReference Include="Extism.Pdk" Version="1.1.1" />
         <PackageReference Include="Moss.NET.Sdk" Version="1.3.0-pre" />
+        <PackageReference Update="FSharp.Core" Version="9.0.201" />
     </ItemGroup>
 
     <ItemGroup>
