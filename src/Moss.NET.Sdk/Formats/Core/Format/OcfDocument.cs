@@ -9,7 +9,7 @@ public class OcfDocument
     public IList<OcfRootFile> RootFiles { get; internal set; } = new List<OcfRootFile>();
 
     private OcfRootFile rootFile;
-    public string RootFilePath => rootFile?.FullPath ?? (rootFile = RootFiles.FirstOrDefault(e => e.MediaType == Constants.OcfMediaType))?.FullPath;
+    public string? RootFilePath => rootFile?.FullPath ?? (rootFile = RootFiles.FirstOrDefault(e => e.MediaType == Constants.OcfMediaType))?.FullPath;
 }
 
 public class OcfRootFile
@@ -20,6 +20,6 @@ public class OcfRootFile
         public static readonly XName MediaType = "media-type";
     }
 
-    public string FullPath { get; internal set; }
+    public string? FullPath { get; internal set; }
     public string MediaType { get; internal set; }
 }

@@ -5,7 +5,7 @@ namespace Moss.NET.Sdk.Formats.Core.Format.Writers;
 
 internal class OcfWriter
 {
-    public static string Format(string opfPath)
+    public static string Format(string? opfPath)
     {
         if (string.IsNullOrWhiteSpace(opfPath)) throw new ArgumentNullException(nameof(opfPath));
 

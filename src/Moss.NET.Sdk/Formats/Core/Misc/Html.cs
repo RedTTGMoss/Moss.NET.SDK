@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Moss.NET.Sdk.Formats.Core.Misc;
 
-internal static class Html
+internal static partial class Html
 {
     private static readonly RegexOptions RegexOptions = RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture;
     private static readonly RegexOptions RegexOptionsIgnoreCase = RegexOptions.IgnoreCase | RegexOptions;
@@ -16,12 +16,12 @@ internal static class Html
         if (string.IsNullOrWhiteSpace(html)) throw new ArgumentNullException(nameof(html));
 
         html = html.Trim();
-        html = Regex.Replace(html, @"\r\n?|\n", "");
+        html = MyRegex().Replace(html, "");
         var match = Regex.Match(html, @"<body[^>]*>.+</body>", RegexOptionsIgnoreCaseSingleLine);
-        return match.Success ? ClearText(match.Value).Trim(' ', '\r', '\n') : "";
+        return match.Success ? ClearText(match.Value)!.Trim(' ', '\r', '\n') : "";
     }
 
-    private static string ClearText(string text)
+    private static string? ClearText(string? text)
     {
         if (text == null) return null;
 
@@ -31,17 +31,17 @@ internal static class Html
         return result;
     }
 
-    private static string RemoveHtmlTags(string text)
+    private static string? RemoveHtmlTags(string? text)
     {
         return text == null ? null : Regex.Replace(text, @"</?(\w+|\s*!--)[^>]*>", " ", RegexOptions);
     }
 
-    private static string ReplaceBlockTagsWithNewLines(string text)
+    private static string? ReplaceBlockTagsWithNewLines(string? text)
     {
         return text == null ? null : Regex.Replace(text, @"(?<!^\s*)<(p|div|h1|h2|h3|h4|h5|h6)[^>]*>", "\n", RegexOptionsIgnoreCaseMultiLine);
     }
 
-    private static string DecodeHtmlSymbols(string text)
+    private static string? DecodeHtmlSymbols(string? text)
     {
         if (text == null) return null;
         var regex = new Regex(@"(?<defined>(&nbsp|&quot|&mdash|&ldquo|&rdquo|\&\#8211|\&\#8212|&\#8230|\&\#171|&laquo|&raquo|&amp);?)|(?<other>\&\#\d+;?)", RegexOptionsIgnoreCase);
@@ -81,4 +81,7 @@ internal static class Html
             default: return " ";
         }
     }
+
+    [GeneratedRegex(@"\r\n?|\n")]
+    private static partial Regex MyRegex();
 }

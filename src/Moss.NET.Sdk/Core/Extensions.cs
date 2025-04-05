@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Metrics;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using Extism;
@@ -14,14 +13,14 @@ public static class Extensions
     {
         return (element.ValueKind switch
         {
-            JsonValueKind.String => (T)(object)element.GetString(),
+            JsonValueKind.String => (T?)(object?)element.GetString(),
             JsonValueKind.Number when typeof(T) == typeof(int) => (T)(object)element.GetInt32(),
             JsonValueKind.Number when typeof(T) == typeof(long) => (T)(object)element.GetInt64(),
             JsonValueKind.Number when typeof(T) == typeof(double) => (T)(object)element.GetDouble(),
             JsonValueKind.Number when typeof(T) == typeof(decimal) => (T)(object)element.GetDecimal(),
             JsonValueKind.True or JsonValueKind.False => (T)(object)element.GetBoolean(),
             JsonValueKind.Null => default,
-            JsonValueKind.Object => JsonSerializer.Deserialize(element.GetRawText(), (JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T))),
+            JsonValueKind.Object => JsonSerializer.Deserialize(element.GetRawText(), ((JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T))!)!),
             _ => throw new InvalidOperationException($"Unsupported value kind: {element.ValueKind}")
         })!;
     }
@@ -33,7 +32,7 @@ public static class Extensions
 
     public static ulong GetPointer<T>(this T @this)
     {
-        return GetPointer(@this, (JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T)));
+        return GetPointer(@this, (JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T))!);
     }
 
     public static ulong GetPointer<T>(this T @this, JsonTypeInfo<T> typeInfo)
@@ -41,14 +40,14 @@ public static class Extensions
         return Utils.Serialize(@this, typeInfo);
     }
 
-    public static T Get<T>(this ulong ptr, JsonTypeInfo<T> typeInfo)
+    public static T? Get<T>(this ulong ptr, JsonTypeInfo<T> typeInfo)
     {
         return Utils.Deserialize(ptr, typeInfo);
     }
 
     public static T Get<T>(this ulong ptr)
     {
-        return Get(ptr, (JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T)));
+        return Get(ptr, (JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T))!)!;
     }
 
     public static MemoryBlock Find(this ulong ptr) => MemoryBlock.Find(ptr);

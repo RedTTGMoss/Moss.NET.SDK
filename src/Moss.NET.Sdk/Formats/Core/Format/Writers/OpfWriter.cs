@@ -112,7 +112,7 @@ internal class OpfWriter
             switch (version)
             {
                 case EpubVersion.Epub2:
-                    element.Add(new XAttribute(OpfMetadataMeta.Attributes.Content, meta.Text));
+                    element.Add(new XAttribute(OpfMetadataMeta.Attributes.Content, meta.Text!));
                     break;
 
                 case EpubVersion.Epub3:

@@ -8,8 +8,7 @@ using System.IO;
 
 internal class FileMeterListener : MeterListener<double>
 {
-    private static string _filePath;
-    private static MeterListener _listener;
+    private readonly string _filePath;
 
     public FileMeterListener(string filePath)
     {

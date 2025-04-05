@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Extism;
 using File = Moss.NET.Sdk.FFI.File;
 
 namespace Moss.NET.Sdk;

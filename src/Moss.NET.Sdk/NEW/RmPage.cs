@@ -4,9 +4,9 @@ namespace Moss.NET.Sdk.NEW;
 
 public class RmPage
 {
-    [JsonPropertyName("id")] public string Id { get; set; }
+    [JsonPropertyName("id")] public string Id { get; set; } = null!;
 
-    [JsonPropertyName("index")] public RMTimestampedValue Index { get; set; }
+    [JsonPropertyName("index")] public RMTimestampedValue Index { get; set; }= null!;
 
     [JsonPropertyName("redirect")] public RMTimestampedValue? Redirect { get; set; }
 

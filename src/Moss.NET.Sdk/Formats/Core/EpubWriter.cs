@@ -17,8 +17,8 @@ public enum ImageFormat
 
 public class EpubWriter
 {
-    private readonly string opfPath = "EPUB/package.opf";
-    private readonly string ncxPath = "EPUB/toc.ncx";
+    private readonly string? opfPath = "EPUB/package.opf";
+    private readonly string? ncxPath = "EPUB/toc.ncx";
 
     private readonly EpubFormat format;
     private readonly EpubResources resources;
@@ -341,7 +341,7 @@ public class EpubWriter
         format.Opf.Manifest.Items.Add(coverItem);
     }
 
-    public byte[] Write()
+    public byte[]? Write()
     {
         var stream = new MemoryStream();
         Write(stream);
@@ -351,39 +351,35 @@ public class EpubWriter
 
     public void Write(string filename)
     {
-        using (var file = File.Create(filename))
-        {
-            Write(file);
-        }
+        using var file = File.Create(filename);
+        Write(file);
     }
 
     public void Write(Stream stream)
     {
-        using (var archive = new ZipArchive(stream, ZipArchiveMode.Create, true))
+        using var archive = new ZipArchive(stream, ZipArchiveMode.Create, true);
+        archive.CreateEntry("mimetype", MimeTypeWriter.Format());
+        archive.CreateEntry(Constants.OcfPath, OcfWriter.Format(opfPath));
+        archive.CreateEntry(opfPath, OpfWriter.Format(format.Opf));
+
+        if (format.Ncx != null)
         {
-            archive.CreateEntry("mimetype", MimeTypeWriter.Format());
-            archive.CreateEntry(Constants.OcfPath, OcfWriter.Format(opfPath));
-            archive.CreateEntry(opfPath, OpfWriter.Format(format.Opf));
+            archive.CreateEntry(ncxPath, NcxWriter.Format(format.Ncx));
+        }
 
-            if (format.Ncx != null)
-            {
-                archive.CreateEntry(ncxPath, NcxWriter.Format(format.Ncx));
-            }
-
-            var allFiles = new[]
-            {
-                resources.Html.Cast<EpubFile>(),
-                resources.Css,
-                resources.Images,
-                resources.Fonts,
-                resources.Other
-            }.SelectMany(collection => collection as EpubFile[] ?? collection.ToArray());
-            var relativePath = PathExt.GetDirectoryPath(opfPath);
-            foreach (var file in allFiles)
-            {
-                var absolutePath = PathExt.Combine(relativePath, file.Href);
-                archive.CreateEntry(absolutePath, file.Content);
-            }
+        var allFiles = new[]
+        {
+            resources.Html.Cast<EpubFile>(),
+            resources.Css,
+            resources.Images,
+            resources.Fonts,
+            resources.Other
+        }.SelectMany(collection => collection as EpubFile[] ?? collection.ToArray());
+        var relativePath = PathExt.GetDirectoryPath(opfPath);
+        foreach (var file in allFiles)
+        {
+            var absolutePath = PathExt.Combine(relativePath, file.Href);
+            archive.CreateEntry(absolutePath, file.Content);
         }
     }
 

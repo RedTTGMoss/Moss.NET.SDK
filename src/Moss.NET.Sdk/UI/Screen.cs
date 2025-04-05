@@ -51,12 +51,17 @@ public abstract class Screen
         SetScreenValue(Utils.Serialize(new ConfigSet(key, value), JsonContext.Default.ConfigSet));
     }
 
-    public T GetValue<T>(string key)
+    public T? GetValue<T>(string key)
     {
         var valuePtr = GetScreenValue(Pdk.Allocate(key).Offset);
 
-        var value = Utils.Deserialize(valuePtr, JsonContext.Default.ConfigGetD).value;
+        var value = Utils.Deserialize(valuePtr, JsonContext.Default.ConfigGetD)?.value;
 
-        return value.GetValue<T>();
+        if (!value.HasValue)
+        {
+            return default;
+        }
+
+        return value.Value.GetValue<T>();
     }
 }

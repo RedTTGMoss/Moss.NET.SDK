@@ -7,7 +7,7 @@ namespace Moss.NET.Sdk.FFI.Dto;
 internal class DocumentNewPdf
 {
     [JsonPropertyName("accessor")]
-    public Accessor Accessor { get; set; }
+    public Accessor Accessor { get; set; } = null!;
 
     [JsonPropertyName("name")]
     public string Name { get; set; } = null!;
@@ -23,5 +23,5 @@ internal class DocumentNewPdf
 
     [JsonPropertyName("pdf_data")]
     [JsonConverter(typeof(Base64Converter))]
-    public Base64 PdfData { get; set; }
+    public Base64? PdfData { get; set; }
 }

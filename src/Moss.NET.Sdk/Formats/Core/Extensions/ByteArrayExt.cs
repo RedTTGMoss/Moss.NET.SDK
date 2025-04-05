@@ -5,7 +5,7 @@ namespace Moss.NET.Sdk.Formats.Core.Extensions;
 
 internal static class ByteArrayExt
 {
-    public static byte[] TrimEncodingPreamble(this byte[] data)
+    public static byte[]? TrimEncodingPreamble(this byte[]? data)
     {
         var preamble = Constants.DefaultEncoding.GetPreamble();
         if (data.Length < preamble.Length)

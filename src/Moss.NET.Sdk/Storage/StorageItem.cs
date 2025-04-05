@@ -7,23 +7,23 @@ namespace Moss.NET.Sdk.Storage;
 
 public abstract class StorageItem<TOut> where TOut : StorageItem<TOut>, new()
 {
-    public Metadata Metadata { get; protected set; }
+    public Metadata Metadata { get; protected set; } = null!;
 
     /// <summary>
     /// It will halt until the document is finished downloading.
     /// </summary>
     public void EnsureDownload()
     {
-        DocumentFunctions.EnsureDownload(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer());
+        DocumentFunctions.EnsureDownload(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid!).GetPointer());
     }
 
     /// <summary>
     /// Calls the callback when the document is finished downloading.
     /// </summary>
     /// <param name="callback"></param>
-    public void EnsureDownload(Action? callback = null)
+    public void EnsureDownload(Action callback)
     {
-        DocumentFunctions.EnsureDownload(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer(), "dispatch_entry".GetPointer());
+        DocumentFunctions.EnsureDownload(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid!).GetPointer(), "dispatch_entry".GetPointer());
 
         //Todo: when EnsureDownload returns a taskid add it to the dispatcher
         //Dispatcher.Register(taskid, callback);
@@ -36,15 +36,16 @@ public abstract class StorageItem<TOut> where TOut : StorageItem<TOut>, new()
     /// </summary>
     public void UnloadFiles()
     {
-        DocumentFunctions.UnloadFiles(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer());
+        DocumentFunctions.UnloadFiles(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid!).GetPointer());
     }
 
     /// <summary>
     /// This will modify all the document UUIDs including nested UUID references to a new random UUID.
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     public void RandomizeUUIDs()
     {
-        var newId = DocumentFunctions.RandomizeUuids(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer()).ReadString();
+        var newId = DocumentFunctions.RandomizeUuids(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid!).GetPointer()).ReadString();
         Metadata = Metadata.Get(newId);
     }
 
@@ -54,7 +55,7 @@ public abstract class StorageItem<TOut> where TOut : StorageItem<TOut>, new()
     /// </summary>
     public void LoadFilesFromCache()
     {
-        DocumentFunctions.LoadFilesFromCache(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer());
+        DocumentFunctions.LoadFilesFromCache(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid!).GetPointer());
     }
 
     public void Delete(Action? callback = null, bool unload = false)
@@ -107,8 +108,10 @@ public abstract class StorageItem<TOut> where TOut : StorageItem<TOut>, new()
             throw new KeyNotFoundException($"No Metadata with uuid {uuid} found");
         }
 
-        var result = new TOut();
-        result.Metadata = metadata;
+        var result = new TOut
+        {
+            Metadata = metadata
+        };
 
         return result;
     }
@@ -120,7 +123,8 @@ public abstract class StorageItem<TOut> where TOut : StorageItem<TOut>, new()
     /// <returns>Returns a new <see cref="Document"/> with the UUID of the new duplicate.</returns>
     public TOut Duplicate()
     {
-        var newId = DocumentFunctions.DuplicateDocument(InternalFunctions.GetAccessor(Metadata.Accessor.Uuid).GetPointer())
+        var newId = DocumentFunctions.DuplicateDocument(
+                InternalFunctions.GetAccessor(Metadata.Accessor.Uuid!).GetPointer())
             .ReadString();
 
         return Get(newId);
@@ -137,6 +141,6 @@ public abstract class StorageItem<TOut> where TOut : StorageItem<TOut>, new()
     public void MoveTo(string newParent)
     {
         Metadata.Set("parent", newParent);
-        Metadata = Metadata.Get(Metadata.Accessor.Uuid);
+        Metadata = Metadata.Get(Metadata.Accessor.Uuid!);
     }
 }

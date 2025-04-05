@@ -9,25 +9,23 @@ namespace Moss.NET.Sdk.Formats.Core.Extensions;
 
 public static class ZipArchiveExt
 {
-    public static void CreateEntry(this ZipArchive archive, string file, string content)
+    public static void CreateEntry(this ZipArchive archive, string? file, string content)
     {
         var data = Constants.DefaultEncoding.GetBytes(content);
         archive.CreateEntry(file, data);
     }
 
-    public static void CreateEntry(this ZipArchive archive, string file, byte[] data)
+    public static void CreateEntry(this ZipArchive archive, string? file, byte[]? data)
     {
         var entry = archive.CreateEntry(file);
-        using (var stream = entry.Open())
-        {
-            stream.Write(data, 0, data.Length);
-        }
+        using var stream = entry.Open();
+        stream.Write(data, 0, data.Length);
     }
 
     /// <summary>
     /// ZIP's are slash-side sensitive and ZIP's created on Windows and Linux can contain their own variation.
     /// </summary>
-    public static ZipArchiveEntry GetEntryImproved(this ZipArchive archive, string entryName)
+    public static ZipArchiveEntry GetEntryImproved(this ZipArchive archive, string? entryName)
     {
         var entry = archive.TryGetEntryImproved(entryName);
         if (entry == null)
@@ -37,7 +35,7 @@ public static class ZipArchiveExt
         return entry;
     }
 
-    public static ZipArchiveEntry TryGetEntryImproved(this ZipArchive archive, string entryName)
+    public static ZipArchiveEntry? TryGetEntryImproved(this ZipArchive archive, string? entryName)
     {
         // The zip specs says all file paths in an archive should be relative.
         // That is, they should not include a leading '/' character.
@@ -86,35 +84,32 @@ public static class ZipArchiveExt
         return entry;
     }
 
-    public static byte[] LoadBytes(this ZipArchive archive, string entryName)
+    public static byte[]? LoadBytes(this ZipArchive archive, string? entryName)
     {
         var entry = archive.GetEntryImproved(entryName);
-        using (var stream = entry.Open())
-        {
-            var data = stream.ReadToEnd();
-            return data;
-        }
+        using var stream = entry.Open();
+        var data = stream.ReadToEnd();
+        return data;
     }
 
-    public static string LoadText(this ZipArchive archive, string entryName)
+    public static string LoadText(this ZipArchive archive, string? entryName)
     {
         var data = archive.LoadBytes(entryName).TrimEncodingPreamble();
-        var str = Constants.DefaultEncoding.GetString(data, 0, data.Length);
+        var str = Constants.DefaultEncoding!.GetString(data, 0, data.Length);
         return str;
     }
 
-    public static XDocument LoadXml(this ZipArchive archive, string entryName)
+    public static XDocument LoadXml(this ZipArchive archive, string? entryName)
     {
         var entry = archive.GetEntryImproved(entryName);
 
-        using (var stream = entry.Open())
-        {
-            var xml = XDocument.Load(stream);
-            return xml;
-        }
+        using var stream = entry.Open();
+        var xml = XDocument.Load(stream);
+
+        return xml;
     }
 
-    public static XDocument LoadHtml(this ZipArchive archive, string entryName)
+    public static XDocument LoadHtml(this ZipArchive archive, string? entryName)
     {
         var html = archive.LoadText(entryName);
         return XDocument.Parse(html);

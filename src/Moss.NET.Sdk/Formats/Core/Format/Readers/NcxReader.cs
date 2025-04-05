@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Moss.NET.Sdk.Formats.Core.Extensions;
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8601 // Possible null reference assignment.
 
 namespace Moss.NET.Sdk.Formats.Core.Format.Readers;
 

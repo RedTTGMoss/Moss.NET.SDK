@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Moss.NET.Sdk.FFI;
+﻿namespace Moss.NET.Sdk.FFI;
 
 //refers to https://redttg.gitbook.io/moss/extensions/host-functions
 internal static class Functions

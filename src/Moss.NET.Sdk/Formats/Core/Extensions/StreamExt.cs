@@ -5,7 +5,7 @@ namespace Moss.NET.Sdk.Formats.Core.Extensions;
 
 internal static class StreamExt
 {
-    public static byte[] ReadToEnd(this Stream stream)
+    public static byte[]? ReadToEnd(this Stream stream)
     {
         long originalPosition = 0;
 

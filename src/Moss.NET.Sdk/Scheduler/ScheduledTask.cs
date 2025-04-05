@@ -4,7 +4,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Extism;
 using Hocon;
-using Moss.NET.Sdk.Core.Converters;
 using Moss.NET.Sdk.FFI;
 
 namespace Moss.NET.Sdk.Scheduler;
@@ -27,13 +26,13 @@ public class ScheduledTask
     public DateTimeOffset? NextRunTime { get; set; }
     [JsonIgnore] public TimeSpan Interval { get; set; }
 
-    [JsonIgnore] public HoconObject Options { get; set; }
+    [JsonIgnore] public HoconObject Options { get; set; } = null!;
 
     public string? Name { get; set; }
 
     public object? Data { get; set; } = new();
 
-    [JsonIgnore] public Job Job { get; }
+    [JsonIgnore] public Job Job { get; } = null!;
 
     [JsonIgnore] public Predicate<object>? Predicate { get; set; }
 

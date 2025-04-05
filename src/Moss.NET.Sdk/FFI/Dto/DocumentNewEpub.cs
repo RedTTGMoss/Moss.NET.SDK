@@ -17,11 +17,11 @@ internal class DocumentNewEpub
 
     [JsonPropertyName("epub_data")]
     [JsonConverter(typeof(Base64Converter))]
-    public Base64 EpubData { get; set; }
+    public Base64? EpubData { get; set; }
 
     [JsonPropertyName("epub_file")]
     public string? EpubFile { get; set; }
 
     [JsonPropertyName("accessor")]
-    public Accessor Accessor { get; set; }
+    public Accessor Accessor { get; set; }= null!;
 }

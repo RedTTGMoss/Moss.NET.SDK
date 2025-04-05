@@ -4,7 +4,7 @@ namespace Moss.NET.Sdk.Formats.Core.Extensions;
 
 internal static class PathExt
 {
-    public static string GetDirectoryPath(string filePath)
+    public static string? GetDirectoryPath(string? filePath)
     {
         var lastSlashIndex = filePath.LastIndexOf('/');
         var dir = lastSlashIndex == -1 ? string.Empty : filePath.Substring(0, lastSlashIndex);
@@ -15,9 +15,9 @@ internal static class PathExt
         return dir;
     }
 
-    public static string Combine(string directory, string filename)
+    public static string? Combine(string? directory, string? filename)
     {
-        string ensurePrefix(string str, string prefix) =>
+        string? ensurePrefix(string? str, string prefix) =>
             str.StartsWith(prefix) ? str : prefix + str;
 
         if (string.IsNullOrEmpty(directory) || filename.StartsWith("/"))

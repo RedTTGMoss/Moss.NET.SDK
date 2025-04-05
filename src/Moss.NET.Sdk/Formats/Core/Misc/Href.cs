@@ -1,13 +1,14 @@
 ﻿using System;
+#pragma warning disable CS8618, CS9264
 
 namespace Moss.NET.Sdk.Formats.Core.Misc;
 
 internal class Href
 {
-    public readonly string Path;
+    public readonly string? Path;
     public readonly string HashLocation;
 
-    public Href(string href)
+    public Href(string? href)
     {
         if (string.IsNullOrWhiteSpace(href)) throw new ArgumentNullException(nameof(href));
 

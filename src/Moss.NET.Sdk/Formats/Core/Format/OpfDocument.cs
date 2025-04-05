@@ -52,12 +52,12 @@ public class OpfDocument
 
     public string UniqueIdentifier { get; internal set; }
     public EpubVersion EpubVersion { get; internal set; }
-    public OpfMetadata Metadata { get; internal set; } = new OpfMetadata();
-    public OpfManifest Manifest { get; internal set; } = new OpfManifest();
-    public OpfSpine Spine { get; internal set; } = new OpfSpine();
-    public OpfGuide Guide { get; internal set; } = new OpfGuide();
+    public OpfMetadata Metadata { get; internal set; } = new();
+    public OpfManifest Manifest { get; internal set; } = new();
+    public OpfSpine Spine { get; internal set; } = new();
+    public OpfGuide Guide { get; internal set; } = new();
 
-    internal string FindCoverPath()
+    internal string? FindCoverPath()
     {
         var coverMetaItem = Metadata.FindCoverMeta();
         if (coverMetaItem != null)
@@ -73,7 +73,7 @@ public class OpfDocument
         return coverItem?.Href;
     }
 
-    internal string FindAndRemoveCover()
+    internal string? FindAndRemoveCover()
     {
         var path = FindCoverPath();
         var meta = Metadata.FindAndDeleteCoverMeta();
@@ -81,9 +81,9 @@ public class OpfDocument
         return path;
     }
 
-    internal string FindNcxPath()
+    internal string? FindNcxPath()
     {
-        string path = null;
+        string? path = null;
 
         var ncxItem = Manifest.Items.FirstOrDefault(e => e.MediaType == "application/x-dtbncx+xml");
         if (ncxItem != null)
@@ -109,7 +109,7 @@ public class OpfDocument
         return path;
     }
 
-    internal string FindNavPath()
+    internal string? FindNavPath()
     {
         var navItem = Manifest.Items.FirstOrDefault(e => e.Properties.Contains("nav"));
         return navItem?.Href;
@@ -161,7 +161,7 @@ public class OpfMetadataDate
     /// <summary>
     /// i.e. "modification"
     /// </summary>
-    public string Event { get; internal set; }
+    public string? Event { get; internal set; }
 }
 
 public class OpfMetadataCreator
@@ -209,7 +209,7 @@ public class OpfMetadataMeta
     public string Refines { get; internal set; }
     public string Property { get; internal set; }
     public string Scheme { get; internal set; }
-    public string Text { get; internal set; }
+    public string? Text { get; internal set; }
 }
 
 public class OpfManifest
@@ -223,7 +223,7 @@ public class OpfManifest
         return Items.FirstOrDefault(e => e.Properties.Contains(ManifestItemCoverImageProperty));
     }
 
-    internal void DeleteCoverItem(string id = null)
+    internal void DeleteCoverItem(string? id = null)
     {
         var item = id != null ? Items.FirstOrDefault(e => e.Id == id) : FindCoverItem();
         if (item != null)
@@ -248,7 +248,7 @@ public class OpfManifestItem
     }
 
     public string Id { get; internal set; }
-    public string Href { get; internal set; }
+    public string? Href { get; internal set; }
     public IList<string> Properties { get; internal set; } = new List<string>();
     public string MediaType { get; internal set; }
     public string RequiredNamespace { get; internal set; }

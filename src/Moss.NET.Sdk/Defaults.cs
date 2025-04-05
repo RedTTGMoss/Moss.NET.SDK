@@ -1,7 +1,6 @@
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
-using Extism;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.FFI.Dto;
@@ -53,7 +52,7 @@ public static class Defaults
         var valuePtr = GetDefaultValue(key.GetPointer());
 
         return valuePtr.Get<ConfigGetD>().value
-            .Deserialize<T>((JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T)));
+            .Deserialize((JsonTypeInfo<T>)JsonContext.Default.GetTypeInfo(typeof(T))!)!;
     }
 
     public static Color GetDefaultColor(string key)

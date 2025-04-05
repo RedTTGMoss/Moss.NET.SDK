@@ -6,7 +6,7 @@ namespace Moss.NET.Sdk;
 
 public class Options(HoconObject hoconObject) : DynamicObject
 {
-    public override bool TryGetMember(GetMemberBinder binder, out object result)
+    public override bool TryGetMember(GetMemberBinder binder, out object? result)
     {
         if (hoconObject.TryGetValue(binder.Name, out var hoconValue))
         {

@@ -1,28 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
 namespace Moss.NET.Sdk.Formats.Core.Format;
 
 internal static class NavElements
 {
-    public static readonly string Html = "html";
+    public const string Html = "html";
 
-    public static readonly string Head = "head";
-    public static readonly string Title = "title";
-    public static readonly string Link = "link";
-    public static readonly string Meta = "meta";
+    public const string Head = "head";
+    public const string Title = "title";
+    public const string Link = "link";
+    public const string Meta = "meta";
 
-    public static readonly string Body = "body";
-    public static readonly string Nav = "nav";
-    public static readonly string Ol = "ol";
-    public static readonly string Li = "li";
-    public static readonly string A = "a";
+    public const string Body = "body";
+    public const string Nav = "nav";
+    public const string Ol = "ol";
+    public const string Li = "li";
+    public const string A = "a";
 }
 
 public class NavDocument
 {
-    public NavHead Head { get; internal set; } = new NavHead();
-    public NavBody Body { get; internal set; } = new NavBody();
+    public NavHead Head { get; internal init; } = new();
+    public NavBody Body { get; internal init; } = new();
 }
 
 public class NavHead
@@ -78,7 +80,7 @@ public class NavBody
     /// </summary>
     internal XElement Dom { get; set; }
 
-    public IList<NavNav> Navs { get; internal set; } = new List<NavNav>();
+    public IList<NavNav> Navs { get; internal init; } = new List<NavNav>();
 }
 
 public class NavNav
@@ -101,9 +103,9 @@ public class NavNav
     /// <summary>
     /// Instantiated only when the EPUB was read.
     /// </summary>
-    internal XElement Dom { get; set; }
+    internal XElement Dom { get; init; }
 
-    public string Type { get; internal set; }
+    public string Type { get; internal init; }
     public string Id { get; internal set; }
     public string Class { get; internal set; }
     public string Hidden { get; internal set; }

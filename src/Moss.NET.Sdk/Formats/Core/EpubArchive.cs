@@ -42,7 +42,7 @@ public class EpubArchive
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    public ZipArchiveEntry FindEntry(string path)
+    public ZipArchiveEntry? FindEntry(string? path)
     {
         if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
         return archive.TryGetEntryImproved(path);

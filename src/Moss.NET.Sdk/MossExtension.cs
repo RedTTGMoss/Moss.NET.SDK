@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.Metrics;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Extism;
 using Hocon;
@@ -16,7 +15,7 @@ public class MossExtension
     private static MossExtension? _instance;
 
     public Meter? Meter;
-    public IMeterListener MeterListener;
+    private IMeterListener? _meterListener;
 
     internal static MossExtension? Instance
     {
@@ -68,8 +67,8 @@ public class MossExtension
         if (Config!.GetBoolean("instrumentation.enabled", true))
         {
             _instance.Meter = new Meter("Moss.NET.Sdk");
-            _instance.MeterListener = new FileMeterListener("extension/instrumentation.txt");
-            _instance.MeterListener.Init();
+            _instance._meterListener = new FileMeterListener("extension/instrumentation.txt");
+            _instance._meterListener.Init();
         }
 
         Extensions.Measure("extension.register", () =>

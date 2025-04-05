@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
 namespace Moss.NET.Sdk.Formats.Core.Format;
 
@@ -30,7 +31,7 @@ public class NcxDocument
     public IList<NcxMeta> Meta { get; internal set; } = new List<NcxMeta>();
     public string DocTitle { get; internal set; }
     public string DocAuthor { get; internal set; }
-    public NcxNapMap NavMap { get; internal set; } = new NcxNapMap(); // <navMap> is a required element in NCX.
+    public NcxNapMap NavMap { get; internal set; } = new(); // <navMap> is a required element in NCX.
     public NcxPageList PageList { get; internal set; }
     public NcxNavList NavList { get; internal set; }
 }
@@ -69,16 +70,16 @@ public class NcxNavPoint
         public static readonly XName ContentSrc = "src";
     }
 
-    public string Id { get; internal set; }
-    public string Class { get; internal set; }
-    public int? PlayOrder { get; internal set; }
+    public string Id { get; internal init; }
+    public string Class { get; internal init; }
+    public int? PlayOrder { get; internal init; }
 
     // NavLabelText and ContentSrc are flattened elements for convenience.
     // In case <navLabel> or <content/> need to carry more data, then they should have a dedicated model created.
-    public string NavLabelText { get; internal set; }
+    public string NavLabelText { get; internal init; }
 
-    public string ContentSrc { get; internal set; }
-    public IList<NcxNavPoint> NavPoints { get; internal set; } = new List<NcxNavPoint>();
+    public string? ContentSrc { get; internal init; }
+    public IList<NcxNavPoint> NavPoints { get; internal init; } = new List<NcxNavPoint>();
 
     public override string ToString()
     {
@@ -96,9 +97,9 @@ public enum NcxPageTargetType
 
 public class NcxPageList
 {
-    public NcxNavInfo NavInfo { get; internal set; }
+    public NcxNavInfo NavInfo { get; internal init; }
 
-    public IList<NcxPageTarget> PageTargets { get; internal set; } = new List<NcxPageTarget>();
+    public IList<NcxPageTarget> PageTargets { get; internal init; } = new List<NcxPageTarget>();
 }
 
 public class NcxNavInfo
@@ -117,12 +118,12 @@ public class NcxPageTarget
         public static readonly XName ContentSrc = "src";
     }
 
-    public string Id { get; internal set; }
-    public int? Value { get; internal set; }
-    public string Class { get; internal set; }
-    public NcxPageTargetType? Type { get; internal set; }
-    public string NavLabelText { get; internal set; }
-    public string ContentSrc { get; internal set; }
+    public string Id { get; internal init; }
+    public int? Value { get; internal init; }
+    public string Class { get; internal init; }
+    public NcxPageTargetType? Type { get; internal init; }
+    public string NavLabelText { get; internal init; }
+    public string ContentSrc { get; internal init; }
 }
 
 public class NcxNavList

@@ -1,7 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.FFI.Dto;
-using Moss.NET.Sdk.NEW;
 
 namespace Moss.NET.Sdk.Core;
 
@@ -44,7 +43,7 @@ public static class InternalFunctions
 
     public static ulong NewDocumentSyncProgress(Accessor accessor)
     {
-        return NewDocumentSyncProgress(accessor.GetPointer(), accessor.Uuid.GetPointer());
+        return NewDocumentSyncProgress(accessor.GetPointer(), accessor.Uuid!.GetPointer());
     }
 
     public static RootInfo GetRootInfo()

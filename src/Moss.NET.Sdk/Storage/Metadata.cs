@@ -4,6 +4,8 @@ using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.Core.Converters;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.FFI.Dto;
+// ReSharper disable MemberCanBePrivate.Global
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
 namespace Moss.NET.Sdk.Storage;
 

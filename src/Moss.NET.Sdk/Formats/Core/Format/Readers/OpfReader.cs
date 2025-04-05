@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Xml.Linq;
 using Moss.NET.Sdk.Formats.Core.Extensions;
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8601 // Possible null reference assignment.
 
 namespace Moss.NET.Sdk.Formats.Core.Format.Readers;
 
@@ -37,7 +39,7 @@ internal static class OpfReader
                 Dates = metadata?.Elements(OpfElements.Date).AsObjectList(elem => new OpfMetadataDate
                 {
                     Text = elem.Value,
-                    Event = (string)elem.Attribute(OpfMetadataDate.Attributes.Event)
+                    Event = (string)elem.Attribute(OpfMetadataDate.Attributes.Event)!
                 }),
                 Descriptions = metadata?.Elements(OpfElements.Description).AsStringList(),
                 Formats = metadata?.Elements(OpfElements.Format).AsStringList(),

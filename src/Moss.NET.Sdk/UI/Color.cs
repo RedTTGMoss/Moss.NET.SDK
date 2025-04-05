@@ -206,7 +206,7 @@ public readonly struct Color(long r, long g, long b, long? a = 255)
         var r = (long)(color1.R * ratio + color2.R * (1 - ratio));
         var g = (long)(color1.G * ratio + color2.G * (1 - ratio));
         var b = (long)(color1.B * ratio + color2.B * (1 - ratio));
-        var a = (long)(color1.A * ratio + color2.A * (1 - ratio));
+        var a = (long)(color1.A * ratio + color2.A * (1 - ratio))!;
 
         return new Color(r, g, b, a);
     }
