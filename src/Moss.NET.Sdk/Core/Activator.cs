@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Moss.NET.Sdk.Scheduler;
 
-public class JobActivator
+public class Activator<TOut>
 {
     private readonly Dictionary<string, Type> _types = new();
 
@@ -12,10 +12,10 @@ public class JobActivator
         _types[name] = typeof(T);
     }
 
-    public Job Create(string name)
+    public TOut Create(string name)
     {
         if (!_types.TryGetValue(name, out var type)) throw new Exception($"Type '{name}' not found");
 
-        return (Job)Activator.CreateInstance(type)! ?? throw new InvalidOperationException($"Job '{name}' not found");
+        return (TOut)System.Activator.CreateInstance(type)! ?? throw new InvalidOperationException($"Job '{name}' not found");
     }
 }

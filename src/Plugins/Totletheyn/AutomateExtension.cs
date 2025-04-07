@@ -1,7 +1,10 @@
 ﻿using System.Runtime.InteropServices;
+using Hocon;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.Scheduler;
+using Totletheyn.Core;
+using Totletheyn.Core.Eventing;
 using Totletheyn.Jobs;
 
 namespace Totletheyn;
@@ -26,6 +29,6 @@ public class AutomateExtension : MossExtension
 
     public override void Register(MossState state)
     {
-        var eventConfig = Config.Get("events");
+        EventActions.Init(Config);
     }
 }

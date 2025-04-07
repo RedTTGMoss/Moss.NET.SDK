@@ -14,7 +14,7 @@ public static class TaskScheduler
 {
     private static HoconObject _config = null!;
     private static readonly List<ScheduledTask> Jobs = [];
-    public static readonly JobActivator Activator = new();
+    public static readonly Activator<Job> Activator = new();
     public static bool IsEnabled => MossExtension.Config.GetBoolean("scheduler.enabled", true);
 
     public static void ScheduleTask(ScheduledTask task)

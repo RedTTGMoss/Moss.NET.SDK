@@ -7,6 +7,7 @@ using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.Core.Instrumentation;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.Scheduler;
+using Activator = System.Activator;
 using File = System.IO.File;
 
 namespace Moss.NET.Sdk;
@@ -29,7 +30,7 @@ public class MossExtension
         set => _instance = value;
     }
 
-    public static HoconRoot Config { get; set; } = HoconParser.Parse("");
+    public static HoconRoot Config { get; set; } = HoconParser.Parse("{}");
 
     public virtual void Register(MossState state)
     {

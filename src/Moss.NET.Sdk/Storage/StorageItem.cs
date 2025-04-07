@@ -82,27 +82,6 @@ public abstract class StorageItem<TOut> where TOut : StorageItem<TOut>, new()
         Dispatcher.Register(taskid, callback);
     }
 
-    public async Task EnsureDownloadAsync()
-    {
-        var tcs = new TaskCompletionSource();
-        EnsureDownload(() => tcs.SetResult());
-        await tcs.Task;
-    }
-
-    public async Task DeleteAsync(bool unload = false)
-    {
-        var tcs = new TaskCompletionSource();
-        Delete(() => tcs.SetResult(), unload);
-        await tcs.Task;
-    }
-
-    public async Task UploadAsync(bool unload = false)
-    {
-        var tcs = new TaskCompletionSource();
-        Upload(() => tcs.SetResult(), unload);
-        await tcs.Task;
-    }
-
     public static TOut Get(string uuid)
     {
         var metadata = Metadata.Get(uuid);
