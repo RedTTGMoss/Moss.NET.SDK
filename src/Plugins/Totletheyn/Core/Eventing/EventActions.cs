@@ -1,0 +1,29 @@
+﻿using System.Collections.Generic;
+using Hocon;
+using Totletheyn.Actions;
+
+namespace Totletheyn.Core.Eventing;
+
+public class EventActions
+{
+    public static List<EventTrigger> Triggers { get; } = [];
+
+    public static void Init(HoconRoot config)
+    {
+        var eventConfig = config.GetObject("events");
+
+        RegisterAction<MoveToAction>();
+
+        foreach (var trigger in eventConfig)
+        {
+            var eventTrigger = EventTrigger.Create(trigger.Key, trigger.Value.GetObject());
+            Triggers.Add(eventTrigger);
+        }
+    }
+
+    static void RegisterAction<T>()
+        where T : class, IEventAction
+    {
+        EventTrigger.Activator.Register<T>(T.Name);
+    }
+}
