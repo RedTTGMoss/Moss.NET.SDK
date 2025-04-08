@@ -22,8 +22,8 @@ public class EventActions
     }
 
     static void RegisterAction<T>()
-        where T : class, IEventAction
+        where T : class, IEventAction, new()
     {
-        EventTrigger.Activator.Register<T>(T.Name);
+        EventTrigger.Activator.Register<T>(new T().Name);
     }
 }

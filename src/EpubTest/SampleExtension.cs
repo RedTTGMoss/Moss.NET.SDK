@@ -25,7 +25,7 @@ public class SampleExtension : MossExtension
 
     public override void ExtensionLoop(MossState state)
     {
-        RunOnce.Execute("epub", async void () =>
+        RunOnce.Execute("epub", void () =>
         {
             var output = new Base64();
             var writer = new EpubWriter();
@@ -44,7 +44,7 @@ public class SampleExtension : MossExtension
 
             var epub = new EpubNotebook("test ebook", output);
 
-            await epub.UploadAsync();
+            epub.Upload();
         });
     }
 }

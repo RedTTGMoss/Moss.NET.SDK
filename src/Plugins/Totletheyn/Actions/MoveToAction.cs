@@ -6,7 +6,7 @@ namespace Totletheyn.Actions;
 
 public class MoveToAction : IEventAction
 {
-    public static string Name => "move to";
+    public string Name => "move to";
 
     public void Execute(Metadata md, object collection)
     {

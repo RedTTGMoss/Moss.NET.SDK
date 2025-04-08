@@ -4,6 +4,6 @@ namespace Totletheyn.Core.Eventing;
 
 public interface IEventAction
 {
-    static abstract string Name { get; }
+    string Name { get; }
     void Execute(Metadata md, object param);
 }
