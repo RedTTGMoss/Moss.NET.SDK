@@ -10,7 +10,9 @@ public class EventActions
 
     public static void Init(HoconRoot config)
     {
-        var eventConfig = config.GetObject("events");
+        var eventConfig = config.GetObject("events", null);
+
+        if (eventConfig is null) return;
 
         RegisterAction<MoveToAction>();
 
