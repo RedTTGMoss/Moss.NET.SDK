@@ -1,0 +1,16 @@
+crawler:
+	frauenhofer(https://www.fraunhofer.de/de/mediathek/publikationen/fraunhofer-magazin.html):
+		title: document.querySelectorAll("h3.teaser-default__text-headline")[*].innerText
+		pdf: document.querySelectorAll(".file-pdf > a")[*].href;
+	
+	mpf(https://www.mpg.de/maxplanckforschung):
+		title: document.querySelectorAll("h3")[*].innerText
+		pdf: document.querySelectorAll(".mpg-icon-pdf")[0].href
+	
+	hello world(https://www.raspberrypi.org/hello-world):
+		title: document.querySelectorAll("h3")[*].innerText
+		pdf: document.querySelectorAll(".pk-c-detailed-link-card__link")[*].href -> every 4th is the pdf
+		
+	paged out (https://pagedout.institute/rss.xml): with rss feed:
+		<title>Paged Out! #6</title>
+    <link>https://pagedout.institute/download/PagedOut_006.pdf</link>
