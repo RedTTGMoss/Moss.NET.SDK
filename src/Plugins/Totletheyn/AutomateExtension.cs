@@ -14,6 +14,7 @@ public class AutomateExtension : MossExtension
     public static ulong Register()
     {
         TaskScheduler.Activator.Register<RssJob>("rss");
+        TaskScheduler.Activator.Register<CrawlerJob>("crawler");
 
         Init<AutomateExtension>();
 
