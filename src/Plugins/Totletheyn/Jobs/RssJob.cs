@@ -24,6 +24,7 @@ public class RssJob : Job
 
     public override void Run()
     {
+        /*
         _lastUpdated = DateTimeOffset.UtcNow;
         _logger.Info($"Running RssJob with '{Options.feeds.Length}' feeds.");
 
@@ -57,6 +58,7 @@ public class RssJob : Job
         _logger.Info($"Saving generated feed to {Options.folder}");
         var notebook = new EpubNotebook(_lastUpdated.ToString(), output, Options.folder);
         notebook.Upload();
+        */
     }
 
     public override void Shutdown()

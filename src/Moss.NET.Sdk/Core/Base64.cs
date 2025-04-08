@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Extism;
 
 namespace Moss.NET.Sdk.Core;
 
@@ -65,6 +66,11 @@ public class Base64 : Stream
     public static implicit operator Base64(MemoryStream ms)
     {
         return new Base64(ms);
+    }
+
+    public static implicit operator Base64(MemoryBlock block)
+    {
+        return new Base64(block.ReadBytes());
     }
 
     public static implicit operator Base64(byte[] bytes)

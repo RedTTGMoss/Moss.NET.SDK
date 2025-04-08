@@ -1,13 +1,64 @@
-﻿using Moss.NET.Sdk.Scheduler;
+﻿using System.Collections.Generic;
+using Moss.NET.Sdk;
+using Moss.NET.Sdk.Core;
+using Moss.NET.Sdk.Scheduler;
+using Moss.NET.Sdk.Storage;
 using Totletheyn.Core;
+using Totletheyn.Crawlers;
 
 namespace Totletheyn.Jobs;
 
 public class CrawlerJob : Job
 {
+    private RestTemplate template = new RestTemplate();
+    private Activator<ICrawler> _activator = new();
+    private List<ICrawler> _crawlers = [];
+    private static readonly LoggerInstance Logger = Log.GetLogger<CrawlerJob>();
+    private string inboxId;
+    private List<string> lastIssueTitles = [];
+
+    public override void Init()
+    {
+        Logger.Info("Initializing Crawler");
+        _activator.Register<PagedOutCrawler>("pagedout");
+        inboxId = MossConfig.Get<string>("inbox");
+        lastIssueTitles = (List<string>)Data;
+
+        foreach (var crawler in Options.providers)
+        {
+            _crawlers.Add(_activator.Create(crawler));
+        }
+
+        Logger.Info("Crawlers initialized: ");
+    }
 
     public override void Run()
     {
+        Logger.Info("Running Crawler");
 
+        List<Issue> issues = [];
+        foreach (var crawler in _crawlers)
+        {
+            if (crawler.IsNewIssueAvailable())
+            {
+                issues.AddRange(crawler.GetNewIssues(lastIssueTitles));
+            }
+        }
+
+        Logger.Info($"CrawlerJob has {issues.Count} new issues");
+        foreach (var issue in issues)
+        {
+            Logger.Info($"downloading {issue}");
+            Base64 content = template.Exchange(issue.PdfUrl).Body;
+            Logger.Info($"uploading {issue}");
+
+            var pdf = new PdfNotebook(issue.Title, content, inboxId);
+            pdf.Upload();
+        }
+    }
+
+    public override void Shutdown()
+    {
+        Data = lastIssueTitles;
     }
 }
