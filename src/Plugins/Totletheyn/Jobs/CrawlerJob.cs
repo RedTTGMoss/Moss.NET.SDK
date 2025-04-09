@@ -10,19 +10,19 @@ namespace Totletheyn.Jobs;
 
 public class CrawlerJob : Job
 {
-    private RestTemplate template = new RestTemplate();
+    private RestTemplate template = new();
     private Activator<ICrawler> _activator = new();
     private List<ICrawler> _crawlers = [];
     private static readonly LoggerInstance Logger = Log.GetLogger<CrawlerJob>();
     private string inboxId;
-    private List<string> lastIssueTitles = [];
 
     public override void Init()
     {
         Logger.Info("Initializing Crawler");
-        _activator.Register<PagedOutCrawler>("pagedout");
+
+        _activator.Register<PagedOutCrawler>(PagedOutCrawler.Name);
+
         inboxId = MossConfig.Get<string>("inbox");
-        lastIssueTitles = (List<string>)Data;
 
         foreach (var crawler in Options.providers)
         {
@@ -41,7 +41,7 @@ public class CrawlerJob : Job
         {
             if (crawler.IsNewIssueAvailable())
             {
-                issues.AddRange(crawler.GetNewIssues(lastIssueTitles));
+                issues.AddRange(crawler.GetNewIssues());
             }
         }
 
@@ -55,10 +55,5 @@ public class CrawlerJob : Job
             var pdf = new PdfNotebook(issue.Title, content, inboxId);
             pdf.Upload();
         }
-    }
-
-    public override void Shutdown()
-    {
-        Data = lastIssueTitles;
     }
 }

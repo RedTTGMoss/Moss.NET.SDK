@@ -7,6 +7,7 @@ namespace Totletheyn.Crawlers;
 
 public class PagedOutCrawler : ICrawler
 {
+    public const string Name = "pagedout";
     private Feed feed;
 
     public PagedOutCrawler()
@@ -16,19 +17,13 @@ public class PagedOutCrawler : ICrawler
 
     public bool IsNewIssueAvailable()
     {
-
         return true;
     }
 
-    public IEnumerable<Issue> GetNewIssues(List<string> lastIssueTitles)
+    public IEnumerable<Issue> GetNewIssues()
     {
-        foreach (var item in feed.Items)
-        {
-            //yield return new(item.Title, item.Link);
-        }
-
-        return feed.Items.Select(_ => new Issue(_.Title, _.Link))
-            .Where(issue => !lastIssueTitles.Contains(issue.Title))
+        return feed.Items
+            .Select(_ => new Issue(_.Title, _.Link))
             .ToList();
     }
 }
