@@ -11,6 +11,3 @@ crawler:
 		title: document.querySelectorAll("h3")[*].innerText
 		pdf: document.querySelectorAll(".pk-c-detailed-link-card__link")[*].href -> every 4th is the pdf
 		
-	paged out (https://pagedout.institute/rss.xml): with rss feed:
-		<title>Paged Out! #6</title>
-    <link>https://pagedout.institute/download/PagedOut_006.pdf</link>

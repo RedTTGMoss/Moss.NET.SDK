@@ -21,6 +21,7 @@ public class CrawlerJob : Job
         Logger.Info("Initializing Crawler");
 
         _activator.Register<PagedOutCrawler>(PagedOutCrawler.Name);
+        _activator.Register<FrauenhoferCrawler>(FrauenhoferCrawler.Name);
 
         inboxId = MossConfig.Get<string>("inbox");
 
