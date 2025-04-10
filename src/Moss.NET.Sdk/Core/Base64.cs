@@ -82,4 +82,8 @@ public class Base64 : Stream
     {
         return Convert.ToBase64String(strm.ToArray());
     }
+
+    public string Decode() {
+        return new StreamReader(strm).ReadToEnd();
+    }
 }

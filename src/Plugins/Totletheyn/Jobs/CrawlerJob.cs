@@ -25,7 +25,7 @@ public class CrawlerJob : Job
 
         inboxId = MossConfig.Get<string>("inbox");
 
-        foreach (var crawler in Options.providers)
+        foreach (var crawler in (string[])Options.providers)
         {
             _crawlers.Add(_activator.Create(crawler));
         }
@@ -49,9 +49,9 @@ public class CrawlerJob : Job
         Logger.Info($"CrawlerJob has {issues.Count} new issues");
         foreach (var issue in issues)
         {
-            Logger.Info($"downloading {issue}");
+            Logger.Info($"downloading {issue.Title}");
             Base64 content = template.Exchange(issue.PdfUrl).Body;
-            Logger.Info($"uploading {issue}");
+            Logger.Info($"uploading {issue.Title}");
 
             var pdf = new PdfNotebook(issue.Title, content, inboxId);
             pdf.Upload();

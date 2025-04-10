@@ -12,13 +12,17 @@ public class FrauenhoferCrawler : ICrawler
     public const string Name = "frauenhofer";
 
     private readonly RestTemplate template = new();
-    private HtmlDocument document = new();
+    private readonly HtmlDocument document = new();
 
 
     public FrauenhoferCrawler()
     {
-        Base64 content = template.Exchange("https://www.fraunhofer.de/de/mediathek/publikationen/fraunhofer-magazin.html").Body;
-        document.LoadHtml(content.Decode());
+        var content = template
+            .Exchange("https://www.fraunhofer.de/de/mediathek/publikationen/fraunhofer-magazin.html")
+            .Body
+            .ReadString();
+
+        document.LoadHtml(content);
     }
 
     public bool IsNewIssueAvailable()
