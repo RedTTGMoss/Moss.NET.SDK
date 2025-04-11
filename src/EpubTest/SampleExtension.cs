@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Core;
-using Moss.NET.Sdk.Formats.Core;
+using Moss.NET.Sdk.Formats.Epub;
 using Moss.NET.Sdk.Storage;
 
 namespace EpubTest;

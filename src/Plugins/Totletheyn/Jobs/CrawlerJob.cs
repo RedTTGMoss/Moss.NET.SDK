@@ -25,7 +25,12 @@ public class CrawlerJob : Job
 
         inboxId = MossConfig.Get<string>("inbox");
 
-        foreach (var crawler in (string[])Options.providers)
+        if (Options.providers is null){
+            Logger.Error("No providers specified");
+            return;
+        }
+
+        foreach (var crawler in Options.providers)
         {
             _crawlers.Add(_activator.Create(crawler));
         }

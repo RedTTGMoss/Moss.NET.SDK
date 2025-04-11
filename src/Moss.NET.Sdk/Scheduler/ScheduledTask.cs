@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using Extism;
 using Hocon;
+using LiteDB;
 using Moss.NET.Sdk.FFI;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Moss.NET.Sdk.Scheduler;
 
@@ -32,19 +33,16 @@ public class ScheduledTask
 
     public object? Data { get; set; } = new();
 
-    [JsonIgnore] public Job Job { get; } = null!;
+    [BsonIgnore] public Job Job { get; } = null!;
 
-    [JsonIgnore] public Predicate<object>? Predicate { get; set; }
+    [BsonIgnore] public Predicate<object>? Predicate { get; set; }
+
+    public ObjectId _id { get; set; }
 
     public void UpdateNextRunTime()
     {
         NextRunTime = NextRunTime?.Add(Interval);
 
         Pdk.Log(LogLevel.Error, "next: " + NextRunTime);
-    }
-
-    public static string Serialize(List<ScheduledTask> tasks)
-    {
-        return JsonSerializer.Serialize(tasks, JsonContext.Default.ListScheduledTask);
     }
 }

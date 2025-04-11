@@ -18,3 +18,7 @@ You can find a full overview of all functionalities the sdk provides in the [wik
 3. Create a new project with `dotnet new moss-plugin`
 
 You can find also an example plugin that uses all functionalities of the sdk [here](https://github.com/RedTTGMoss/Moss.NET.SDK/tree/main/src/SamplePlugin).   
+
+# Generating Notebooks
+
+To generate epub notebooks the sdk has integrated a changed version of the library EpubSharp. If you want to generate pdf notebooks you can use PdfPig
