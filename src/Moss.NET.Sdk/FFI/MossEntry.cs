@@ -10,7 +10,8 @@ internal static class MossEntry
     public static ulong Unregister()
     {
         TaskScheduler.SaveTasks();
-        MossExtension.Instance?.Unregister();
+        MossExtension.Instance!.Cache.Dispose();
+        MossExtension.Instance.Unregister();
 
         return 0;
     }

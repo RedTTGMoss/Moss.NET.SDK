@@ -41,7 +41,6 @@ namespace Moss.NET.Sdk.FFI;
 [JsonSerializable(typeof(FileSyncProgress))]
 [JsonSerializable(typeof(DocumentSyncProgress))]
 [JsonSerializable(typeof(RmFileList))]
-[JsonSerializable(typeof(List<ScheduledTask>))]
 internal partial class JsonContext : JsonSerializerContext
 {
 }

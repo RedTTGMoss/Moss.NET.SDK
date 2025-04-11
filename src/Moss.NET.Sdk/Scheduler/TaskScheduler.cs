@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using Extism;
 using Hocon;
+using LiteDB;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
 using File = System.IO.File;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Moss.NET.Sdk.Scheduler;
 
@@ -16,6 +17,8 @@ public static class TaskScheduler
     private static readonly List<ScheduledTask> Jobs = [];
     public static readonly Activator<Job> Activator = new();
     public static bool IsEnabled => MossExtension.Config.GetBoolean("scheduler.enabled", true);
+
+    private static ILiteCollection<ScheduledTask> JobsCollection;
 
     public static void ScheduleTask(ScheduledTask task)
     {
@@ -55,36 +58,31 @@ public static class TaskScheduler
         {
             job.Data = job.Job.Data;
             job.Job.Shutdown();
-        }
 
-        var json = ScheduledTask.Serialize(Jobs);
-        File.WriteAllText("extension/.tasks", json);
+            JobsCollection.Update(job);
+        }
     }
 
     public static void Init()
     {
         if (!IsEnabled) return;
 
-        var json = "[]";
-        try
-        {
-            json = File.ReadAllText("extension/.tasks");
-        }
-        catch (Exception)
-        {
-            // ignored
-        }
+        JobsCollection = MossExtension.Instance.Cache.GetCollection<ScheduledTask>();
 
-        ReadJobConfig(json);
+        ReadJobConfig();
     }
 
-    private static void ReadJobConfig(string json)
+    private static void ReadJobConfig()
     {
         if (MossExtension.Config is null) return;
 
-        _config = MossExtension.Config.GetObject("scheduler");
+        _config = MossExtension.Config.GetObject("scheduler", null);
+        if (_config is null) return;
 
-        foreach (var jobInfo in _config.GetObject("jobs"))
+        var jobsDefinition = _config.GetObject("jobs");
+        if (jobsDefinition is null) return;
+
+        foreach (var jobInfo in jobsDefinition)
         {
             var obj = jobInfo.Value.GetObject();
 
@@ -115,12 +113,12 @@ public static class TaskScheduler
             ScheduleTask(new ScheduledTask(job.Name, job, DateTime.UtcNow, job.Interval, options));
         }
 
-        AssociateJobInfo(json);
+        AssociateJobInfo();
     }
 
-    private static void AssociateJobInfo(string json)
+    private static void AssociateJobInfo()
     {
-        var taskInfos = JsonSerializer.Deserialize(json, JsonContext.Default.ListScheduledTask);
+        var taskInfos = JobsCollection.FindAll();
 
         if (taskInfos == null) return;
 

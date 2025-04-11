@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Diagnostics.Metrics;
-using System.Text.Json;
 using Extism;
 using Hocon;
+using LiteDB;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.Core.Instrumentation;
 using Moss.NET.Sdk.FFI;
 using Moss.NET.Sdk.Scheduler;
 using Activator = System.Activator;
 using File = System.IO.File;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Moss.NET.Sdk;
 
@@ -18,6 +19,7 @@ public class MossExtension
     private IMeterListener? _meterListener;
 
     public Meter? Meter;
+    public LiteDatabase Cache = new("extension/cache.db");
 
     internal static MossExtension? Instance
     {
@@ -53,8 +55,6 @@ public class MossExtension
             var configSource = File.ReadAllText(configPath);
             Config = HoconParser.Parse(configSource);
         }
-
-        TaskScheduler.Init();
     }
 
     public static void Init<T>() where T : MossExtension, new()
@@ -64,6 +64,8 @@ public class MossExtension
 
         PreInitExtension();
         _instance = Activator.CreateInstance<T>();
+
+        TaskScheduler.Init();
 
         var input = Pdk.GetInputJson(JsonContext.Default.MossState);
 
@@ -75,7 +77,6 @@ public class MossExtension
         }
 
         Extensions.Measure("extension.register", () => { _instance!.Register(input!); });
-
 
         var extensionInfo = new ExtensionInfo
         {
