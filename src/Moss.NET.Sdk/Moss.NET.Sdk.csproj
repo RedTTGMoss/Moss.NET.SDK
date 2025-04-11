@@ -20,6 +20,7 @@
         <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
         <PackageReference Include="Extism.runtime.all" Version="1.9.1"/>
         <PackageReference Include="Hocon" Version="2.0.4"/>
+        <PackageReference Include="LiteDB" Version="5.0.21" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.3"/>
         <PackageReference Include="PipelineNet" Version="0.11.0"/>
     </ItemGroup>
