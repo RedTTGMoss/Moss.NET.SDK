@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Moss.NET.Sdk.LayoutEngine.Nodes;
 
 namespace Moss.NET.Sdk.LayoutEngine;
@@ -29,6 +30,23 @@ public static class LayoutLoader
         return layout;
     }
 
+    public static YogaNode LoadFragment(string xmlContent)
+    {
+        var xml = XDocument.Parse(xmlContent);
+
+        var layout = Layout.CreateTemplate();
+        foreach (var child in xml.Root.Elements())
+        {
+            var node = ParseNode(layout, child);
+            if (node != null)
+            {
+                layout.Add(node);
+            }
+        }
+
+        return layout.GetRoot();
+    }
+
     private static YogaNode? ParseNode(Layout layout, XElement element)
     {
         YogaNode? node;
@@ -47,6 +65,9 @@ public static class LayoutLoader
                 break;
             case "img":
                 node = layout.CreateImageNode(element.Attribute("src")!.Value, element.Attribute("name")?.Value);
+                break;
+            case "fragment":
+                node = LoadFragment(File.ReadAllText(element.Attribute("src")!.Value));
                 break;
             default:
                 if (element.FirstNode is XText t)

@@ -46,7 +46,7 @@ class Newspaper
 
     private Base64 Render()
     {
-        var coverLayout = LayoutLoader.LoadLayoutFromXml(File.ReadAllText("extension/Assets/cover.xml"));
+        var coverLayout = LayoutLoader.LoadLayoutFromXml(File.ReadAllText("extension/Assets/layouts/cover.xml"));
         coverLayout.FindNode<TextNode>("header headerInfo date")!.Text = DateTime.Now.ToString("dddd, MMMM dd, yyyy");
 
         coverLayout.Apply();
