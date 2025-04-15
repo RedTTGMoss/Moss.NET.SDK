@@ -16,6 +16,6 @@ public class Activator<TOut>
     {
         if (!_types.TryGetValue(name, out var type)) throw new Exception($"Type '{name}' not found");
 
-        return (TOut)System.Activator.CreateInstance(type)! ?? throw new InvalidOperationException($"Job '{name}' not found");
+        return (TOut)Activator.CreateInstance(type)! ?? throw new InvalidOperationException($"Job '{name}' not found");
     }
 }

@@ -92,7 +92,7 @@ internal static class OpfReader
                         Id = (string)elem.Attribute(OpfManifestItem.Attributes.Id),
                         MediaType = (string)elem.Attribute(OpfManifestItem.Attributes.MediaType),
                         Properties = ((string)elem.Attribute(OpfManifestItem.Attributes.Properties))?.Split(' ') ??
-                                     new string[0],
+                                     [],
                         RequiredModules = (string)elem.Attribute(OpfManifestItem.Attributes.RequiredModules),
                         RequiredNamespace = (string)elem.Attribute(OpfManifestItem.Attributes.RequiredNamespace)
                     })

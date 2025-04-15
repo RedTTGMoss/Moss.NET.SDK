@@ -11,7 +11,7 @@ public abstract class Screen
 {
     public abstract string Name { get; }
 
-    public WidgetCollection Widgets { get; } = new();
+    public WidgetCollection Widgets { get; } = [];
 
     [DllImport(Functions.DLL, EntryPoint = "moss_pe_get_screen_value")]
     private static extern ulong GetScreenValue(ulong keyPtr); //-> ConfigGet

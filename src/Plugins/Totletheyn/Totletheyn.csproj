@@ -11,7 +11,7 @@
         <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1" />
         <PackageReference Include="Extism.Pdk" Version="1.1.1" />
         <PackageReference Include="HtmlAgilityPack.CssSelectors.NetCore" Version="1.2.1" />
-        <PackageReference Include="PdfPig" Version="0.1.11-alpha-20250407-24902" />
+        <PackageReference Include="PdfPig" Version="0.1.11-alpha-20250413-58085" />
         <PackageReference Include="Scriban" Version="6.2.0" />
         <ProjectReference Include="..\..\Moss.NET.Sdk\Moss.NET.Sdk.csproj" />
         <PackageReference Include="HtmlAgilityPack" Version="1.12.0" />
