@@ -1,5 +1,4 @@
 ﻿rss:
-    [ ] add ability to include joke of the day (https://icanhazdadjoke.com/api)
     [ ] add ability to include comic strip of the day (https://www.gocomics.com)
     [ ] add ability to include sodoku of the day:
         https://www.sudokuoftheday.com/dailypuzzles
