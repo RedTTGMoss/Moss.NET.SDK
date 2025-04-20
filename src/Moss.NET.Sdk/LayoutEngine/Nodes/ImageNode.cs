@@ -5,7 +5,7 @@ namespace Moss.NET.Sdk.LayoutEngine.Nodes;
 
 public enum ImageFormat {Png, Jpeg}
 
-public class ImageNode(YogaConfig config) : YogaNode(config)
+public class ImageNode(YogaConfig config, Layout parentLayout) : YogaNode(config, parentLayout)
 {
     public required string Src { get; set; }
     public bool AutoSize { get; set; }

@@ -1,8 +1,7 @@
 ﻿using Moss.NET.Sdk.LayoutEngine.Nodes;
+using System.Xml.Linq;
 
 namespace Moss.NET.Sdk.LayoutEngine;
-
-using System.Xml.Linq;
 
 public static class LayoutLoader
 {
@@ -22,6 +21,11 @@ public static class LayoutLoader
         var device = Enum.Parse<Device>(xml.Root!.Attribute("device")!.Value, true);
         var isLandscape = xml.Root.Attribute("isLandscape")?.Value == "true";
         var layout = Layout.Create(device, isLandscape);
+
+        if (xml.Root.Attribute("name") != null)
+        {
+            layout.Name = xml.Root.Attribute("name")!.Value;
+        }
 
         layout.GetRoot().SetAttributes(xml.Root);
 
@@ -77,10 +81,33 @@ public static class LayoutLoader
 
     private static YogaNode? ParseNode(Layout layout, XElement element)
     {
-        YogaNode? node;
+        if (!CreateNode(layout, element, out var node) && node is null) return null;
+
+        node!.SetAttributes(element);
+
+        ParseChildren(layout, element, node);
+
+        ApplyDataSource(layout, element, node);
+
+        return node;
+    }
+
+    private static void ApplyDataSource(Layout layout, XElement element, YogaNode node)
+    {
+        if (element.Attribute("datasource") is not null
+            && DataSources.TryGetValue(element.Attribute("datasource")!.Value, out var dataSource))
+        {
+            dataSource.ApplyData(node, layout.Page!, element);
+        }
+    }
+
+    private static bool CreateNode(Layout layout, XElement element, out YogaNode? node)
+    {
         switch (element.Name.LocalName)
         {
-            case "setter": return null;
+            case "setter":
+                node = null;
+                return false;
             case "text":
                 node = layout.CreateTextNode(element.Attribute("text")?.Value ?? string.Empty,
                     element.Attribute("name")?.Value);
@@ -94,6 +121,11 @@ public static class LayoutLoader
                 break;
             case "img":
                 node = layout.CreateImageNode(element.Attribute("src")?.Value!, element.Attribute("name")?.Value);
+                break;
+            case "container":
+                node = layout.CreateContainerNode(element.Attribute("title")?.Value ?? string.Empty,
+                    element.Attribute("copyright")?.Value ?? string.Empty,
+                    element.Attribute("name")?.Value);
                 break;
             case "fragment":
                 node = LoadFragment(element.Attribute("src")!.Value);
@@ -118,26 +150,26 @@ public static class LayoutLoader
                 break;
         }
 
-        if (node == null) return null;
+        return true;
+    }
 
-        node.SetAttributes(element);
-
+    private static void ParseChildren(Layout layout, XElement element, YogaNode node)
+    {
         foreach (var child in element.Elements())
         {
             var childNode = ParseNode(layout, child);
             if (childNode != null)
             {
-                node.Add(childNode);
+                if (node is ContainerNode container)
+                {
+                    container.Content.Add(childNode);
+                }
+                else
+                {
+                    node.Add(childNode);
+                }
             }
         }
-
-        if (element.Attribute("datasource") is not null
-            && DataSources.TryGetValue(element.Attribute("datasource")!.Value, out var dataSource))
-        {
-            dataSource.ApplyData(node, layout.Page!, element);
-        }
-
-        return node;
     }
 
     private static void ApplyFragmentSetter(XElement element, YogaNode node)

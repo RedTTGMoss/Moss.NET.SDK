@@ -1,6 +1,8 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 using HtmlAgilityPack;
 using Moss.NET.Sdk.LayoutEngine;
+using Moss.NET.Sdk.LayoutEngine.Nodes;
 using Totletheyn.Core.RSS;
 using UglyToad.PdfPig.Writer;
 
@@ -19,6 +21,11 @@ public class NasaDataSource : IDataSource
 
     public void ApplyData(YogaNode node, PdfPageBuilder page, XElement element)
     {
+        if (node is not ContainerNode container)
+        {
+            throw new ArgumentException("node is not a ContainerNode");
+        }
+
         var template = new RestTemplate();
         var link = feed.Items[0].Link;
 
@@ -31,21 +38,9 @@ public class NasaDataSource : IDataSource
         img.Width = 300;
         img.Height = 150;
 
-        node.Add(img);
+        container.Copyright = "NASA";
+        container.Width = img.Width;
 
-        node.Margin = 10;
-
-        var text = node.ParentLayout.CreateTextNode("© NASA");
-        text.FontFamily = "NoticiaText";
-        text.FontSize = 6;
-        text.AlignSelf = YogaAlign.FlexEnd;
-        text.AutoSize = true;
-        text.MarginTop = 5;
-
-        node.Add(text);
-
-        node.FlexDirection = YogaFlexDirection.Column;
-        node.Width = img.Width;
-        node.Height = img.Height.Value!.Value + 10;
+        container.Content.Add(img);
     }
 }

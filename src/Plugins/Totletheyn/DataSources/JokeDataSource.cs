@@ -1,5 +1,7 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 using Moss.NET.Sdk.LayoutEngine;
+using Moss.NET.Sdk.LayoutEngine.Nodes;
 using UglyToad.PdfPig.Writer;
 
 namespace Totletheyn.DataSources;
@@ -11,32 +13,24 @@ public class JokeDataSource : IDataSource
 
     public void ApplyData(YogaNode node, PdfPageBuilder page, XElement element)
     {
+        if (node is not ContainerNode container)
+        {
+            throw new ArgumentException("node is not a ContainerNode");
+        }
+
         var template = new RestTemplate();
         template.Headers.Add("Accept", "text/plain");
 
-        var content = template.GetString(URL);
+        var content = template.GetString(URL).Replace('\r', '\0').Replace("\n", "-");
 
-        var jokeBox = node.ParentLayout.CreateNode("jokeBox");
-        jokeBox.BorderColor = Colors.Black;
-        jokeBox.Padding = 10;
-        jokeBox.FlexDirection = YogaFlexDirection.Column;
+        container.Title = "Joke";
 
-        var titleNode = node.ParentLayout.CreateTextNode("Joke", "jokeTitle");
-        titleNode.FontSize = 12;
-        titleNode.FontFamily = "NoticiaText";
-        titleNode.AlignSelf = YogaAlign.Center;
-        titleNode.MarginBottom = 5;
-        titleNode.AutoSize = true;
+        var contentTextNode = node.ParentLayout.CreateTextNode(content, "jokeContent");
+        contentTextNode.FontSize = 10;
+        contentTextNode.FontFamily = "NoticiaText";
+        contentTextNode.MarginTop = 5;
+        contentTextNode.AutoSize = true;
 
-        var jokeTextNode = node.ParentLayout.CreateTextNode(content, "jokeContent");
-        jokeTextNode.FontSize = 10;
-        jokeTextNode.FontFamily = "NoticiaText";
-        jokeTextNode.MarginTop = 5;
-        jokeTextNode.AutoSize = true;
-
-        jokeBox.Add(titleNode);
-        jokeBox.Add(jokeTextNode);
-
-        node.Add(jokeBox);
+        container.Content.Add(contentTextNode);
     }
 }

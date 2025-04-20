@@ -24,7 +24,7 @@ public class Layout
             pageSize = page.PageSize;
         }
 
-        root = new YogaNode(config)
+        root = new YogaNode(config, this)
         {
             Width = pageSize.Width,
             Height = pageSize.Height,
@@ -58,20 +58,28 @@ public class Layout
 
     public YogaNode CreateNode(string? name = null)
     {
-        return new YogaNode(config)
+        return new YogaNode(config, this)
         {
-            Name = name,
-            ParentLayout = this
+            Name = name
         };
     }
 
     public TextNode CreateTextNode(string text, string? name = null)
     {
-        return new TextNode(config)
+        return new TextNode(config, this)
         {
             Name = name,
-            Text = text,
-            ParentLayout = this
+            Text = text
+        };
+    }
+
+    public ContainerNode CreateContainerNode(string title, string copyright, string? name = null)
+    {
+        return new ContainerNode(config, this)
+        {
+            Name = name,
+            Title = title,
+            Copyright = copyright
         };
     }
 
@@ -106,17 +114,16 @@ public class Layout
     {
         foreach (var child in root.Children)
         {
-            child.ReCalculate(page);
-
             ReCalculate(child, page);
+
+            child.ReCalculate(page);
         }
     }
 
     public HorizontalLineNode CreateHorizontalLine(string? name = null)
     {
-        return new HorizontalLineNode(config){
-            Name = name,
-            ParentLayout = this
+        return new HorizontalLineNode(config, this){
+            Name = name
         };
     }
 
@@ -171,10 +178,9 @@ public class Layout
 
     public ImageNode CreateImageNode(string url, string? name = null)
     {
-        return new ImageNode(config)
+        return new ImageNode(config, this)
         {
             Name = name,
-            ParentLayout = this,
             Src = url
         };
     }

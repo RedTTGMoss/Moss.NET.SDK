@@ -3,10 +3,10 @@ using UglyToad.PdfPig.Writer;
 
 namespace Moss.NET.Sdk.LayoutEngine.Nodes;
 
-public class TextNode(YogaConfig config) : YogaNode(config)
+public class TextNode(YogaConfig config, Layout parentLayout) : YogaNode(config, parentLayout)
 {
     public double FontSize { get; set; } = 10;
-    public string Text { get; set; }
+    public string? Text { get; set; }
     public string FontFamily { get; set; } = "Default";
 
     public Color? Color { get; set; } = Colors.Black;
@@ -35,6 +35,11 @@ public class TextNode(YogaConfig config) : YogaNode(config)
 
     public override void ReCalculate(PdfPageBuilder page)
     {
+        if (string.IsNullOrEmpty(Text))
+        {
+            return;
+        }
+
         var text = GetActualString();
 
         var measuredText = page.MeasureText(text, FontSize, PdfPoint.Origin, ParentLayout.GetFont(FontFamily));
@@ -64,7 +69,7 @@ public class TextNode(YogaConfig config) : YogaNode(config)
 
     public override void Draw(PdfPageBuilder page, double absoluteX, double absoluteY)
     {
-        if (Display == YogaDisplay.None)
+        if (Display == YogaDisplay.None || string.IsNullOrEmpty(Text))
         {
             return;
         }

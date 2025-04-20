@@ -37,7 +37,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
     private YogaConfig _config;
     private bool _isDirty;
     private YogaArray<YogaValue> _resolvedDimensions; // [2]
-    public required Layout ParentLayout { get; set; }
+    public Layout ParentLayout { get; set; }
     public Color? Background { get; set; }
     public BoxShadow? BoxShadow { get; set; }
 
@@ -132,7 +132,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
         Interlocked.Increment(ref _instanceCount);
     }
 
-    public YogaNode(YogaConfig config) : this()
+    public YogaNode(YogaConfig config, Layout layout) : this()
     {
         _config = config ?? new YogaConfig();
 
@@ -141,6 +141,8 @@ public partial class YogaNode : IEnumerable<YogaNode>
             Style.FlexDirection = YogaFlexDirection.Row;
             Style.AlignContent = YogaAlign.Stretch;
         }
+
+        ParentLayout = layout;
     }
 
     ~YogaNode()
