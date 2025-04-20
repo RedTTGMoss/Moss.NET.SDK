@@ -45,7 +45,6 @@ class Newspaper
         Layout.AddFont("Jaini", "fonts/Jaini-Regular.ttf");
         Layout.AddFont("NoticiaText", "fonts/NoticiaText-Regular.ttf");
 
-        LayoutLoader.AddDataSource<Meta>();
         LayoutLoader.AddDataSource<WeatherDataSource>();
         LayoutLoader.AddDataSource<XkcdDataSource>();
         LayoutLoader.AddDataSource<NasaDataSource>();

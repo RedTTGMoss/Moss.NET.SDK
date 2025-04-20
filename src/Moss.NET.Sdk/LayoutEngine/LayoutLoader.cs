@@ -1,11 +1,15 @@
 ﻿using Moss.NET.Sdk.LayoutEngine.Nodes;
 using System.Xml.Linq;
+using Moss.NET.Sdk.LayoutEngine.DataSources;
 
 namespace Moss.NET.Sdk.LayoutEngine;
 
 public static class LayoutLoader
 {
-    private static readonly Dictionary<string, IDataSource> DataSources = new();
+    private static readonly Dictionary<string, IDataSource> DataSources = new()
+    {
+        ["meta"] = new Meta()
+    };
 
     public static void AddDataSource<T>()
         where T:IDataSource, new()
