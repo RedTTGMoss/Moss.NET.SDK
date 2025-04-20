@@ -10,8 +10,9 @@ public class Layout
     private YogaConfig config;
     public readonly PdfPageBuilder? Page;
     public static PdfDocumentBuilder Builder;
-    static Dictionary<string, PdfDocumentBuilder.AddedFont> _fonts = new();
+    private static readonly Dictionary<string, PdfDocumentBuilder.AddedFont> Fonts = new();
     public static PathResolver PathResolver = new();
+    public string Name { get; set; }
 
     protected Layout(YogaConfig config, PdfPageBuilder? page, PdfRectangle pageSize = default)
     {
@@ -134,7 +135,7 @@ public class Layout
     public static void AddFont(string name, string path)
     {
        var font = Builder.AddTrueTypeFont(PathResolver.ReadBytes(path));
-       _fonts[name] = font;
+       Fonts[name] = font;
     }
 
     public void EnableDebugLines()
@@ -159,7 +160,7 @@ public class Layout
 
     public PdfDocumentBuilder.AddedFont GetFont(string fontFamily)
     {
-        if (_fonts.TryGetValue(fontFamily, out var font))
+        if (Fonts.TryGetValue(fontFamily, out var font))
         {
             return font;
         }

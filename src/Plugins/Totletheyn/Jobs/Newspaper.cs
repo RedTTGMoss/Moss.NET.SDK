@@ -34,10 +34,6 @@ class Newspaper
         _issue = issue;
         _author = author;
 
-        builder.Bookmarks = new([
-            new DocumentBookmarkNode("Cover", 0,
-                new ExplicitDestination(1, ExplicitDestinationType.FitPage, ExplicitDestinationCoordinates.Empty), [])
-        ]);
         builder.DocumentInformation.Producer = "Totletheyn";
         builder.DocumentInformation.Title = "Issue #" + issue;
         builder.DocumentInformation.CreationDate = DateTime.Now.ToString("dddd, MMMM dd, yyyy");
@@ -56,6 +52,22 @@ class Newspaper
         LayoutLoader.AddDataSource<JokeDataSource>();
     }
 
+    private static void AddBookmarks(params Layout[] layouts)
+    {
+        var nodes = new List<DocumentBookmarkNode>();
+
+        foreach (var layout in layouts)
+        {
+            nodes.Add(new DocumentBookmarkNode(layout.Name, 0,
+                new ExplicitDestination(layout.Page!.PageNumber, ExplicitDestinationType.FitPage,
+                    ExplicitDestinationCoordinates.Empty),
+                [])
+            );
+        }
+
+        Layout.Builder.Bookmarks = new(nodes);
+    }
+
     private Base64 Render()
     {
         var coverLayout = LayoutLoader.Load("layouts/cover.xml");
@@ -63,10 +75,10 @@ class Newspaper
         coverLayout.Apply();
 
         var contentLayout = LayoutLoader.Load("layouts/content.xml");
-        var pageIndex = Layout.Builder.Pages.Last().Value.PageNumber - 1;
-        contentLayout.FindNode<TextNode>("footer #page")!.Text = $"Page {pageIndex}";
-
+        contentLayout.Name = "Page 1";
         contentLayout.Apply();
+
+        AddBookmarks(coverLayout, contentLayout);
 
         return builder.Build();
     }
