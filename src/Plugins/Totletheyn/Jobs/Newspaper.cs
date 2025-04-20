@@ -6,6 +6,7 @@ using System.Linq;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.LayoutEngine;
+using Moss.NET.Sdk.LayoutEngine.DataSources;
 using Moss.NET.Sdk.LayoutEngine.Nodes;
 using Moss.NET.Sdk.Storage;
 using Totletheyn.Core.RSS;
