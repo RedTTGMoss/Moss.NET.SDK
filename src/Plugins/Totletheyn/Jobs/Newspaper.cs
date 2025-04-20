@@ -50,6 +50,7 @@ class Newspaper
         LayoutLoader.AddDataSource<XkcdDataSource>();
         LayoutLoader.AddDataSource<NasaDataSource>();
         LayoutLoader.AddDataSource<JokeDataSource>();
+        LayoutLoader.AddDataSource<ComicDataSource>();
     }
 
     private static void AddBookmarks(params Layout[] layouts)
