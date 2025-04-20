@@ -6,6 +6,7 @@ using PipelineNet.Pipelines;
 public class RestTemplate
 {
     private readonly Pipeline<HttpRequest> _pipeline = new(new ActivatorMiddlewareResolver());
+    public Dictionary<string, string> Headers { get; } = new();
 
     public void Use<T>()
         where T : IMiddleware<HttpRequest, HttpResponse>
@@ -15,6 +16,11 @@ public class RestTemplate
 
     public HttpResponse Execute(HttpRequest request)
     {
+        foreach (var header in Headers)
+        {
+            request.Headers.Add(header.Key, header.Value);
+        }
+
         _pipeline.Execute(request);
 
         return Pdk.SendRequest(request);

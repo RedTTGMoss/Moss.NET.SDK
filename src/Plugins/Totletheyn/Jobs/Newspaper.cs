@@ -53,6 +53,7 @@ class Newspaper
         LayoutLoader.AddDataSource<WeatherDataSource>();
         LayoutLoader.AddDataSource<XkcdDataSource>();
         LayoutLoader.AddDataSource<NasaDataSource>();
+        LayoutLoader.AddDataSource<JokeDataSource>();
     }
 
     private Base64 Render()
