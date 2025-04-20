@@ -21,4 +21,4 @@ You can find also an example plugin that uses all functionalities of the sdk [he
 
 # Generating Notebooks
 
-To generate epub notebooks the sdk has integrated a changed version of the library [EpubSharp](https://github.com/asido/EpubSharp). If you want to generate pdf notebooks you can use [PdfPig](https://github.com/UglyToad/PdfPig).
+To generate epub notebooks the sdk has integrated a changed version of the library [EpubSharp](https://github.com/asido/EpubSharp). If you want to generate pdf notebooks you can use [PdfPig](https://github.com/UglyToad/PdfPig). This library has a layout system on top of pdfpig to make it easier to make pdf layouts. An example usage is in the Totletheyn source
