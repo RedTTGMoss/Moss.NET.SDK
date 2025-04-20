@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Moss.NET.Sdk.LayoutEngine;
+﻿namespace Moss.NET.Sdk.LayoutEngine;
 
 public enum Device
 {

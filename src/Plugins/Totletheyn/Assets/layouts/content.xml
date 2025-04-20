@@ -1,0 +1,19 @@
+﻿<layout device="rmpp" background="creme" isLandscape="true">
+    <header name="header" height="40" margintop="2" flexgrow="0">
+        <section name="headerInfo" flexdirection="row" justifycontent="spacebetween" alignitems="center" margin="10">
+            <text fontfamily="Jaini" fontsize="11" alignself="flexstart">Issue #{0}</text>
+            <text name="headline" fontSize="11" fontFamily="Jaini" alignSelf="center" autosize="true" positiontype="relative" marginBottom="5" textDecoration="underline">Daily E-Book Times</text>
+            <text fontfamily="Jaini" fontsize="11" alignself="center" autosize="true">Thursday, April 15, 2025</text>
+        </section>
+        <hr marginleft="10" marginright="10" />
+    </header>
+
+    <content flexdirection="row" flexGrow="1" margin="10" marginbottom="1">
+        <container datasource="nasa" />
+    </content>
+
+    <footer height="10" marginbottom="5" margintop="5" marginleft="10" marginright="10" display="flex" flexdirection="row" justifyContent="spacebetween">
+        <text id="footerText" fontsize="7" fontfamily="NoticiaText" autosize="true" flexgrow="0" >Generated with Totletheyn on Moss</text>
+        <text id="page" fontSize="7" fontfamily="NoticiaText" autosize="true" flexgrow="0" alignself="flexend" alignitems="center">Page {0}</text>
+    </footer>
+</layout>

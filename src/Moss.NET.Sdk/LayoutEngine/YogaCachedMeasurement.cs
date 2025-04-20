@@ -30,10 +30,10 @@ public sealed class YogaCachedMeasurement
 
     public static bool operator ==(YogaCachedMeasurement self, YogaCachedMeasurement measurement)
     {
-        if (ReferenceEquals(self, measurement))
+        if (object.ReferenceEquals(self, measurement))
             return true;
 
-        if (ReferenceEquals(self, null) || ReferenceEquals(measurement, null))
+        if (object.ReferenceEquals(self, null) || object.ReferenceEquals(measurement, null))
             return false;
 
         var isEqual = self.WidthMeasureMode == measurement.WidthMeasureMode && self.HeightMeasureMode == measurement.HeightMeasureMode;

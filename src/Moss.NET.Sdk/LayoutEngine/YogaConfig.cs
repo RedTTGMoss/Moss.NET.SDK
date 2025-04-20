@@ -6,13 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-using System;
-
 namespace Moss.NET.Sdk.LayoutEngine;
 
 public class YogaConfig
 {
-    private bool[] _experimentalFeatures = [false];
+    private bool[] _experimentalFeatures = new bool[] { false };
     private bool _useWebDefaults;
     private bool _useLegacyStretchBehaviour;
     private bool _shouldDiffLayoutWithoutLegacyStretchBehaviour;

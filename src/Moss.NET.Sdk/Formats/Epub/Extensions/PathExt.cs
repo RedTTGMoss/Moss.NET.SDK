@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Moss.NET.Sdk.Formats.Epub.Extensions;
+﻿namespace Moss.NET.Sdk.Formats.Epub.Extensions;
 
 internal static class PathExt
 {

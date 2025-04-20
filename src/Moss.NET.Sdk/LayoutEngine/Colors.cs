@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Moss.NET.Sdk.LayoutEngine;
+﻿namespace Moss.NET.Sdk.LayoutEngine;
 
 public static class Colors
 {
@@ -36,6 +34,36 @@ public static class Colors
     public static readonly Color LightGreen = new(144, 238, 144);
     public static readonly Color LightPink = new(255, 182, 193);
     public static readonly Color LightSalmon = new(255, 160, 122);
+
+    public static Color Parse(string color)
+    {
+        if (color.StartsWith('#'))
+        {
+            return FromHex(color);
+        }
+
+        return FromName(color);
+    }
+
+    public static Color FromHex(string hex)
+    {
+        if (hex.StartsWith("#"))
+        {
+            hex = hex.Substring(1);
+        }
+
+        if (hex.Length != 6 && hex.Length != 8)
+        {
+            throw new ArgumentException("Hex-Farbe muss 6 oder 8 Zeichen lang sein.");
+        }
+
+        byte r = Convert.ToByte(hex.Substring(0, 2), 16);
+        byte g = Convert.ToByte(hex.Substring(2, 2), 16);
+        byte b = Convert.ToByte(hex.Substring(4, 2), 16);
+        byte a = hex.Length == 8 ? Convert.ToByte(hex.Substring(6, 2), 16) : (byte)255;
+
+        return new Color(r, g, b);
+    }
 
     public static Color FromName(string name)
     {

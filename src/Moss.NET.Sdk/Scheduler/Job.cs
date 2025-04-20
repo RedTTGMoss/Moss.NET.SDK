@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Moss.NET.Sdk.Scheduler;
+﻿namespace Moss.NET.Sdk.Scheduler;
 
 public abstract class Job
 {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.IO.Compression;
+﻿using System.IO.Compression;
 using Moss.NET.Sdk.Formats.Epub.Extensions;
 using Moss.NET.Sdk.Formats.Epub.Format;
 

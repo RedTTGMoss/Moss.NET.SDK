@@ -6,8 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-using System;
-
 namespace Moss.NET.Sdk.LayoutEngine;
 
 public static class YogaArray

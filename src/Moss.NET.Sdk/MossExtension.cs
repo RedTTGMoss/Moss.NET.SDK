@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.Metrics;
+﻿using System.Diagnostics.Metrics;
 using Extism;
 using Hocon;
 using LiteDB;
@@ -10,6 +9,7 @@ using Moss.NET.Sdk.Scheduler;
 using Activator = System.Activator;
 using File = System.IO.File;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using TaskScheduler = Moss.NET.Sdk.Scheduler.TaskScheduler;
 
 namespace Moss.NET.Sdk;
 

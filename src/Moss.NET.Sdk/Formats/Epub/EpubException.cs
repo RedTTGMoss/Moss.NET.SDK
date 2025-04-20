@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Moss.NET.Sdk.Formats.Epub;
+﻿namespace Moss.NET.Sdk.Formats.Epub;
 
 public class EpubException(string message) : Exception(message)
 {

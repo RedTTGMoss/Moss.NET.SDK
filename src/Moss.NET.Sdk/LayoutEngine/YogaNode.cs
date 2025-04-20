@@ -6,11 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading;
 using System.Xml.Linq;
 using UglyToad.PdfPig.Core;
 using UglyToad.PdfPig.Writer;
@@ -45,6 +41,13 @@ public partial class YogaNode : IEnumerable<YogaNode>
     public Color? Background { get; set; }
     public BoxShadow? BoxShadow { get; set; }
 
+    public string ID { get; set; }
+
+    /// <summary>
+    /// The gap between each children
+    /// </summary>
+    public YogaValue Gap { get; set; }
+
     public YogaNode()
     {
         _print = null;
@@ -57,11 +60,11 @@ public partial class YogaNode : IEnumerable<YogaNode>
         _layout = new YogaLayout();
         _lineIndex = 0;
         _owner = null;
-        _children = [];
+        _children = new List<YogaNode>();
         _nextChild = null;
         _config = new YogaConfig();
         _isDirty = false;
-        _resolvedDimensions = new YogaArray<YogaValue>(new YogaValue[] { YogaValue.Undefined, YogaValue.Undefined });
+        _resolvedDimensions = new YogaArray<YogaValue>(new YogaValue[] { YogaValue.Unset, YogaValue.Unset });
 
         Interlocked.Increment(ref _instanceCount);
     }
@@ -282,12 +285,12 @@ public partial class YogaNode : IEnumerable<YogaNode>
         var leadingPosition = default(YogaValue);
         if (axis.IsRow())
         {
-            leadingPosition = ComputedEdgeValue(_style.Position, YogaEdge.Start, YogaValue.Undefined);
+            leadingPosition = ComputedEdgeValue(_style.Position, YogaEdge.Start, YogaValue.Unset);
             if (leadingPosition.Unit != YogaUnit.Undefined)
                 return leadingPosition.Resolve(axisSize);
         }
 
-        leadingPosition = ComputedEdgeValue(_style.Position, Leading[axis], YogaValue.Undefined);
+        leadingPosition = ComputedEdgeValue(_style.Position, Leading[axis], YogaValue.Unset);
         return leadingPosition.Unit == YogaUnit.Undefined ? 0.0f : leadingPosition.Resolve(axisSize);
     }
 
@@ -296,12 +299,12 @@ public partial class YogaNode : IEnumerable<YogaNode>
         var trailingPosition = default(YogaValue);
         if (axis.IsRow())
         {
-            trailingPosition = ComputedEdgeValue(_style.Position, YogaEdge.End, YogaValue.Undefined);
+            trailingPosition = ComputedEdgeValue(_style.Position, YogaEdge.End, YogaValue.Unset);
             if (trailingPosition.Unit != YogaUnit.Undefined)
                 return trailingPosition.Resolve(axisSize);
         }
 
-        trailingPosition = ComputedEdgeValue(_style.Position, Trailing[axis], YogaValue.Undefined);
+        trailingPosition = ComputedEdgeValue(_style.Position, Trailing[axis], YogaValue.Unset);
         return trailingPosition.Unit == YogaUnit.Undefined ? 0.0f : trailingPosition.Resolve(axisSize);
     }
 
@@ -312,14 +315,14 @@ public partial class YogaNode : IEnumerable<YogaNode>
 
     public bool IsLeadingPositionDefined(YogaFlexDirection axis)
     {
-        return (axis.IsRow() && ComputedEdgeValue(_style.Position, YogaEdge.Start, YogaValue.Undefined).Unit != YogaUnit.Undefined)
-               || ComputedEdgeValue(_style.Position, Leading[axis], YogaValue.Undefined).Unit != YogaUnit.Undefined;
+        return (axis.IsRow() && ComputedEdgeValue(_style.Position, YogaEdge.Start, YogaValue.Unset).Unit != YogaUnit.Undefined)
+               || ComputedEdgeValue(_style.Position, Leading[axis], YogaValue.Unset).Unit != YogaUnit.Undefined;
     }
 
     public bool IsTrailingPositionDefined(YogaFlexDirection axis)
     {
-        return (axis.IsRow() && ComputedEdgeValue(_style.Position, YogaEdge.End, YogaValue.Undefined).Unit != YogaUnit.Undefined)
-               || ComputedEdgeValue(_style.Position, Trailing[axis], YogaValue.Undefined).Unit != YogaUnit.Undefined;
+        return (axis.IsRow() && ComputedEdgeValue(_style.Position, YogaEdge.End, YogaValue.Unset).Unit != YogaUnit.Undefined)
+               || ComputedEdgeValue(_style.Position, Trailing[axis], YogaValue.Unset).Unit != YogaUnit.Undefined;
     }
 
     public double? GetLeadingMargin(YogaFlexDirection axis, double? widthSize)
@@ -741,23 +744,72 @@ public partial class YogaNode : IEnumerable<YogaNode>
     /// </summary>
     /// <param name="query"></param>
     /// <returns></returns>
-    /// <example>content.left.article</example>
-    public T? FindNode<T>(string query)
-        where T : YogaNode
+    /// <example>content #left article</example>
+    public YogaNode? FindNode(string query)
     {
         var parts = query.Split(' ');
         var currentNode = this;
 
         foreach (var part in parts)
         {
-            currentNode = currentNode.Children.FirstOrDefault(child => child.Name == part);
+            currentNode = currentNode.Children.FirstOrDefault(child =>
+            {
+                if (part.StartsWith('#'))
+                {
+                    return child.ID == part[1..];
+                }
+
+                return child.Name == part;
+            });
             if (currentNode == null)
             {
                 return null;
             }
         }
 
-        return (T?)currentNode;
+        return currentNode;
+    }
+
+    public IEnumerable<YogaNode> FindNodes(string query)
+    {
+        var parts = query.Split(' ');
+        var currentNodes = new List<YogaNode> { this };
+
+        foreach (var part in parts)
+        {
+            currentNodes = currentNodes
+                .SelectMany(node => node.Children)
+                .Where(child =>
+                {
+                    if (part.StartsWith('#'))
+                    {
+                        return child.ID == part[1..];
+                    }
+
+                    return child.Name == part;
+                })
+                .ToList();
+        }
+
+        return currentNodes;
+    }
+
+    /// <summary>
+    /// Finds a node in the layout tree by a query.
+    /// </summary>
+    /// <param name="query"></param>
+    /// <returns></returns>
+    /// <example>content #left article</example>
+    public T? FindNode<T>(string query)
+        where T : YogaNode
+    {
+        return (T?)FindNode(query);
+    }
+
+    public IEnumerable<T?> FindNodes<T>(string query)
+        where T : YogaNode
+    {
+        return (IEnumerable<T?>)FindNodes(query);
     }
 
     private static YogaValue ComputedEdgeValue(YogaArray<YogaValue> edges, YogaEdge edge, YogaValue defaultValue)
@@ -775,7 +827,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
             return edges[YogaEdge.All];
 
         if (edge == YogaEdge.Start || edge == YogaEdge.End)
-            return YogaValue.Undefined;
+            return YogaValue.Unset;
 
         return defaultValue;
     }
@@ -844,7 +896,27 @@ public partial class YogaNode : IEnumerable<YogaNode>
 
     public virtual void ReCalculate(PdfPageBuilder page)
     {
+        if (Gap.Unit != YogaUnit.Undefined)
+        {
+            SetChildGaps();
+        }
+    }
 
+    private void SetChildGaps()
+    {
+        for (int i = 0; i < Children.Count - 1; i++)
+        {
+            var child = Children[i];
+
+            if (FlexDirection == YogaFlexDirection.Column)
+            {
+                child.MarginBottom = Gap;
+            }
+            else if(FlexDirection == YogaFlexDirection.Row)
+            {
+                child.MarginRight = Gap;
+            }
+        }
     }
 
     public void SetAttributes(XElement element)
@@ -854,47 +926,53 @@ public partial class YogaNode : IEnumerable<YogaNode>
             switch (attr.Name.LocalName.ToLower())
             {
                 case "height":
-                    Height = double.Parse(attr.Value, CultureInfo.InvariantCulture);
+                    Height = YogaValue.Parse(attr.Value);
                     break;
                 case "width":
-                    Width = double.Parse(attr.Value, CultureInfo.InvariantCulture);
+                    Width = YogaValue.Parse(attr.Value);
+                    break;
+                case "id":
+                    ID = attr.Value;
                     break;
                 case "margintop":
-                    MarginTop = double.Parse(attr.Value, CultureInfo.InvariantCulture);
+                    MarginTop = YogaValue.Parse(attr.Value);
+                    break;
+                case "gap":
+                    Gap = YogaValue.Parse(attr.Value);
                     break;
                 case "marginbottom":
-                    MarginBottom = double.Parse(attr.Value, CultureInfo.InvariantCulture);
+                    MarginBottom = YogaValue.Parse(attr.Value);
                     break;
                 case "margin":
-                    Margin = double.Parse(attr.Value, CultureInfo.InvariantCulture);
+                    Margin = YogaValue.Parse(attr.Value);
                     break;
                 case "marginright":
-                    MarginRight = double.Parse(attr.Value, CultureInfo.InvariantCulture);
+                    MarginRight = YogaValue.Parse(attr.Value);
                     break;
                 case "marginleft":
-                    MarginLeft = double.Parse(attr.Value, CultureInfo.InvariantCulture);
+                    MarginLeft = YogaValue.Parse(attr.Value);
                     break;
 
                 case "padding":
-                    Padding = double.Parse(attr.Value, CultureInfo.InvariantCulture);
+                    Padding = YogaValue.Parse(attr.Value);
                     break;
                 case "paddingtop":
-                    PaddingTop = double.Parse(attr.Value, CultureInfo.InvariantCulture);
+                    PaddingTop = YogaValue.Parse(attr.Value);
                     break;
                 case "paddingbottom":
-                    PaddingBottom = double.Parse(attr.Value, CultureInfo.InvariantCulture);
+                    PaddingBottom = YogaValue.Parse(attr.Value);
                     break;
                 case "paddingright":
-                    PaddingRight = double.Parse(attr.Value, CultureInfo.InvariantCulture);
+                    PaddingRight = YogaValue.Parse(attr.Value);
                     break;
                 case "paddingleft":
-                    PaddingLeft = double.Parse(attr.Value, CultureInfo.InvariantCulture);
+                    PaddingLeft = YogaValue.Parse(attr.Value);
                     break;
                 case "flexgrow":
                     FlexGrow = double.Parse(attr.Value, CultureInfo.InvariantCulture);
                     break;
                 case "background":
-                    Background = Colors.FromName(attr.Value);
+                    Background = Colors.Parse(attr.Value);
                     break;
                 case "alignitems":
                     AlignItems = Enum.Parse<YogaAlign>(attr.Value, true);
@@ -912,11 +990,11 @@ public partial class YogaNode : IEnumerable<YogaNode>
                     FlexDirection = Enum.Parse<YogaFlexDirection>(attr.Value, true);
                     break;
                 case "bordercolor":
-                    BorderColor = Colors.FromName(attr.Value);
+                    BorderColor = Colors.Parse(attr.Value);
                     break;
                 case "boxshadow":
                     var spl = attr.Value.Split(' ');
-                    BoxShadow = new BoxShadow(Colors.FromName(spl[0]), int.Parse(spl[1]));
+                    BoxShadow = new BoxShadow(Colors.Parse(spl[0]), int.Parse(spl[1]));
                     break;
                 case "positiontype":
                     PositionType = Enum.Parse<YogaPositionType>(attr.Value, true);
@@ -931,7 +1009,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
         }
     }
 
-    protected virtual void SetAttribute(string name, string value)
+    internal virtual void SetAttribute(string name, string value)
     {
 
     }

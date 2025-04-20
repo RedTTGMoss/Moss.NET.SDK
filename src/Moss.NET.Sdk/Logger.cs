@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Moss.NET.Sdk;
+﻿namespace Moss.NET.Sdk;
 
 public static class Log
 {

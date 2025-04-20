@@ -24,4 +24,14 @@ public class RestTemplate
     {
         return Execute(new HttpRequest(url));
     }
+
+    public byte[] GetBytes(string url)
+    {
+        return Exchange(url).Body.ReadBytes();
+    }
+
+    public string GetString(string url)
+    {
+        return Exchange(url).Body.ReadString();
+    }
 }

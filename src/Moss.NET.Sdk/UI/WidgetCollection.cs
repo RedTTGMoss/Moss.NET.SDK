@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Moss.NET.Sdk.UI;
+﻿namespace Moss.NET.Sdk.UI;
 
 public class WidgetCollection : List<Widget>
 {

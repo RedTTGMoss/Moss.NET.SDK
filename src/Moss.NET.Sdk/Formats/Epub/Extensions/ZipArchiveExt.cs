@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Compression;
-using System.Linq;
+﻿using System.IO.Compression;
 using System.Xml.Linq;
 using Moss.NET.Sdk.Formats.Epub.Format;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-#pragma warning disable CS8618, CS9264
+﻿#pragma warning disable CS8618, CS9264
 
 namespace Moss.NET.Sdk.Formats.Epub.Misc;
 

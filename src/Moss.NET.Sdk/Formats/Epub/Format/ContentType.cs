@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Moss.NET.Sdk.Formats.Epub.Format;
+﻿namespace Moss.NET.Sdk.Formats.Epub.Format;
 
 public enum EpubContentType
 {

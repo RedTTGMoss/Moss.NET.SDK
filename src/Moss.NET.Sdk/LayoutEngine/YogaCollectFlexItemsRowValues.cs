@@ -6,8 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-using System.Collections.Generic;
-
 namespace Moss.NET.Sdk.LayoutEngine;
 
 public class YogaCollectFlexItemsRowValues
@@ -17,7 +15,7 @@ public class YogaCollectFlexItemsRowValues
     public double? TotalFlexGrowFactors = 0;
     public double? TotalFlexShrinkScaledFactors = 0;
     public int EndOfLineIndex;
-    public List<YogaNode> RelativeChildren = [];
+    public List<YogaNode> RelativeChildren = new List<YogaNode>();
     public double? RemainingFreeSpace = 0;
     // The size of the mainDim for the row after considering size, padding, margin
     // and border of flex items. This is used to calculate maxLineDim after going

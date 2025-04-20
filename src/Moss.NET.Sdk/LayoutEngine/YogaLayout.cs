@@ -6,8 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-using System;
-
 namespace Moss.NET.Sdk.LayoutEngine;
 
 public sealed class YogaLayout
@@ -38,7 +36,7 @@ public sealed class YogaLayout
     public bool DidUseLegacyFlag;
     public bool DoesLegacyStretchFlagAffectsLayout;
 
-    public static readonly double?[] DefaultDimensionValues = [default(double?), default(double?)];
+    public static readonly double?[] DefaultDimensionValues = new double?[] { default(double?), default(double?) };
 
     public YogaLayout()
     {
@@ -67,10 +65,10 @@ public sealed class YogaLayout
 
     public static bool operator ==(YogaLayout self, YogaLayout layout)
     {
-        if (ReferenceEquals(self, layout))
+        if (object.ReferenceEquals(self, layout))
             return true;
 
-        if (ReferenceEquals(self, null) || ReferenceEquals(layout, null))
+        if (object.ReferenceEquals(self, null) || object.ReferenceEquals(layout, null))
             return false;
 
         var isEqual = YogaArray.Equal(self.Position, layout.Position)

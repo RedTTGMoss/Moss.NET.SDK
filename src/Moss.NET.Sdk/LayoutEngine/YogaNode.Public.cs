@@ -6,9 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace Moss.NET.Sdk.LayoutEngine;
 
@@ -482,10 +480,10 @@ public partial class YogaNode
         _layout = new YogaLayout();
         _lineIndex = 0;
         _owner = null;
-        _children = [];
+        _children = new List<YogaNode>();
         _nextChild = null;
         _isDirty = false;
-        _resolvedDimensions = new YogaArray<YogaValue>(new YogaValue[] { YogaValue.Undefined, YogaValue.Undefined });
+        _resolvedDimensions = new YogaArray<YogaValue>(new YogaValue[] { YogaValue.Unset, YogaValue.Unset });
 
         if (_config.UseWebDefaults)
         {

@@ -1,18 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using UglyToad.PdfPig.Core;
+﻿using UglyToad.PdfPig.Core;
 using UglyToad.PdfPig.Writer;
 
 namespace Moss.NET.Sdk.LayoutEngine.Nodes;
 
-public class ImageNode : YogaNode
+public class ImageNode(YogaConfig config) : YogaNode(config)
 {
     public required Uri Src { get; set; }
-
-    public ImageNode(YogaConfig config) : base(config)
-    {
-    }
 
     public override void Draw(PdfPageBuilder page, double absoluteX, double absoluteY)
     {
@@ -24,25 +17,42 @@ public class ImageNode : YogaNode
         base.Draw(page, absoluteX, absoluteY);
 
         byte[] imageBytes = null;
+        var url = Src.ToString();
         if (Src is { IsAbsoluteUri: true, Scheme: "http" or "https" })
         {
+            //Todo: convert to moss rest template
             var template = new RestTemplate();
-            imageBytes = template.Exchange(Src.ToString()).Body.ReadBytes();
+            imageBytes = template.GetBytes(url);
         }
 
         if (Src.IsFile)
         {
-            imageBytes = File.ReadAllBytes(Src.ToString().Replace("file://", ""));
+            imageBytes = File.ReadAllBytes(url.Replace("file://", ""));
         }
 
         var boxPos = new PdfPoint(absoluteX, page.PageSize.Height - absoluteY - LayoutHeight);
         var rect = new PdfRectangle(boxPos, new PdfPoint(boxPos.X + LayoutWidth, boxPos.Y + LayoutHeight));
-        var img = page.AddPng(new MemoryStream(imageBytes), rect);
+
+        PdfPageBuilder.AddedImage img;
+
+        if (url.EndsWith(".png"))
+        {
+            img = page.AddPng(new MemoryStream(imageBytes), rect);
+        }
+        else if (url.EndsWith(".jpg") ||
+                 url.EndsWith(".jpeg"))
+        {
+            img = page.AddJpeg(new MemoryStream(imageBytes), rect);
+        }
+        else
+        {
+            throw new ArgumentException($"invalid image format '{url}'");
+        }
 
         page.AddImage(img, rect);
     }
 
-    protected override void SetAttribute(string name, string value)
+    internal override void SetAttribute(string name, string value)
     {
         if (name == "src")
         {

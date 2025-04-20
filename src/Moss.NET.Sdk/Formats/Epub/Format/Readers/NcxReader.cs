@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using Moss.NET.Sdk.Formats.Epub.Extensions;
 
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.

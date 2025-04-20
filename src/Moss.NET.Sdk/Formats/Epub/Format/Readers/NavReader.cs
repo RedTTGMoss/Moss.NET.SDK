@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using Moss.NET.Sdk.Formats.Epub.Extensions;
 
 namespace Moss.NET.Sdk.Formats.Epub.Format.Readers;

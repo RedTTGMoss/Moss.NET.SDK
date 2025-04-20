@@ -10,21 +10,21 @@ namespace Moss.NET.Sdk.LayoutEngine;
 
 public sealed class YogaStyle
 {
-    private static readonly YogaValue[] DefaultEdgeValuesUnit =
-    [
-        YogaValue.Undefined,
-        YogaValue.Undefined,
-        YogaValue.Undefined,
-        YogaValue.Undefined,
-        YogaValue.Undefined,
-        YogaValue.Undefined,
-        YogaValue.Undefined,
-        YogaValue.Undefined,
-        YogaValue.Undefined
-    ];
+    private static readonly YogaValue[] DefaultEdgeValuesUnit = new YogaValue[]
+    {
+        YogaValue.Unset,
+        YogaValue.Unset,
+        YogaValue.Unset,
+        YogaValue.Unset,
+        YogaValue.Unset,
+        YogaValue.Unset,
+        YogaValue.Unset,
+        YogaValue.Unset,
+        YogaValue.Unset,
+    };
 
-    private static readonly YogaValue[] DefaultDimensionValuesAutoUnit = [YogaValue.Auto, YogaValue.Auto];
-    private static readonly YogaValue[] DefaultDimensionValuesUnit = [YogaValue.Undefined, YogaValue.Undefined];
+    private static readonly YogaValue[] DefaultDimensionValuesAutoUnit = new YogaValue[] { YogaValue.Auto, YogaValue.Auto };
+    private static readonly YogaValue[] DefaultDimensionValuesUnit = new YogaValue[] { YogaValue.Unset, YogaValue.Unset };
 
     public YogaDirection Direction;
     public YogaFlexDirection FlexDirection;
@@ -104,10 +104,10 @@ public sealed class YogaStyle
     // Yoga specific properties, not compatible with flexbox specification
     public static bool operator ==(YogaStyle self, YogaStyle style)
     {
-        if (ReferenceEquals(self, style))
+        if (object.ReferenceEquals(self, style))
             return true;
 
-        if (ReferenceEquals(self, null) || ReferenceEquals(style, null))
+        if (object.ReferenceEquals(self, null) || object.ReferenceEquals(style, null))
             return false;
 
         var areNondoubleValuesEqual =

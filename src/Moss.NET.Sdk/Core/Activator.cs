@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Moss.NET.Sdk.Scheduler;
+﻿namespace Moss.NET.Sdk.Scheduler;
 
 public class Activator<TOut>
 {

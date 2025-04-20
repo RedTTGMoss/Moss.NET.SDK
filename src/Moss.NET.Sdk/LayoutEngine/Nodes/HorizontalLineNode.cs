@@ -14,11 +14,11 @@ public class HorizontalLineNode(YogaConfig config) : YogaNode(config)
         Background = LineColor;
     }
 
-    protected override void SetAttribute(string name, string value)
+    internal override void SetAttribute(string name, string value)
     {
         if (name == "lineColor")
         {
-            LineColor = Colors.FromName(value);
+            LineColor = Colors.Parse(value);
         }
         else if (name == "thickness")
         {

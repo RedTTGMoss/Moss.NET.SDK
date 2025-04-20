@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace Moss.NET.Sdk.Formats.Epub.Extensions;
+﻿namespace Moss.NET.Sdk.Formats.Epub.Extensions;
 
 internal static class StreamExt
 {

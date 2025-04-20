@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.FFI;
 

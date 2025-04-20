@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Moss.NET.Sdk.Storage;
+﻿namespace Moss.NET.Sdk.Storage;
 
 public class Collection : StorageItem<Collection>
 {

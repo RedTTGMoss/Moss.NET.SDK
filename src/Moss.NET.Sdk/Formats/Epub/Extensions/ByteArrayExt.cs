@@ -1,5 +1,4 @@
-﻿using System;
-using Moss.NET.Sdk.Formats.Epub.Format;
+﻿using Moss.NET.Sdk.Formats.Epub.Format;
 
 namespace Moss.NET.Sdk.Formats.Epub.Extensions;
 

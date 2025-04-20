@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Moss.NET.Sdk.LayoutEngine.Nodes;
+﻿using Moss.NET.Sdk.LayoutEngine.Nodes;
 
 namespace Moss.NET.Sdk.LayoutEngine;
 
@@ -8,6 +6,15 @@ using System.Xml.Linq;
 
 public static class LayoutLoader
 {
+    private static readonly Dictionary<string, IDataSource> DataSources = new();
+
+    public static void AddDataSource<T>()
+        where T:IDataSource, new()
+    {
+        var component = new T();
+        DataSources[component.Name] = component;
+    }
+
     public static Layout LoadLayoutFromXml(string xmlContent)
     {
         var xml = XDocument.Parse(xmlContent);
@@ -27,6 +34,11 @@ public static class LayoutLoader
             }
         }
 
+        if (xml.Root.Attribute("debug")?.Value == "true")
+        {
+            layout.EnableDebugLines();
+        }
+
         return layout;
     }
 
@@ -35,7 +47,7 @@ public static class LayoutLoader
         var xml = XDocument.Parse(xmlContent);
 
         var layout = Layout.CreateTemplate();
-        foreach (var child in xml.Root.Elements())
+        foreach (var child in xml.Root!.Elements())
         {
             var node = ParseNode(layout, child);
             if (node != null)
@@ -43,6 +55,12 @@ public static class LayoutLoader
                 layout.Add(node);
             }
         }
+
+        if (xml.Root.Attribute("debug")?.Value == "true")
+        {
+            layout.EnableDebugLines();
+        }
+        layout.GetRoot().Name = xml.Root.Name.LocalName;
 
         return layout.GetRoot();
     }
@@ -52,6 +70,7 @@ public static class LayoutLoader
         YogaNode? node;
         switch (element.Name.LocalName)
         {
+            case "setter": return null;
             case "text":
                 node = layout.CreateTextNode(element.Attribute("text")?.Value ?? string.Empty,
                     element.Attribute("name")?.Value);
@@ -64,10 +83,11 @@ public static class LayoutLoader
                 node = layout.CreateHorizontalLine();
                 break;
             case "img":
-                node = layout.CreateImageNode(element.Attribute("src")!.Value, element.Attribute("name")?.Value);
+                node = layout.CreateImageNode(element.Attribute("src")?.Value ?? "http://localhost/", element.Attribute("name")?.Value);
                 break;
             case "fragment":
                 node = LoadFragment(File.ReadAllText(element.Attribute("src")!.Value));
+                ApplyFragmentSetter(element, node);
                 break;
             default:
                 if (element.FirstNode is XText t)
@@ -77,7 +97,14 @@ public static class LayoutLoader
                     break;
                 }
 
-                node = layout.CreateNode(element.Attribute("name")?.Value);
+                var name = element.Attribute("name")?.Value;
+                if (name is null)
+                {
+                    name = element.Name.LocalName;
+                }
+
+                node = layout.CreateNode(name);
+
                 break;
         }
 
@@ -94,6 +121,26 @@ public static class LayoutLoader
             }
         }
 
+        if (element.Attribute("datasource") is not null
+            && DataSources.TryGetValue(element.Attribute("datasource")!.Value, out var dataSource))
+        {
+            dataSource.ApplyData(node, layout.Page!, element);
+        }
+
         return node;
+    }
+
+    private static void ApplyFragmentSetter(XElement element, YogaNode node)
+    {
+        foreach (var setter in element.Elements())
+        {
+            if (setter.Name.LocalName != "setter") continue;
+
+            var query = setter.Attribute("query")!.Value;
+            var property = setter.Attribute("property")!.Value;
+            var value = setter.Value;
+
+            node.FindNode(query)?.SetAttribute(property, value);
+        }
     }
 }

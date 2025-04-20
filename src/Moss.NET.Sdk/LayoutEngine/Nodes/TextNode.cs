@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using UglyToad.PdfPig.Core;
+﻿using UglyToad.PdfPig.Core;
 using UglyToad.PdfPig.Writer;
 
 namespace Moss.NET.Sdk.LayoutEngine.Nodes;
@@ -29,8 +27,8 @@ public class TextNode(YogaConfig config) : YogaNode(config)
             }
             else
             {
-                Width = YogaValue.Undefined;
-                Height = YogaValue.Undefined;
+                Width = YogaValue.Unset;
+                Height = YogaValue.Unset;
             }
         }
     }
@@ -105,10 +103,13 @@ public class TextNode(YogaConfig config) : YogaNode(config)
         page.ResetColor();
     }
 
-    protected override void SetAttribute(string name, string value)
+    internal override void SetAttribute(string name, string value)
     {
         switch (name)
         {
+            case "text":
+                Text = value;
+                break;
             case "fontsize":
                 FontSize = int.Parse(value);
                 break;
@@ -116,7 +117,7 @@ public class TextNode(YogaConfig config) : YogaNode(config)
                 FontFamily = value;
                 break;
             case "color":
-                Color = Colors.FromName(value);
+                Color = Colors.Parse(value);
                 break;
             case "autosize":
                 AutoSize = value == "true";

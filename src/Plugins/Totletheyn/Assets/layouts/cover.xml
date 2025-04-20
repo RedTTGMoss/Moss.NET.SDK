@@ -1,32 +1,35 @@
 ﻿<layout device="rmpp" background="creme" isLandscape="true">
     <header name="header" height="120" margintop="10" flexgrow="0">
-        <text name="headline" fontSize="70" fontFamily="Jaini" alignSelf="center" autosize="true" positiontype="relative" marginBottom="5" textDecoration="underline">Daily E-Book Times</text>
+        <text name="headline" fontSize="70" fontFamily="Jaini" alignSelf="center" autosize="true" positiontype="relative" marginBottom="5">Daily E-Book Times</text>
 
         <hr marginleft="10" marginright="10" />
         <section name="headerInfo" flexdirection="row" justifycontent="spacebetween" alignitems="center" margin="10">
             <text fontfamily="Jaini" fontsize="15" alignself="flexstart">Issue #{0}</text>
-            <text name="date" fontfamily="Jaini" fontsize="15" alignself="center" autosize="true">Thursday, April 15, 2025</text>
-            <img name="rss" src="file://extension/Assets/images/rss.png" width="9" height="9" alignself="center" />
+            <text fontfamily="Jaini" fontsize="15" alignself="center" autosize="true">Thursday, April 15, 2025</text>
+            <img name="rss" src="file://images/rss.png" width="9" height="9" alignself="center" />
         </section>
         <hr marginleft="10" marginright="10" />
     </header>
 
-    <content name="content" flexdirection="row" flexGrow="1" margin="10" marginbottom="1">
-        <column name="left" flexgrow="1" background="White" marginright="10" bordercolor="gray" boxshadow="gray 2">
+    <content flexdirection="row" flexGrow="1" margin="10" marginbottom="1">
+        <column id="left" flexgrow="1" background="White" marginright="10" bordercolor="gray" boxshadow="gray 2">
             <article flexgrow="1" flexdirection="column" height="50" padding="5">
                 <text name="title" fontsize="9" fontfamily="NoticiaText" height="20" color="red">Title</text>
                 <summary name="summary" fontsize="7" fontfamily="NoticiaText" height="100">My Summary</summary>
             </article>
         </column>
 
-        <column name="middle" flexgrow="2" background="White" marginleft="5" marginright="5" bordercolor="gray" boxshadow="gray 2">
-            <article flexgrow="1" flexdirection="column" height="50" padding="5">
-                <text name="title" fontsize="9" fontfamily="NoticiaText" height="20" color="red">Title</text>
-                <text name="summary" fontsize="7" fontfamily="NoticiaText" height="100">summary</text>
-            </article>
+        <column id="middle" flexgrow="2" background="White" marginleft="5" marginright="5" bordercolor="gray" boxshadow="gray 2">
+            <forecastStrip flexdirection="row" justifycontent="spaceevenly" alignitems="center" datasource="weather">
+                <fragment src="fragments/forecast_item.xml" width="100" height="145" alignself="center" background="darkgray" boxshadow="gray 1" />
+                <fragment src="fragments/forecast_item.xml" width="100" height="145" alignself="center" background="lightblue" boxshadow="gray 1" />
+                <fragment src="fragments/forecast_item.xml" width="100" height="145" alignself="center" background="green" boxshadow="gray 1" />
+            </forecastStrip>
+
+            <container datasource="xkcd" />
         </column>
 
-        <column name="right" flexgrow="1" background="White" boxshadow="gray 2" marginleft="10" bordercolor="gray">
+        <column id="right" flexgrow="1" background="White" boxshadow="gray 2" marginleft="10" bordercolor="gray">
             <article flexgrow="1" flexdirection="column" height="50" padding="5">
                 <text name="title" fontsize="9" fontfamily="NoticiaText" height="20" color="red">Title</text>
                 <text name="summary" fontsize="7" fontfamily="NoticiaText" height="100">summary</text>
@@ -34,8 +37,8 @@
         </column>
     </content>
 
-    <footer name="footer" height="10" marginbottom="5" margintop="5" marginleft="10" marginright="10" display="flex" flexdirection="row" justifyContent="spacebetween">
-        <text name="footerText" fontsize="7" fontfamily="NoticiaText" autosize="true" flexgrow="0" >Generated with Totletheyn on Moss</text>
-        <text name="pageNum" fontSize="7" fontfamily="NoticiaText" autosize="true" flexgrow="0" alignself="flexend" alignitems="center" display="none">Page 0</text>
+    <footer height="10" marginbottom="5" margintop="5" marginleft="10" marginright="10" display="flex" flexdirection="row" justifyContent="spacebetween">
+        <text id="footerText" fontsize="7" fontfamily="NoticiaText" autosize="true" flexgrow="0" >Generated with Totletheyn on Moss</text>
+        <text id="citation" fontSize="7" fontfamily="NoticiaText" autosize="true" flexgrow="0" alignself="flexend" alignitems="center">Icons © flaticon.com</text>
     </footer>
 </layout>

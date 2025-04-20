@@ -6,18 +6,42 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-using System;
+using System.Globalization;
 
 namespace Moss.NET.Sdk.LayoutEngine;
 
 public struct YogaValue: IEquatable<YogaValue>
 {
     public static readonly YogaValue Zero = new YogaValue { Value = 0, Unit = YogaUnit.Point };
-    public static readonly YogaValue Undefined = new YogaValue { Value = null, Unit = YogaUnit.Undefined };
+    public static readonly YogaValue Unset = new YogaValue { Value = null, Unit = YogaUnit.Undefined };
     public static readonly YogaValue Auto = new YogaValue { Value = null, Unit = YogaUnit.Auto };
 
     public double? Value;
     public YogaUnit Unit;
+
+    public static YogaValue Parse(string value)
+    {
+        if (value == "auto")
+        {
+            return Auto;
+        }
+
+        if (value == "unset")
+        {
+            return Unset;
+        }
+
+        var unit = YogaUnit.Point;
+        if (value.EndsWith('%'))
+        {
+            value = value.TrimEnd('%');
+            unit = YogaUnit.Percent;
+        }
+
+        var number = double.Parse(value.Trim(), CultureInfo.InvariantCulture);
+
+        return new YogaValue { Value = number, Unit = unit };
+    }
 
     public override string ToString()
     {

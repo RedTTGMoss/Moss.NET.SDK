@@ -11,6 +11,7 @@
         <RepositoryUrl>https://github.com/RedTTGMoss/Moss.NET.SDK</RepositoryUrl>
         <Version>1.6-pre</Version>
         <Nullable>enable</Nullable>
+        <ImplicitUsings>true</ImplicitUsings>
     </PropertyGroup>
 
     <ItemGroup>

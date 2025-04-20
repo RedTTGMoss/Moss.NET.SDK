@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.LayoutEngine;
 using Moss.NET.Sdk.LayoutEngine.Nodes;
 using Moss.NET.Sdk.Storage;
 using Totletheyn.Core.RSS;
+using Totletheyn.DataSources;
+using Totletheyn.DataSources.Weather;
 using UglyToad.PdfPig.Content;
 using UglyToad.PdfPig.Core;
 using UglyToad.PdfPig.Outline;
@@ -31,7 +34,8 @@ class Newspaper
         _author = author;
 
         builder.Bookmarks = new([
-            new DocumentBookmarkNode("Cover", 0, new ExplicitDestination(1, ExplicitDestinationType.FitPage, ExplicitDestinationCoordinates.Empty), [])
+            new DocumentBookmarkNode("Cover", 0,
+                new ExplicitDestination(1, ExplicitDestinationType.FitPage, ExplicitDestinationCoordinates.Empty), [])
         ]);
         builder.DocumentInformation.Producer = "Totletheyn";
         builder.DocumentInformation.Title = "Issue #" + issue;
@@ -39,17 +43,26 @@ class Newspaper
 
         Layout.Builder = builder;
 
-        //Layout.AddFont("default", Defaults.GetDefaultValue<string>("CUSTOM_FONT"));
+        Layout.AddFont("Default", "extension/Assets/fonts/NoticiaText-Regular.ttf");
         Layout.AddFont("Jaini", "extension/Assets/fonts/Jaini-Regular.ttf");
         Layout.AddFont("NoticiaText", "extension/Assets/fonts/NoticiaText-Regular.ttf");
+
+        LayoutLoader.AddDataSource<WeatherDataSource>();
+        LayoutLoader.AddDataSource<XkcdDataSource>();
+        LayoutLoader.AddDataSource<NasaDataSource>();
     }
 
     private Base64 Render()
     {
-        var coverLayout = LayoutLoader.LoadLayoutFromXml(File.ReadAllText("extension/Assets/layouts/cover.xml"));
-        coverLayout.FindNode<TextNode>("header headerInfo date")!.Text = DateTime.Now.ToString("dddd, MMMM dd, yyyy");
-
+        var coverLayout = LayoutLoader.LoadLayoutFromXml(File.ReadAllText("cover.xml"));
+        //coverLayout.EnableDebugLines();
         coverLayout.Apply();
+
+        var contentLayout = LayoutLoader.LoadLayoutFromXml(File.ReadAllText("content.xml"));
+        var pageIndex = Layout.Builder.Pages.Last().Value.PageNumber - 1;
+        contentLayout.FindNode<TextNode>("footer #page")!.Text = $"Page {pageIndex}";
+
+        contentLayout.Apply();
 
         return builder.Build();
     }
