@@ -12,7 +12,7 @@ public static class LayoutLoader
         where T:IDataSource, new()
     {
         var component = new T();
-        DataSources.Add(component.Name, component);
+        DataSources[component.Name] = component;
     }
 
     public static Layout LoadLayoutFromXml(string xmlContent)

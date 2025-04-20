@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Scheduler;
 using Totletheyn.Core.RSS;
-using UglyToad.PdfPig.Fonts.Standard14Fonts;
 
 namespace Totletheyn.Jobs;
 

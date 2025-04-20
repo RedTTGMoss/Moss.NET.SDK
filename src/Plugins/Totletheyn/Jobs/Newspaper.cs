@@ -40,6 +40,7 @@ class Newspaper
         builder.DocumentInformation.Producer = "Totletheyn";
         builder.DocumentInformation.Title = "Issue #" + issue;
         builder.DocumentInformation.CreationDate = DateTime.Now.ToString("dddd, MMMM dd, yyyy");
+        builder.DocumentInformation.Author = author;
 
         Layout.Builder = builder;
 
