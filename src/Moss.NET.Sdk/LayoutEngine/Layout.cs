@@ -11,6 +11,7 @@ public class Layout
     public readonly PdfPageBuilder? Page;
     public static PdfDocumentBuilder Builder;
     static Dictionary<string, PdfDocumentBuilder.AddedFont> _fonts = new();
+    public static PathResolver PathResolver = new();
 
     protected Layout(YogaConfig config, PdfPageBuilder? page, PdfRectangle pageSize = default)
     {
@@ -132,7 +133,7 @@ public class Layout
 
     public static void AddFont(string name, string path)
     {
-       var font = Builder.AddTrueTypeFont(File.ReadAllBytes(path));
+       var font = Builder.AddTrueTypeFont(PathResolver.ReadBytes(path));
        _fonts[name] = font;
     }
 
@@ -173,7 +174,7 @@ public class Layout
         {
             Name = name,
             ParentLayout = this,
-            Src = new Uri(url)
+            Src = url
         };
     }
 }

@@ -43,9 +43,9 @@ class Newspaper
 
         Layout.Builder = builder;
 
-        Layout.AddFont("Default", "extension/Assets/fonts/NoticiaText-Regular.ttf");
-        Layout.AddFont("Jaini", "extension/Assets/fonts/Jaini-Regular.ttf");
-        Layout.AddFont("NoticiaText", "extension/Assets/fonts/NoticiaText-Regular.ttf");
+        Layout.AddFont("Default", "fonts/NoticiaText-Regular.ttf");
+        Layout.AddFont("Jaini", "fonts/Jaini-Regular.ttf");
+        Layout.AddFont("NoticiaText", "fonts/NoticiaText-Regular.ttf");
 
         LayoutLoader.AddDataSource<WeatherDataSource>();
         LayoutLoader.AddDataSource<XkcdDataSource>();
@@ -54,11 +54,11 @@ class Newspaper
 
     private Base64 Render()
     {
-        var coverLayout = LayoutLoader.LoadLayoutFromXml(File.ReadAllText("cover.xml"));
+        var coverLayout = LayoutLoader.Load("layouts/cover.xml");
         //coverLayout.EnableDebugLines();
         coverLayout.Apply();
 
-        var contentLayout = LayoutLoader.LoadLayoutFromXml(File.ReadAllText("content.xml"));
+        var contentLayout = LayoutLoader.Load("layouts/content.xml");
         var pageIndex = Layout.Builder.Pages.Last().Value.PageNumber - 1;
         contentLayout.FindNode<TextNode>("footer #page")!.Text = $"Page {pageIndex}";
 

@@ -12,7 +12,7 @@ public static class LayoutLoader
         where T:IDataSource, new()
     {
         var component = new T();
-        DataSources[component.Name] = component;
+        DataSources.Add(component.Name, component);
     }
 
     public static Layout LoadLayoutFromXml(string xmlContent)
@@ -42,7 +42,17 @@ public static class LayoutLoader
         return layout;
     }
 
-    public static YogaNode LoadFragment(string xmlContent)
+    public static Layout Load(string file)
+    {
+        return LoadLayoutFromXml(Layout.PathResolver.ReadText(file));
+    }
+
+    public static YogaNode LoadFragment(string file)
+    {
+        return LoadFragmentFromXml(Layout.PathResolver.ReadText(file));
+    }
+
+    public static YogaNode LoadFragmentFromXml(string xmlContent)
     {
         var xml = XDocument.Parse(xmlContent);
 
@@ -83,10 +93,10 @@ public static class LayoutLoader
                 node = layout.CreateHorizontalLine();
                 break;
             case "img":
-                node = layout.CreateImageNode(element.Attribute("src")?.Value ?? "http://localhost/", element.Attribute("name")?.Value);
+                node = layout.CreateImageNode(element.Attribute("src")?.Value!, element.Attribute("name")?.Value);
                 break;
             case "fragment":
-                node = LoadFragment(File.ReadAllText(element.Attribute("src")!.Value));
+                node = LoadFragment(element.Attribute("src")!.Value);
                 ApplyFragmentSetter(element, node);
                 break;
             default:

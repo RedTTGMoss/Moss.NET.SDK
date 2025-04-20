@@ -1,6 +1,6 @@
 ﻿<forecastItem flexdirection="column" flexgrow="1" background="#FFFAE5" bordercolor="gray" boxshadow="gray 1">
     <text id="day" fontsize="13" fontfamily="NoticiaText" marginbottom="7" color="black" fontweight="bold" alignself="center" autosize="true">Today</text>
-    <img id="icon" src="file://images/icons/forecast/sunny.png" width="30" height="30" alignself="center" margin="1" />
+    <img id="icon" src="images/icons/forecast/sunny.png" width="30" height="30" alignself="center" margin="1" />
 
     <temperature margin="6" flexdirection="row" alignitems="center" alignself="center" gap="3">
         <text name="max" fontsize="12" fontfamily="NoticiaText" autosize="true" alignself="flexend" color="red">15 °C</text>
@@ -9,22 +9,22 @@
     </temperature>
 
     <precipitation margin="3" flexdirection="row" justifycontent="spacebetween" alignitems="center">
-        <img src="file://images/icons/forecast/info/precipitation.png" width="8" height="8" alignself="flexstart" />
+        <img src="images/icons/forecast/info/precipitation.png" width="8" height="8" alignself="flexstart" />
         <text name="value" fontsize="7" fontfamily="NoticiaText" autosize="true" alignself="flexend">90 % | 0,6 l/m²</text>
     </precipitation>
 
     <wind margin="3" flexdirection="row" justifycontent="spacebetween" alignitems="center">
-        <img src="file://images/icons/forecast/info/wind.png" width="8" height="8" alignself="flexstart" />
+        <img src="images/icons/forecast/info/wind.png" width="8" height="8" alignself="flexstart" />
         <text name="value" fontsize="7" fontfamily="NoticiaText" autosize="true" alignself="flexend">W 11 km/h</text>
     </wind>
 
     <humidity margin="3" flexdirection="row" justifycontent="spacebetween" alignitems="center">
-        <img src="file://images/icons/forecast/info/humidity.png" width="8" height="8" alignself="flexstart" />
+        <img src="images/icons/forecast/info/humidity.png" width="8" height="8" alignself="flexstart" />
         <text name="value" fontsize="7" fontfamily="NoticiaText" autosize="true" alignself="flexend">68 %</text>
     </humidity>
 
     <pressure margin="3" flexdirection="row" justifycontent="spacebetween" alignitems="center">
-        <img src="file://images/icons/forecast/info/pressure.png" width="8" height="8" alignself="flexstart" />
+        <img src="images/icons/forecast/info/pressure.png" width="8" height="8" alignself="flexstart" />
         <text name="value" fontsize="7" fontfamily="NoticiaText" autosize="true" alignself="flexend">1000 hPa</text>
     </pressure>
 </forecastItem>

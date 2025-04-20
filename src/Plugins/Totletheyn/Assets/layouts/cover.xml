@@ -4,9 +4,9 @@
 
         <hr marginleft="10" marginright="10" />
         <section name="headerInfo" flexdirection="row" justifycontent="spacebetween" alignitems="center" margin="10">
-            <text fontfamily="Jaini" fontsize="15" alignself="flexstart">Issue #{0}</text>
-            <text fontfamily="Jaini" fontsize="15" alignself="center" autosize="true">Thursday, April 15, 2025</text>
-            <img name="rss" src="file://images/rss.png" width="9" height="9" alignself="center" />
+            <text fontfamily="Jaini" fontsize="15" alignself="flexstart" id="issue">Issue #{0}</text>
+            <text fontfamily="Jaini" fontsize="15" alignself="center" autosize="true" id="date">Thursday, April 15, 2025</text>
+            <img name="rss" src="images/rss.png" width="9" height="9" alignself="center" />
         </section>
         <hr marginleft="10" marginright="10" />
     </header>
@@ -21,9 +21,9 @@
 
         <column id="middle" flexgrow="2" background="White" marginleft="5" marginright="5" bordercolor="gray" boxshadow="gray 2">
             <forecastStrip flexdirection="row" justifycontent="spaceevenly" alignitems="center" datasource="weather">
-                <fragment src="fragments/forecast_item.xml" width="100" height="145" alignself="center" background="darkgray" boxshadow="gray 1" />
-                <fragment src="fragments/forecast_item.xml" width="100" height="145" alignself="center" background="lightblue" boxshadow="gray 1" />
-                <fragment src="fragments/forecast_item.xml" width="100" height="145" alignself="center" background="green" boxshadow="gray 1" />
+                <fragment src="layouts/fragments/forecast_item.xml" width="100" height="145" alignself="center" background="darkgray" boxshadow="gray 1" />
+                <fragment src="layouts/fragments/forecast_item.xml" width="100" height="145" alignself="center" background="lightblue" boxshadow="gray 1" />
+                <fragment src="layouts/fragments/forecast_item.xml" width="100" height="145" alignself="center" background="green" boxshadow="gray 1" />
             </forecastStrip>
 
             <container datasource="xkcd" />
