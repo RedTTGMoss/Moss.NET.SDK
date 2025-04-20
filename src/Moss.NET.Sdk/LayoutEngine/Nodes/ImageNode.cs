@@ -3,17 +3,22 @@ using UglyToad.PdfPig.Writer;
 
 namespace Moss.NET.Sdk.LayoutEngine.Nodes;
 
+public enum ImageFormat {Png, Jpeg}
+
 public class ImageNode(YogaConfig config) : YogaNode(config)
 {
     public required string Src { get; set; }
     public bool AutoSize { get; set; }
 
-    private byte[] Data;
+    private byte[] _data;
+    private ImageFormat ImageFormat;
 
     public override void ReCalculate(PdfPageBuilder page)
     {
         base.ReCalculate(page);
-        Data = LoadImage();
+        _data = LoadImage();
+
+        DetectImageFormat();
 
         if (AutoSize)
         {
@@ -21,10 +26,27 @@ public class ImageNode(YogaConfig config) : YogaNode(config)
         }
     }
 
+    private void DetectImageFormat()
+    {
+        if (GetMagicNumber(4).SequenceEqual(new byte[] { 0x89, 0x50, 0x4E, 0x47 })) // PNG
+        {
+            ImageFormat = ImageFormat.Png;
+        }
+        else if (GetMagicNumber(2).SequenceEqual(new byte[] { 0xFF, 0xD8 })) // JPEG
+        {
+            ImageFormat = ImageFormat.Jpeg;
+        }
+        else
+        {
+            throw new ArgumentException($"invalid image format '{Src}'");
+        }
+    }
+
     private void AdjustSize()
     {
+
         (int width, int height) dimension;
-        if (Src.EndsWith(".png"))
+        if ( Src.EndsWith(".png"))
         {
             dimension = ReadPngDimension();
         }
@@ -55,13 +77,13 @@ public class ImageNode(YogaConfig config) : YogaNode(config)
 
         PdfPageBuilder.AddedImage img;
 
-        if (Src.EndsWith(".png"))
+        if (ImageFormat == ImageFormat.Png)
         {
-            img = page.AddPng(new MemoryStream(Data), rect);
+            img = page.AddPng(new MemoryStream(_data), rect);
         }
-        else if (Src.EndsWith(".jpg") || Src.EndsWith(".jpeg"))
+        else if (ImageFormat == ImageFormat.Jpeg)
         {
-            img = page.AddJpeg(new MemoryStream(Data), rect);
+            img = page.AddJpeg(new MemoryStream(_data), rect);
         }
         else
         {
@@ -103,7 +125,7 @@ public class ImageNode(YogaConfig config) : YogaNode(config)
 
     private (int width, int height) ReadPngDimension()
     {
-        var stream = new MemoryStream(Data);
+        var stream = new MemoryStream(_data);
 
         stream.Seek(16, SeekOrigin.Begin);
         var buffer = new byte[4];
@@ -119,7 +141,7 @@ public class ImageNode(YogaConfig config) : YogaNode(config)
 
     private (int width, int height) ReadJpegDimension()
     {
-        using var stream = new MemoryStream(Data);
+        using var stream = new MemoryStream(_data);
         var b1 = stream.ReadByte();
         var b2 = stream.ReadByte();
 
@@ -169,5 +191,13 @@ public class ImageNode(YogaConfig config) : YogaNode(config)
         }
 
         throw new InvalidOperationException("SOF-Marker not found");
+    }
+
+    private byte[] GetMagicNumber(int count)
+    {
+        var buffer = new byte[count];
+        using var stream = new MemoryStream(_data);
+        stream.ReadExactly(buffer, 0, buffer.Length);
+        return buffer;
     }
 }
