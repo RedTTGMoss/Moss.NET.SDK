@@ -7,7 +7,7 @@ namespace Totletheyn.Jobs;
 
 public class RssJob : Job
 {
-    private static readonly LoggerInstance _logger = Log.GetLogger<RssJob>();
+    private static readonly LoggerInstance Logger = Log.GetLogger<RssJob>();
     private DateTimeOffset _lastUpdated;
     private int issue = 1;
 
@@ -24,7 +24,7 @@ public class RssJob : Job
     public override void Run()
     {
         _lastUpdated = DateTimeOffset.UtcNow;
-        _logger.Info($"Running RssJob with '{Options.feeds.Length}' feeds.");
+        Logger.Info($"Running RssJob with '{Options.feeds.Length}' feeds.");
 
         var newspaper = new Newspaper(issue, Options.author ?? "Totletheyn");
 
@@ -42,7 +42,7 @@ public class RssJob : Job
             }
         }
 
-        _logger.Info($"Saving generated feed to {Options.folder}");
+        Logger.Info($"Saving generated feed to {Options.folder}");
         var notebook = newspaper.CreateNotebook(Options.folder);
         notebook.Upload();
     }
