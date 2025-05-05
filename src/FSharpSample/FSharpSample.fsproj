@@ -11,7 +11,6 @@
     <ItemGroup>
         <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
         <PackageReference Include="Extism.Pdk" Version="1.1.1"/>
-        <PackageReference Include="Moss.NET.Sdk" Version="1.6.0-pre" />
         <PackageReference Update="FSharp.Core" Version="9.0.202" />
     </ItemGroup>
 
@@ -26,11 +25,20 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Moss.NET.Sdk\Moss.NET.Sdk.csproj"/>
+        <Asset Include="Assets/**/**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Asset>
+        <None Include="*.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="plugin.conf">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <Target Name="Bundle" AfterTargets="PostBuildEvent">
-        <Copy SourceFiles="@(EmbeddedResource)" DestinationFolder="$(OutputPath)AppBundle\Assets\%(RecursiveDir)" SkipUnchangedFiles="true"/>
+        <Copy SourceFiles="@(Asset)" DestinationFolder="$(OutputPath)AppBundle\Assets\%(RecursiveDir)" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="@(None)" DestinationFolder="$(OutputPath)AppBundle\%(RecursiveDir)" SkipUnchangedFiles="true" />
     </Target>
 
 </Project>
