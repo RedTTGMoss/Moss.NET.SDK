@@ -1,18 +1,19 @@
 ﻿using Extism;
 using Hocon;
-using LiteDB;
 using Moss.NET.Sdk.Core;
+using PolyType;
 
 namespace Moss.NET.Sdk.Scheduler;
+
+[GenerateShape]
+partial class JobsCollection : List<ScheduledTask>;
 
 public static class TaskScheduler
 {
     private static HoconObject _config = null!;
-    private static readonly List<ScheduledTask> Jobs = [];
+    private static JobsCollection Jobs = [];
     public static readonly Activator<Job> Activator = new();
-    public static bool IsEnabled => MossExtension.Config.GetBoolean("scheduler.enabled", true);
-
-    private static ILiteCollection<ScheduledTask> JobsCollection;
+    public static bool IsEnabled => MossExtension.Config!.GetBoolean("scheduler.enabled", true);
 
     public static void ScheduleTask(ScheduledTask task)
     {
@@ -53,15 +54,16 @@ public static class TaskScheduler
             job.Data = job.Job.Data;
             job.Job.Shutdown();
 
-            JobsCollection.Update(job);
         }
+
+        MossExtension.Instance!.Cache.Set("scheduler", Jobs);
     }
 
     public static void Init()
     {
         if (!IsEnabled) return;
 
-        JobsCollection = MossExtension.Instance.Cache.GetCollection<ScheduledTask>();
+        Jobs = MossExtension.Instance!.Cache.Get<JobsCollection>("scheduler") ?? [];
 
         ReadJobConfig();
     }
@@ -112,12 +114,10 @@ public static class TaskScheduler
 
     private static void AssociateJobInfo()
     {
-        var taskInfos = JobsCollection.FindAll();
-
-        if (taskInfos == null) return;
+        if (!Jobs.Any()) return;
 
         // Load task info to appropriate job
-        foreach (var taskInfo in taskInfos)
+        foreach (var taskInfo in Jobs)
         {
             var task = Jobs.FirstOrDefault(t => t.Name == taskInfo.Name);
 
@@ -139,7 +139,7 @@ public static class TaskScheduler
     {
         if (TimeSpan.TryParse(span, out var result)) return result;
 
-        var unit = span![^1];
+        var unit = span[^1];
         if (int.TryParse(span[..^1], out var value))
             return unit switch
             {

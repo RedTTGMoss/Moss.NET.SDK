@@ -1,11 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 using Extism;
 using Hocon;
-using LiteDB;
+using PolyType;
 
 namespace Moss.NET.Sdk.Scheduler;
 
-public class ScheduledTask
+[GenerateShape]
+public partial class ScheduledTask
 {
     public ScheduledTask()
     {
@@ -21,19 +22,18 @@ public class ScheduledTask
     }
 
     public DateTimeOffset? NextRunTime { get; set; }
-    [JsonIgnore] public TimeSpan Interval { get; set; }
+    [PropertyShape(Ignore = true)] public TimeSpan Interval { get; set; }
 
-    [JsonIgnore] public HoconObject Options { get; set; } = null!;
+    [PropertyShape(Ignore = true)] public HoconObject Options { get; set; } = null!;
 
     public string? Name { get; set; }
 
+    [PropertyShape(Ignore = true)]
     public object? Data { get; set; } = new();
 
-    [BsonIgnore] public Job Job { get; } = null!;
+    [PropertyShape(Ignore = true)] public Job Job { get; } = null!;
 
-    [BsonIgnore] public Predicate<object>? Predicate { get; set; }
-
-    public ObjectId _id { get; set; }
+    [PropertyShape(Ignore = true)] public Predicate<object>? Predicate { get; set; }
 
     public void UpdateNextRunTime()
     {

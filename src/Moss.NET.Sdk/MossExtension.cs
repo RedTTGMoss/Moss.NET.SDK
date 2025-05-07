@@ -1,11 +1,10 @@
 ﻿using System.Diagnostics.Metrics;
 using Extism;
 using Hocon;
-using LiteDB;
 using Moss.NET.Sdk.Core;
+using Moss.NET.Sdk.Core.Caching;
 using Moss.NET.Sdk.Core.Instrumentation;
 using Moss.NET.Sdk.FFI;
-using Moss.NET.Sdk.Scheduler;
 using Activator = System.Activator;
 using File = System.IO.File;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -19,7 +18,7 @@ public class MossExtension
     private IMeterListener? _meterListener;
 
     public Meter? Meter;
-    public LiteDatabase Cache = new("extension/cache.db");
+    public ICache Cache = new DefaultPersistendCache();
 
     internal static MossExtension? Instance
     {
@@ -32,7 +31,7 @@ public class MossExtension
         set => _instance = value;
     }
 
-    public static HoconRoot Config { get; set; } = HoconParser.Parse("{}");
+    public static HoconRoot? Config { get; set; } = HoconParser.Parse("{}");
 
     public virtual void Register(MossState state)
     {

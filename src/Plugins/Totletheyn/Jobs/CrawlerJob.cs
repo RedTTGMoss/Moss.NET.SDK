@@ -59,7 +59,7 @@ public class CrawlerJob : Job
             Logger.Info($"uploading {issue.Title}");
 
             var pdf = new PdfNotebook(issue.Title, content, inboxId);
-            //pdf.Upload();
+            pdf.Upload();
         }
     }
 }

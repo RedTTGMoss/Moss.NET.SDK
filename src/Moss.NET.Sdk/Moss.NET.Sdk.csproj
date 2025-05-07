@@ -21,9 +21,10 @@
         <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
         <PackageReference Include="Extism.runtime.all" Version="1.9.1"/>
         <PackageReference Include="Hocon" Version="2.0.4"/>
-        <PackageReference Include="LiteDB" Version="5.0.21" />
         <PackageReference Include="PdfPig" Version="0.1.11-alpha-20250425-47584" />
         <PackageReference Include="PipelineNet" Version="0.11.0"/>
+        <PackageReference Include="PolyType" Version="0.37.1" />
+        <PackageReference Include="PolyType.Examples" Version="0.37.1" />
     </ItemGroup>
 
 </Project>
