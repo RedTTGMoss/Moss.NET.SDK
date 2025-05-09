@@ -20,7 +20,7 @@ public class MossExtension
     public Meter? Meter;
     public ICache Cache = new DefaultPersistendCache();
 
-    internal static MossExtension? Instance
+    public static MossExtension? Instance
     {
         get
         {

@@ -4,6 +4,6 @@ namespace Totletheyn.Core;
 
 public interface ICrawler
 {
-    bool IsNewIssueAvailable();
-    IEnumerable<Issue> GetNewIssues();
+    bool IsNewIssueAvailable(Issue? lastIssue);
+    IEnumerable<Issue> GetNewIssues(Issue? lastIssue);
 }

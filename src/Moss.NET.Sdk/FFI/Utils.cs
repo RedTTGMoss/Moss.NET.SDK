@@ -11,7 +11,10 @@ internal static class Utils
         var data = JsonSerializer.Serialize(value, typeInfo);
 
 #if DEBUG
-        Pdk.Log(LogLevel.Info, $"{typeof(T).FullName}:{data}");
+        if (data.Length < 150)
+        {
+            Pdk.Log(LogLevel.Info, $"{typeof(T).FullName}:{data}");
+        }
 #endif
 
         return Pdk.Allocate(data).Offset;

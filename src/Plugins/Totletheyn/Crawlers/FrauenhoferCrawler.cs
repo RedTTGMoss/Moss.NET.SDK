@@ -1,3 +1,4 @@
+using System;
 using Totletheyn.Core;
 using Moss.NET.Sdk.Core;
 using HtmlAgilityPack;
@@ -11,36 +12,35 @@ public class FrauenhoferCrawler : ICrawler
 {
     public const string Name = "frauenhofer";
 
-    private readonly RestTemplate template = new();
-    private readonly HtmlDocument document = new();
-
+    private readonly RestTemplate _template = new();
+    private readonly HtmlDocument _document = new();
 
     public FrauenhoferCrawler()
     {
-        var content = template
+        var content = _template
             .Exchange("https://www.fraunhofer.de/de/mediathek/publikationen/fraunhofer-magazin.html")
             .Body
             .ReadString();
 
-        document.LoadHtml(content);
+        _document.LoadHtml(content);
     }
 
-    public bool IsNewIssueAvailable()
+    public bool IsNewIssueAvailable(Issue lastIssue)
     {
         return true;
     }
 
-    public IEnumerable<Issue> GetNewIssues()
+    public IEnumerable<Issue> GetNewIssues(Issue lastIssue)
     {
-        var titles = document.QuerySelectorAll("h3.teaser-default__text-headline").Select(_ => _.InnerText).ToList();
-        var links = document.QuerySelectorAll(".file-pdf > a").Select(_ => _.Attributes["href"].Value).ToList();
+        var titles = _document.QuerySelectorAll("h3.teaser-default__text-headline").Select(_ => _.InnerText).ToList();
+        var links = _document.QuerySelectorAll(".file-pdf > a").Select(_ => _.Attributes["href"].Value).ToList();
 
         var issues = new List<Issue>();
         for (int i = 0; i < titles.Count; i++)
         {
-            issues.Add(new Issue(titles[i], links[i]));
+            issues.Add(new Issue(titles[i], links[i], DateTime.Now));
         }
 
-        return issues;
+        return issues.TakeLast(1);
     }
 }

@@ -9,4 +9,8 @@ public interface ICache
 
     public T? Get<T>(string key)
         where T : IShapeable<T>;
+
+    public void Remove(string key);
+
+    public bool HasKey(string key);
 }

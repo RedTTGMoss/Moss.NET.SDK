@@ -1,5 +1,7 @@
 ﻿using System;
+using PolyType;
 
 namespace Totletheyn.Core;
 
-public record Issue(string Title, string PdfUrl);
+[GenerateShape]
+public partial record Issue(string Title, string PdfUrl, DateTime PublishingDate);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.Scheduler;
@@ -10,11 +11,11 @@ namespace Totletheyn.Jobs;
 
 public class CrawlerJob : Job
 {
-    private RestTemplate template = new();
-    private Activator<ICrawler> _activator = new();
-    private List<ICrawler> _crawlers = [];
+    private readonly RestTemplate _template = new();
+    private readonly Activator<ICrawler> _activator = new();
+    private readonly List<ICrawler> _crawlers = [];
     private static readonly LoggerInstance Logger = Log.GetLogger<CrawlerJob>();
-    private string inboxId;
+    private string _inboxId;
 
     public override void Init()
     {
@@ -23,7 +24,7 @@ public class CrawlerJob : Job
         _activator.Register<PagedOutCrawler>(PagedOutCrawler.Name);
         _activator.Register<FrauenhoferCrawler>(FrauenhoferCrawler.Name);
 
-        inboxId = MossConfig.Get<string>("inbox");
+        _inboxId = MossConfig.Get<string>("inbox");
 
         if (Options.providers is null){
             Logger.Error("No providers specified");
@@ -40,14 +41,21 @@ public class CrawlerJob : Job
 
     public override void Run()
     {
-        Logger.Info("Running Crawler");
+        Logger.Info("Running Crawlers");
 
         List<Issue> issues = [];
         foreach (var crawler in _crawlers)
         {
-            if (crawler.IsNewIssueAvailable())
+            Logger.Info("Running Crawler: " + _activator.GetName(crawler));
+            var lastIssue = MossExtension.Instance!.Cache.Get<Issue>($"crawler.{_activator.GetName(crawler)}");
+            Logger.Info("Last issue: " + lastIssue?.Title);
+
+            if (crawler.IsNewIssueAvailable(lastIssue))
             {
-                issues.AddRange(crawler.GetNewIssues());
+                Logger.Info("New issues available");
+                issues.AddRange(crawler.GetNewIssues(lastIssue));
+
+                MossExtension.Instance!.Cache.Set($"crawler.{_activator.GetName(crawler)}", issues.Last());
             }
         }
 
@@ -55,11 +63,14 @@ public class CrawlerJob : Job
         foreach (var issue in issues)
         {
             Logger.Info($"downloading {issue.Title}");
-            Base64 content = template.Exchange(issue.PdfUrl).Body;
+            Base64 content = _template.Exchange(issue.PdfUrl).Body;
             Logger.Info($"uploading {issue.Title}");
 
-            var pdf = new PdfNotebook(issue.Title, content, inboxId);
-            pdf.Upload();
+            var pdf = new PdfNotebook(issue.Title, content);
+            pdf.MoveTo(_inboxId);
+            //pdf.Upload();
+
+
         }
     }
 }

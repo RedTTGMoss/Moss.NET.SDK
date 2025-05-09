@@ -14,6 +14,7 @@ public static class TaskScheduler
     private static JobsCollection Jobs = [];
     public static readonly Activator<Job> Activator = new();
     public static bool IsEnabled => MossExtension.Config!.GetBoolean("scheduler.enabled", true);
+    private static readonly LoggerInstance Logger = Log.GetLogger(nameof(TaskScheduler));
 
     public static void ScheduleTask(ScheduledTask task)
     {
@@ -62,8 +63,6 @@ public static class TaskScheduler
     public static void Init()
     {
         if (!IsEnabled) return;
-
-        Jobs = MossExtension.Instance!.Cache.Get<JobsCollection>("scheduler") ?? [];
 
         ReadJobConfig();
     }
@@ -117,21 +116,21 @@ public static class TaskScheduler
         if (!Jobs.Any()) return;
 
         // Load task info to appropriate job
-        foreach (var taskInfo in Jobs)
+        foreach (var job in MossExtension.Instance!.Cache.Get<JobsCollection>("scheduler")!)
         {
-            var task = Jobs.FirstOrDefault(t => t.Name == taskInfo.Name);
+            var task = Jobs.FirstOrDefault(t => t.Name == job.Name);
 
             if (task is null)
             {
-                Pdk.Log(LogLevel.Error, "job not found: " + taskInfo.Name);
+                Pdk.Log(LogLevel.Error, "job not found: " + job.Name);
                 continue;
             }
 
-            task.NextRunTime = taskInfo.NextRunTime ?? DateTimeOffset.UtcNow;
+            task.NextRunTime = job.NextRunTime ?? DateTimeOffset.UtcNow;
 
-            task.Interval = taskInfo.Interval;
-            task.Name = taskInfo.Name;
-            task.Data = taskInfo.Data;
+            task.Interval = job.Interval;
+            task.Name = job.Name;
+            task.Data = job.Data;
         }
     }
 
