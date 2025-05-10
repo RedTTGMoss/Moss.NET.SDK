@@ -62,4 +62,20 @@ public class DefaultPersistendCache : ICache
 
         return File.Exists(path);
     }
+
+    public void Clear()
+    {
+        var files = Directory.GetFiles(Path);
+        foreach (var file in files)
+        {
+            try
+            {
+                File.Delete(file);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.ToString());
+            }
+        }
+    }
 }

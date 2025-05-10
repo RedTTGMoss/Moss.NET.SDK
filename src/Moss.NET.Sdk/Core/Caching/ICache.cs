@@ -13,4 +13,6 @@ public interface ICache
     public void Remove(string key);
 
     public bool HasKey(string key);
+
+    public void Clear();
 }
