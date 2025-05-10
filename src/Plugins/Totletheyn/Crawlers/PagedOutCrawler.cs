@@ -18,7 +18,7 @@ public class PagedOutCrawler : ICrawler
             return true;
         }
 
-        var item = _feed.Items.FirstOrDefault(x => x.Title == lastIssue.Title);
+        var item = _feed.Items.LastOrDefault(x => x.Title == lastIssue.Title);
         if (item == null)
         {
             return true;
