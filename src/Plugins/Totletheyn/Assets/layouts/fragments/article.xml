@@ -1,0 +1,4 @@
+﻿<article flexdirection="column" padding="5" width="auto" height="auto" gap="15">
+    <title fontsize="11" fontfamily="NoticiaText" textwrapping="wrap" height="auto">Title</title>
+    <summary fontsize="7" fontfamily="NoticiaText" textwrapping="wrap" height="100">My Summary</summary>
+</article>

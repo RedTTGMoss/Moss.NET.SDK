@@ -7,8 +7,8 @@ public class WeatherCode
     private static readonly Dictionary<int, string> WeatherCodeToImageMap = new()
     {
         {0, "images/icons/forecast/sunny.png"},
-        {1, "images/icons/forecast/mostly_sunny.png"},
-        {2, "images/icons/forecast/partly_cloudy.png"},
+        {1, "images/icons/forecast/sunny.png"},
+        {2, "images/icons/forecast/cloudy.png"},
         {3, "images/icons/forecast/cloudy.png"},
         {45, "images/icons/forecast/fog.png"},
         {48, "images/icons/forecast/fog.png"},
@@ -17,9 +17,9 @@ public class WeatherCode
         {55, "images/icons/forecast/drizzle.png"},
         {56, "images/icons/forecast/freezing_drizzle.png"},
         {57, "images/icons/forecast/freezing_drizzle.png"},
-        {61, "images/icons/forecast/rain.png"},
-        {63, "images/icons/forecast/rain.png"},
-        {65, "images/icons/forecast/rain.png"},
+        {61, "images/icons/forecast/rainy.png"},
+        {63, "images/icons/forecast/rainy.png"},
+        {65, "images/icons/forecast/rainy.png"},
         {66, "images/icons/forecast/freezing_rain.png"},
         {67, "images/icons/forecast/freezing_rain.png"},
         {71, "images/icons/forecast/snow.png"},

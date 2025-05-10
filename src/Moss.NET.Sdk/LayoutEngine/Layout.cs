@@ -1,4 +1,5 @@
 ﻿using Moss.NET.Sdk.LayoutEngine.Nodes;
+using Moss.NET.Sdk.LayoutEngine.Nodes.Table;
 using UglyToad.PdfPig.Core;
 using UglyToad.PdfPig.Writer;
 
@@ -64,12 +65,20 @@ public class Layout
         };
     }
 
-    public TextNode CreateTextNode(string text, string? name = null)
+    public TextNode CreateTextNode(object text, string? name = null)
     {
         return new TextNode(config, this)
         {
             Name = name,
             Text = text
+        };
+    }
+
+    public TableNode CreateTableNode(string? name = null)
+    {
+        return new TableNode(config, this)
+        {
+            Name = name
         };
     }
 
@@ -183,5 +192,10 @@ public class Layout
             Name = name,
             Src = url
         };
+    }
+
+    public IEnumerable<YogaNode> FindDescendantNodes(string name)
+    {
+        return GetRoot().Descendants(name);
     }
 }

@@ -34,6 +34,7 @@ public static class Colors
     public static readonly Color LightGreen = new(144, 238, 144);
     public static readonly Color LightPink = new(255, 182, 193);
     public static readonly Color LightSalmon = new(255, 160, 122);
+    public static readonly Color WhiteSmoke = new(245, 245, 245);
 
     public static Color Parse(string color)
     {
@@ -101,6 +102,7 @@ public static class Colors
             "lightgreen" => LightGreen,
             "lightpink" => LightPink,
             "lightsalmon" => LightSalmon,
+            "whitesmoke" => WhiteSmoke,
             _ => throw new ArgumentException($"Color '{name}' not found.")
         };
     }

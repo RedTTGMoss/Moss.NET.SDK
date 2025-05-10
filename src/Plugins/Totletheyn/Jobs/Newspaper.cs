@@ -1,46 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using Moss.NET.Sdk;
-using Moss.NET.Sdk.Core;
 using Moss.NET.Sdk.LayoutEngine;
-using Moss.NET.Sdk.LayoutEngine.DataSources;
 using Moss.NET.Sdk.LayoutEngine.Nodes;
-using Moss.NET.Sdk.Storage;
 using Totletheyn.Core.RSS;
 using Totletheyn.DataSources;
+using Totletheyn.DataSources.Crypto;
 using Totletheyn.DataSources.Weather;
-using UglyToad.PdfPig.Content;
-using UglyToad.PdfPig.Core;
 using UglyToad.PdfPig.Outline;
 using UglyToad.PdfPig.Outline.Destinations;
 using UglyToad.PdfPig.Writer;
 
 namespace Totletheyn.Jobs;
 
-class Newspaper
+public class Newspaper
 {
-    public List<Feed> Feeds { get; } = [];
-    public List<FeedItem> Items { get; } = [];
+    private List<Feed> Feeds { get; } = [];
 
-    private readonly PdfDocumentBuilder builder = new();
-    private readonly int _issue;
-    private readonly string _author;
+    private readonly PdfDocumentBuilder _builder = new();
+    private readonly int Issue;
+
+    private readonly List<Layout> _layouts = [];
+
+    public string Title => _builder.DocumentInformation.Title;
 
     public Newspaper(int issue, string? author)
     {
-        _issue = issue;
-        _author = author;
+        Issue = issue;
 
-        builder.DocumentInformation.Producer = "Totletheyn";
-        builder.DocumentInformation.Title = "Issue #" + issue;
-        builder.DocumentInformation.CreationDate = DateTime.Now.ToString("dddd, MMMM dd, yyyy");
-        builder.DocumentInformation.Author = author;
+        _builder.DocumentInformation.Producer = "Totletheyn";
+        _builder.DocumentInformation.Title = "Issue #" + issue;
+        _builder.DocumentInformation.CreationDate = DateTime.Now.ToString("dddd, MMMM dd, yyyy");
+        _builder.DocumentInformation.Author = author;
 
-        Layout.Builder = builder;
+        Layout.Builder = _builder;
 
+        Layout.PathResolver.Base = "Assets/";
         Layout.AddFont("Default", "fonts/NoticiaText-Regular.ttf");
         Layout.AddFont("Jaini", "fonts/Jaini-Regular.ttf");
         Layout.AddFont("NoticiaText", "fonts/NoticiaText-Regular.ttf");
@@ -50,6 +45,12 @@ class Newspaper
         LayoutLoader.AddDataSource<NasaDataSource>();
         LayoutLoader.AddDataSource<JokeDataSource>();
         LayoutLoader.AddDataSource<ComicDataSource>();
+        LayoutLoader.AddDataSource<TiobeDataSource>();
+        LayoutLoader.AddDataSource<CryptoDataSource>();
+
+        var coverLayout = LayoutLoader.Load("layouts/cover.xml");
+
+        _layouts.Add(coverLayout);
     }
 
     private static void AddBookmarks(params Layout[] layouts)
@@ -68,23 +69,61 @@ class Newspaper
         Layout.Builder.Bookmarks = new(nodes);
     }
 
-    private Base64 Render()
+    public byte[] Render()
     {
-        var coverLayout = LayoutLoader.Load("layouts/cover.xml");
-        //coverLayout.EnableDebugLines();
-        coverLayout.Apply();
+        AddNewsToCover();
 
-        var contentLayout = LayoutLoader.Load("layouts/content.xml");
-        contentLayout.Name = "Page 1";
-        contentLayout.Apply();
+        foreach (var layout in _layouts)
+        {
+            layout.Apply();
+        }
 
-        AddBookmarks(coverLayout, contentLayout);
+        AddBookmarks(_layouts.ToArray());
 
-        return builder.Build();
+        return _builder.Build();
     }
 
-    public PdfNotebook CreateNotebook(string folder)
+    private void AddNewsToCover()
     {
-        return new PdfNotebook("Issue #" + _issue, Render(), folder);
+        var coverLayout = _layouts[0];
+        var articles = coverLayout.FindDescendantNodes("article").ToArray();
+
+        var articleIndex = 0;
+        var totalArticles = articles.Length;
+        var feedQueue = new Queue<Feed>(Feeds);
+
+        while (articleIndex < totalArticles && feedQueue.Count > 0)
+        {
+            var feed = feedQueue.Dequeue();
+
+            foreach (var item in feed.Items)
+            {
+                if (articleIndex >= totalArticles)
+                    break;
+
+                var titleNode = articles[articleIndex].FindNode<TextNode>("title");
+                if(titleNode is not null)
+                    titleNode.Text = item.Title;
+
+                var summaryNode = articles[articleIndex].FindNode<TextNode>("summary")!;
+                if(titleNode is not null)
+                    summaryNode.Text = item.Content;
+                articleIndex++;
+            }
+
+            if (feed.Items.Any())
+                feedQueue.Enqueue(feed);
+        }
+    }
+
+    public void AddFeed(Feed feed)
+    {
+        Feeds.Add(feed);
+
+        var layout = LayoutLoader.Load("layouts/content.xml", feed.Title);
+
+        var articles = layout.FindDescendantNodes("article").ToArray();
+
+        _layouts.Add(layout);
     }
 }

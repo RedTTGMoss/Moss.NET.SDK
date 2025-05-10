@@ -3,7 +3,9 @@ using UglyToad.PdfPig.Writer;
 
 namespace Moss.NET.Sdk.LayoutEngine.Nodes;
 
-public enum ImageFormat {Png, Jpeg}
+public enum ImageFormat {Png, Jpeg,
+    Unknown
+}
 
 public class ImageNode(YogaConfig config, Layout parentLayout) : YogaNode(config, parentLayout)
 {
@@ -38,25 +40,24 @@ public class ImageNode(YogaConfig config, Layout parentLayout) : YogaNode(config
         }
         else
         {
-            throw new ArgumentException($"invalid image format '{Src}'");
+            ImageFormat = ImageFormat.Unknown;
         }
     }
 
     private void AdjustSize()
     {
-
         (int width, int height) dimension;
-        if ( Src.EndsWith(".png"))
+        if (ImageFormat == ImageFormat.Png)
         {
             dimension = ReadPngDimension();
         }
-        else if (Src.EndsWith(".jpg") || Src.EndsWith(".jpeg"))
+        else if (ImageFormat == ImageFormat.Jpeg)
         {
             dimension = ReadJpegDimension();
         }
         else
         {
-            throw new ArgumentException($"invalid image format '{Src}'");
+            return;
         }
 
         Width = dimension.width;
@@ -72,25 +73,22 @@ public class ImageNode(YogaConfig config, Layout parentLayout) : YogaNode(config
 
         base.Draw(page, absoluteX, absoluteY);
 
-        var boxPos = new PdfPoint(absoluteX, page.PageSize.Height - absoluteY - LayoutHeight);
-        var rect = new PdfRectangle(boxPos, new PdfPoint(boxPos.X + LayoutWidth, boxPos.Y + LayoutHeight));
-
         PdfPageBuilder.AddedImage img;
 
         if (ImageFormat == ImageFormat.Png)
         {
-            img = page.AddPng(new MemoryStream(_data), rect);
+            img = page.AddPng(new MemoryStream(_data), Bounds);
         }
         else if (ImageFormat == ImageFormat.Jpeg)
         {
-            img = page.AddJpeg(new MemoryStream(_data), rect);
+            img = page.AddJpeg(new MemoryStream(_data), Bounds);
         }
         else
         {
-            throw new ArgumentException($"invalid image format '{Src}'");
+            return;
         }
 
-        page.AddImage(img, rect);
+        page.AddImage(img, Bounds);
     }
 
     private byte[] LoadImage()

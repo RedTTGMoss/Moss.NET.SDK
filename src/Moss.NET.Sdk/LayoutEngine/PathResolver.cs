@@ -2,7 +2,7 @@
 
 public class PathResolver
 {
-    public string Base { get; set; } = "extension/Assets/";
+    public string Base { get; set; }
 
     public virtual string Resolve(string file)
     {

@@ -2,27 +2,28 @@
 
 public class ContainerNode : YogaNode
 {
-    private readonly TextNode copyrightNode;
-    private readonly TextNode titleNode;
+    public readonly TextNode CopyrightNode;
+    public readonly TextNode TitleNode;
 
     public ContainerNode(YogaConfig config, Layout parentLayout) : base(config, parentLayout)
     {
         Content = ParentLayout.CreateNode("content");
         FlexDirection = YogaFlexDirection.Column;
 
-        titleNode = ParentLayout.CreateTextNode("", "title");
-        titleNode.AlignSelf = YogaAlign.Center;
-        titleNode.PositionType = YogaPositionType.Relative;
-        titleNode.Margin = 5;
-        titleNode.AutoSize = true;
+        TitleNode = ParentLayout.CreateTextNode("", "title");
+        TitleNode.AlignSelf = YogaAlign.Center;
+        TitleNode.PositionType = YogaPositionType.Relative;
+        TitleNode.Margin = 5;
+        TitleNode.AutoSize = true;
 
-        copyrightNode = ParentLayout.CreateTextNode("", "copyright");
-        copyrightNode.AlignSelf = YogaAlign.FlexEnd;
-        copyrightNode.PositionType = YogaPositionType.Relative;
-        copyrightNode.FontFamily = "NoticiaText";
-        copyrightNode.FontSize = 6;
-        copyrightNode.AutoSize = true;
-        copyrightNode.MarginTop = 5;
+        CopyrightNode = ParentLayout.CreateTextNode("", "copyright");
+        CopyrightNode.AlignSelf = YogaAlign.FlexEnd;
+        CopyrightNode.PositionType = YogaPositionType.Relative;
+        CopyrightNode.FontFamily = "NoticiaText";
+        CopyrightNode.FontSize = 6;
+        CopyrightNode.AutoSize = true;
+        CopyrightNode.MarginTop = 5;
+        CopyrightNode.TextFormat = "© {0}";
 
         Content.Margin= 2;
 
@@ -30,26 +31,26 @@ public class ContainerNode : YogaNode
 
         if (Title is not null)
         {
-            Add(titleNode);
+            Add(TitleNode);
         }
 
         Add(Content);
 
         if (Copyright is not null)
         {
-            Add(copyrightNode);
+            Add(CopyrightNode);
         }
     }
 
-    public required string Title
+    public required string? Title
     {
-        get => titleNode.Text;
-        set => titleNode.Text = value;
+        get => TitleNode.Text?.ToString();
+        set => TitleNode.Text = value;
     }
 
-    public required string Copyright
+    public required string? Copyright
     {
-        get => copyrightNode.Text;
+        get => CopyrightNode.Text?.ToString();
         set
         {
             if (string.IsNullOrEmpty(value))
@@ -57,7 +58,7 @@ public class ContainerNode : YogaNode
                 return;
             }
 
-            copyrightNode.Text = "© " + value;
+            CopyrightNode.Text = value;
         }
     }
 

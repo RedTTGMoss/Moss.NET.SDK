@@ -19,7 +19,7 @@ public class WeatherDataSource : IDataSource
     {
         var template = new RestTemplate();
         var response = template.GetString(ApiUrl);
-        var model = JsonSerializer.Deserialize(response, WeatherJsonContext.Default.WeatherApiResponse);
+        var model = JsonSerializer.Deserialize<WeatherApiResponse>(response);
         
         var items = node.FindNodes("forecastItem").ToArray();
 
@@ -36,9 +36,9 @@ public class WeatherDataSource : IDataSource
         itemNode.FindNode<TextNode>("#day")!.Text = $"{itemIndex + 1}. day";
 
         var weatherCode = GetDominantWeatherCode(model, itemIndex);
-        itemNode.FindNode<ImageNode>("#icon")!.Src = new(WeatherCode.GetImagePath(weatherCode));
+        itemNode.FindNode<ImageNode>("#icon")!.Src = WeatherCode.GetImagePath(weatherCode);
 
-        var temperatureMin = model!.Daily.Temperature_2m_min[itemIndex];
+        var temperatureMin = model.Daily.Temperature_2m_min[itemIndex];
         var temperatureMax = model.Daily.Temperature_2m_max[itemIndex];
 
         itemNode.FindNode<TextNode>("temperature max")!.Text = $"{temperatureMax:0.0} {model.Daily_units.Temperature_2m_max}";

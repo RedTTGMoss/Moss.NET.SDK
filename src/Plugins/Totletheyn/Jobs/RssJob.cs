@@ -1,6 +1,7 @@
 ﻿using System;
 using Moss.NET.Sdk;
 using Moss.NET.Sdk.Scheduler;
+using Moss.NET.Sdk.Storage;
 using Totletheyn.Core.RSS;
 
 namespace Totletheyn.Jobs;
@@ -31,19 +32,12 @@ public class RssJob : Job
         foreach (string url in Options.feeds)
         {
             var feed = FeedReader.Read(url);
-            newspaper.Feeds.Add(feed);
-
-            foreach (var item in feed.Items)
-            {
-                if (item.PublishingDate > _lastUpdated)
-                {
-                   newspaper.Items.Add(item);
-                }
-            }
+            newspaper.AddFeed(feed);
         }
 
         Logger.Info($"Saving generated feed to {Options.folder}");
-        var notebook = newspaper.CreateNotebook(Options.folder);
+        var notebook = new PdfNotebook(newspaper.Title, newspaper.Render());
+        notebook.MoveTo(Options.folder);
         notebook.Upload();
     }
 
