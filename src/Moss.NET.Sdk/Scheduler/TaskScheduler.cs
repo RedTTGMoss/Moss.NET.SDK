@@ -54,7 +54,6 @@ public static class TaskScheduler
         {
             job.Data = job.Job.Data;
             job.Job.Shutdown();
-
         }
 
         MossExtension.Instance!.Cache.Set("scheduler", Jobs);
