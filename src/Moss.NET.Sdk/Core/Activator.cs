@@ -2,8 +2,8 @@
 
 public class Activator<TOut>
 {
-    private readonly Dictionary<string, Type> _types = new();
     private readonly Dictionary<Type, string> _names = new();
+    private readonly Dictionary<string, Type> _types = new();
 
     public void Register<T>(string name) where T : class
     {

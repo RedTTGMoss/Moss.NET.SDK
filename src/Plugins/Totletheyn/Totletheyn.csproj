@@ -8,13 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1" />
-        <PackageReference Include="Extism.Pdk" Version="1.1.1" />
-        <PackageReference Include="HtmlAgilityPack.CssSelectors.NetCore" Version="1.2.1" />
-        <PackageReference Include="PdfPig" Version="0.1.11-alpha-20250425-47584" />
-        <PackageReference Include="Scriban" Version="6.2.1" />
-        <ProjectReference Include="..\..\Moss.NET.Sdk\Moss.NET.Sdk.csproj" />
-        <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
+        <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
+        <PackageReference Include="Extism.Pdk" Version="1.1.1"/>
+        <PackageReference Include="HtmlAgilityPack.CssSelectors.NetCore" Version="1.2.1"/>
+        <PackageReference Include="PdfPig" Version="0.1.11-alpha-20250425-47584"/>
+        <PackageReference Include="Scriban" Version="6.2.1"/>
+        <ProjectReference Include="..\..\Moss.NET.Sdk\Moss.NET.Sdk.csproj"/>
+        <PackageReference Include="HtmlAgilityPack" Version="1.12.1"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -30,8 +30,8 @@
     </ItemGroup>
 
     <Target Name="Bundle" AfterTargets="PostBuildEvent">
-        <Copy SourceFiles="@(Asset)" DestinationFolder="$(OutputPath)AppBundle\Assets\%(RecursiveDir)" SkipUnchangedFiles="true" />
-        <Copy SourceFiles="@(None)" DestinationFolder="$(OutputPath)AppBundle\%(RecursiveDir)" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="@(Asset)" DestinationFolder="$(OutputPath)AppBundle\Assets\%(RecursiveDir)" SkipUnchangedFiles="true"/>
+        <Copy SourceFiles="@(None)" DestinationFolder="$(OutputPath)AppBundle\%(RecursiveDir)" SkipUnchangedFiles="true"/>
     </Target>
 
 </Project>

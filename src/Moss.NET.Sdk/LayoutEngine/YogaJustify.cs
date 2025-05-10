@@ -15,5 +15,5 @@ public enum YogaJustify
     FlexEnd,
     SpaceBetween,
     SpaceAround,
-    SpaceEvenly,
+    SpaceEvenly
 }

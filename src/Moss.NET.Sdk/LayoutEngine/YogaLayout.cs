@@ -12,31 +12,31 @@ public sealed class YogaLayout
 {
     public const int MaxCachedResultCount = 16;
 
-    public YogaArray<double?> Position;       // 4
-    public YogaArray<double?> Dimensions;     // 2
-    public YogaArray<double?> Margin;         // 6
-    public YogaArray<double> Border;         // 6
-    public YogaArray<double> Padding;        // 6
-    public YogaDirection Direction;
+    public static readonly double?[] DefaultDimensionValues = new[] { default(double?), default(double?) };
+    public YogaArray<double> Border; // 6
+
+    public YogaCachedMeasurement CachedLayout;
+    public YogaCachedMeasurement[] CachedMeasurements; // MaxCachedResultCount
+    public double? ComputedFlexBasis;
 
     public uint ComputedFlexBasisGeneration;
-    public double? ComputedFlexBasis;
-    public bool HadOverflow;
+    public bool DidUseLegacyFlag;
+    public YogaArray<double?> Dimensions; // 2
+    public YogaDirection Direction;
+    public bool DoesLegacyStretchFlagAffectsLayout;
 
     // Instead of recomputing the entire layout every single time, we
     // cache some information to break early when nothing changed
     public uint GenerationCount;
+    public bool HadOverflow;
     public YogaDirection LastOwnerDirection;
-
-    public int NextCachedMeasurementsIndex;
-    public YogaCachedMeasurement[] CachedMeasurements; // MaxCachedResultCount
+    public YogaArray<double?> Margin; // 6
     public YogaArray<double?> MeasuredDimensions; // 2
 
-    public YogaCachedMeasurement CachedLayout;
-    public bool DidUseLegacyFlag;
-    public bool DoesLegacyStretchFlagAffectsLayout;
+    public int NextCachedMeasurementsIndex;
+    public YogaArray<double> Padding; // 6
 
-    public static readonly double?[] DefaultDimensionValues = new double?[] { default(double?), default(double?) };
+    public YogaArray<double?> Position; // 4
 
     public YogaLayout()
     {
@@ -65,10 +65,10 @@ public sealed class YogaLayout
 
     public static bool operator ==(YogaLayout self, YogaLayout layout)
     {
-        if (object.ReferenceEquals(self, layout))
+        if (ReferenceEquals(self, layout))
             return true;
 
-        if (object.ReferenceEquals(self, null) || object.ReferenceEquals(layout, null))
+        if (ReferenceEquals(self, null) || ReferenceEquals(layout, null))
             return false;
 
         var isEqual = YogaArray.Equal(self.Position, layout.Position)
@@ -85,9 +85,9 @@ public sealed class YogaLayout
         for (var i = 0; i < MaxCachedResultCount && isEqual; ++i)
             isEqual = isEqual && self.CachedMeasurements[i] == layout.CachedMeasurements[i];
 
-        isEqual = isEqual && (self.ComputedFlexBasis == layout.ComputedFlexBasis);
-        isEqual = isEqual && (self.MeasuredDimensions[0] == layout.MeasuredDimensions[0]);
-        isEqual = isEqual && (self.MeasuredDimensions[1] == layout.MeasuredDimensions[1]);
+        isEqual = isEqual && self.ComputedFlexBasis == layout.ComputedFlexBasis;
+        isEqual = isEqual && self.MeasuredDimensions[0] == layout.MeasuredDimensions[0];
+        isEqual = isEqual && self.MeasuredDimensions[1] == layout.MeasuredDimensions[1];
 
         return isEqual;
     }
@@ -167,4 +167,4 @@ public sealed class YogaLayout
                DidUseLegacyFlag.GetHashCode() +
                DoesLegacyStretchFlagAffectsLayout.GetHashCode();
     }
-};
+}

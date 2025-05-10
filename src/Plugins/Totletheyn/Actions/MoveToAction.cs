@@ -11,6 +11,5 @@ public class MoveToAction : IEventAction
     public void Execute(Metadata md, object collection)
     {
         var collectionID = MossConfig.Get<string>((string)collection);
-        
     }
 }

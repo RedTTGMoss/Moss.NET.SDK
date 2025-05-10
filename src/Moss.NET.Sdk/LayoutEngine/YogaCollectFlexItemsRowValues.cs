@@ -10,18 +10,20 @@ namespace Moss.NET.Sdk.LayoutEngine;
 
 public class YogaCollectFlexItemsRowValues
 {
-    public int ItemsOnLine;
-    public double? SizeConsumedOnCurrentLine = 0;
-    public double? TotalFlexGrowFactors = 0;
-    public double? TotalFlexShrinkScaledFactors = 0;
+    // The size of the crossDim for the row after considering size, padding,
+    // margin and border of flex items. Used for calculating containers crossSize.
+    public double? CrossDimension = 0;
     public int EndOfLineIndex;
-    public List<YogaNode> RelativeChildren = new List<YogaNode>();
-    public double? RemainingFreeSpace = 0;
+
+    public int ItemsOnLine;
+
     // The size of the mainDim for the row after considering size, padding, margin
     // and border of flex items. This is used to calculate maxLineDim after going
     // through all the rows to decide on the main axis size of owner.
     public double? MainDimension = 0;
-    // The size of the crossDim for the row after considering size, padding,
-    // margin and border of flex items. Used for calculating containers crossSize.
-    public double? CrossDimension = 0;
+    public List<YogaNode> RelativeChildren = new();
+    public double? RemainingFreeSpace = 0;
+    public double? SizeConsumedOnCurrentLine = 0;
+    public double? TotalFlexGrowFactors = 0;
+    public double? TotalFlexShrinkScaledFactors = 0;
 }

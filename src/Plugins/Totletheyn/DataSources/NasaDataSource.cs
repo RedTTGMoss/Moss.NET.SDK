@@ -10,21 +10,20 @@ namespace Totletheyn.DataSources;
 
 public class NasaDataSource : IDataSource
 {
-    const string URL = "https://apod.nasa.gov/apod.rss";
-    public string Name => "nasa";
+    private const string URL = "https://apod.nasa.gov/apod.rss";
 
-    private Feed feed;
+    private readonly Feed feed;
+
     public NasaDataSource()
     {
         feed = FeedReader.Read(URL);
     }
 
+    public string Name => "nasa";
+
     public void ApplyData(YogaNode node, PdfPageBuilder page, XElement element)
     {
-        if (node is not ContainerNode container)
-        {
-            throw new ArgumentException("node is not a ContainerNode");
-        }
+        if (node is not ContainerNode container) throw new ArgumentException("node is not a ContainerNode");
 
         var template = new RestTemplate();
         var link = feed.Items[0].Link;

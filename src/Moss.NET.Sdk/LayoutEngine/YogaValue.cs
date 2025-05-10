@@ -10,26 +10,20 @@ using System.Globalization;
 
 namespace Moss.NET.Sdk.LayoutEngine;
 
-public struct YogaValue: IEquatable<YogaValue>
+public struct YogaValue : IEquatable<YogaValue>
 {
-    public static readonly YogaValue Zero = new YogaValue { Value = 0, Unit = YogaUnit.Point };
-    public static readonly YogaValue Unset = new YogaValue { Value = null, Unit = YogaUnit.Undefined };
-    public static readonly YogaValue Auto = new YogaValue { Value = null, Unit = YogaUnit.Auto };
+    public static readonly YogaValue Zero = new() { Value = 0, Unit = YogaUnit.Point };
+    public static readonly YogaValue Unset = new() { Value = null, Unit = YogaUnit.Undefined };
+    public static readonly YogaValue Auto = new() { Value = null, Unit = YogaUnit.Auto };
 
     public double? Value;
     public YogaUnit Unit;
 
     public static YogaValue Parse(string value)
     {
-        if (value == "auto")
-        {
-            return Auto;
-        }
+        if (value == "auto") return Auto;
 
-        if (value == "unset")
-        {
-            return Unset;
-        }
+        if (value == "unset") return Unset;
 
         var unit = YogaUnit.Point;
         if (value.EndsWith('%'))
@@ -75,12 +69,12 @@ public struct YogaValue: IEquatable<YogaValue>
 
     public static YogaValue Percent(double percentValue)
     {
-        return new YogaValue() { Unit = YogaUnit.Percent, Value = percentValue };
+        return new YogaValue { Unit = YogaUnit.Percent, Value = percentValue };
     }
 
     public static YogaValue Point(double pointValue)
     {
-        return new YogaValue() { Unit = YogaUnit.Point, Value = pointValue };
+        return new YogaValue { Unit = YogaUnit.Point, Value = pointValue };
     }
 
     public bool Equals(YogaValue b)

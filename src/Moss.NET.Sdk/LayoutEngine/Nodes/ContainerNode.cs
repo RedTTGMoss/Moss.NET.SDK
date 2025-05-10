@@ -25,21 +25,15 @@ public class ContainerNode : YogaNode
         CopyrightNode.MarginTop = 5;
         CopyrightNode.TextFormat = "© {0}";
 
-        Content.Margin= 2;
+        Content.Margin = 2;
 
         Margin = 5;
 
-        if (Title is not null)
-        {
-            Add(TitleNode);
-        }
+        if (Title is not null) Add(TitleNode);
 
         Add(Content);
 
-        if (Copyright is not null)
-        {
-            Add(CopyrightNode);
-        }
+        if (Copyright is not null) Add(CopyrightNode);
     }
 
     public required string? Title
@@ -53,10 +47,7 @@ public class ContainerNode : YogaNode
         get => CopyrightNode.Text?.ToString();
         set
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                return;
-            }
+            if (string.IsNullOrEmpty(value)) return;
 
             CopyrightNode.Text = value;
         }

@@ -68,32 +68,29 @@ public struct YogaArray<T>
 
     public T this[int index]
     {
-        get { return _array[index]; }
-        set { _array[index] = value; }
+        get => _array[index];
+        set => _array[index] = value;
     }
 
     public T this[YogaEdge index]
     {
-        get { return _array[(int)index]; }
-        set { _array[(int)index] = value; }
+        get => _array[(int)index];
+        set => _array[(int)index] = value;
     }
 
     public T this[YogaFlexDirection index]
     {
-        get { return _array[(int)index]; }
-        set { _array[(int)index] = value; }
+        get => _array[(int)index];
+        set => _array[(int)index] = value;
     }
 
     public T this[YogaDimension index]
     {
-        get { return _array[(int)index]; }
-        set { _array[(int)index] = value; }
+        get => _array[(int)index];
+        set => _array[(int)index] = value;
     }
 
-    public int Length
-    {
-        get { return _array.Length; }
-    }
+    public int Length => _array.Length;
 
     public YogaArray(int length)
     {
@@ -113,7 +110,7 @@ public struct YogaArray<T>
     public void Clear()
     {
         for (var i = 0; i < _array.Length; i++)
-            _array[i] = default(T);
+            _array[i] = default;
     }
 
     public override int GetHashCode()

@@ -12,5 +12,5 @@ public enum YogaMeasureMode
 {
     Undefined,
     Exactly,
-    AtMost,
+    AtMost
 }

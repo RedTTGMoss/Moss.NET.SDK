@@ -11,12 +11,10 @@ namespace Totletheyn.DataSources;
 public class ComicDataSource : IDataSource
 {
     public string Name => "comic";
+
     public void ApplyData(YogaNode node, PdfPageBuilder page, XElement element)
     {
-        if (node is not ContainerNode container)
-        {
-            throw new ArgumentException("node is not a ContainerNode");
-        }
+        if (node is not ContainerNode container) throw new ArgumentException("node is not a ContainerNode");
 
         var series = "garfield";
         var template = new RestTemplate();

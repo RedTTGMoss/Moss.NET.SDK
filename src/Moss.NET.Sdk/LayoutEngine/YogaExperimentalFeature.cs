@@ -10,5 +10,5 @@ namespace Moss.NET.Sdk.LayoutEngine;
 
 public enum YogaExperimentalFeature
 {
-    WebFlexBasis,
+    WebFlexBasis
 }

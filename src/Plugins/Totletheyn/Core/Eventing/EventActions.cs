@@ -23,7 +23,7 @@ public class EventActions
         }
     }
 
-    static void RegisterAction<T>()
+    private static void RegisterAction<T>()
         where T : class, IEventAction, new()
     {
         EventTrigger.Activator.Register<T>(new T().Name);

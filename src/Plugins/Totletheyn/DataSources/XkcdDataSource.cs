@@ -9,21 +9,20 @@ namespace Totletheyn.DataSources;
 
 public class XkcdDataSource : IDataSource
 {
-    const string URL = "https://xkcd.com/rss.xml";
-    public string Name => "xkcd";
+    private const string URL = "https://xkcd.com/rss.xml";
 
-    private Feed feed;
+    private readonly Feed feed;
+
     public XkcdDataSource()
     {
         feed = FeedReader.Read(URL);
     }
 
+    public string Name => "xkcd";
+
     public void ApplyData(YogaNode node, PdfPageBuilder page, XElement element)
     {
-        if (node is not ContainerNode container)
-        {
-            throw new ArgumentException("node is not a ContainerNode");
-        }
+        if (node is not ContainerNode container) throw new ArgumentException("node is not a ContainerNode");
 
         container.Copyright = "xkcd";
 

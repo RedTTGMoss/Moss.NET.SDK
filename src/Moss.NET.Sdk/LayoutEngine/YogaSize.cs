@@ -15,10 +15,10 @@ public struct YogaSize
 
     public static YogaSize From(double? width, double? height)
     {
-        return new YogaSize()
+        return new YogaSize
         {
             Width = width,
-            Height = height,
+            Height = height
         };
     }
 }

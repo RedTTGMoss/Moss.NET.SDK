@@ -14,10 +14,7 @@ public class RssJob : Job
 
     public override void Init()
     {
-        if (Data is not null)
-        {
-            issue = (int)Data;
-        }
+        if (Data is not null) issue = (int)Data;
 
         //_lastUpdated = (DateTimeOffset)Data;
     }

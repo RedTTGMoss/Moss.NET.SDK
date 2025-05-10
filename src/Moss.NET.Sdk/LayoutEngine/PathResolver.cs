@@ -9,6 +9,13 @@ public class PathResolver
         return Base + file;
     }
 
-    public byte[] ReadBytes(string file) => File.ReadAllBytes(Resolve(file));
-    public string ReadText(string file) => File.ReadAllText(Resolve(file));
+    public byte[] ReadBytes(string file)
+    {
+        return File.ReadAllBytes(Resolve(file));
+    }
+
+    public string ReadText(string file)
+    {
+        return File.ReadAllText(Resolve(file));
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using PolyType;
+using PolyType.Examples.CborSerializer;
 
 namespace Moss.NET.Sdk.Core.Caching;
 
@@ -9,22 +10,16 @@ public class DefaultPersistendCache : ICache
 
     public DefaultPersistendCache()
     {
-        if (!Directory.Exists(Path))
-        {
-            Directory.CreateDirectory(Path);
-        }
+        if (!Directory.Exists(Path)) Directory.CreateDirectory(Path);
     }
 
     public void Set<T>(string key, T value)
         where T : IShapeable<T>
     {
-        var encoded = PolyType.Examples.CborSerializer.CborSerializer.Encode(value);
+        var encoded = CborSerializer.Encode(value);
 
         var itemPath = System.IO.Path.Combine(Path, key);
-        if (!File.Exists(itemPath))
-        {
-            File.Create(itemPath).Close();
-        }
+        if (!File.Exists(itemPath)) File.Create(itemPath).Close();
 
         File.WriteAllBytes(itemPath, encoded);
     }
@@ -32,12 +27,12 @@ public class DefaultPersistendCache : ICache
     public T? Get<T>(string key)
         where T : IShapeable<T>
     {
-        if(!HasKey(key)) return default;
+        if (!HasKey(key)) return default;
 
         try
         {
             var raw = File.ReadAllBytes(System.IO.Path.Combine(Path, key));
-            var cacheItem = PolyType.Examples.CborSerializer.CborSerializer.Decode<T>(raw);
+            var cacheItem = CborSerializer.Decode<T>(raw);
 
             return cacheItem;
         }
@@ -52,10 +47,7 @@ public class DefaultPersistendCache : ICache
     {
         var path = System.IO.Path.Combine(Path, key);
 
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-        }
+        if (File.Exists(path)) File.Delete(path);
     }
 
     public bool HasKey(string key)

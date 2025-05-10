@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Extism;
+﻿using Extism;
 using Hocon;
 using PolyType;
 
@@ -28,8 +27,7 @@ public partial class ScheduledTask
 
     public string? Name { get; set; }
 
-    [PropertyShape(Ignore = true)]
-    public object? Data { get; set; } = new();
+    [PropertyShape(Ignore = true)] public object? Data { get; set; } = new();
 
     [PropertyShape(Ignore = true)] public Job Job { get; } = null!;
 

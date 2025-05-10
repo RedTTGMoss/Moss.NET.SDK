@@ -17,5 +17,5 @@ public enum YogaAlign
     Stretch,
     Baseline,
     SpaceBetween,
-    SpaceAround,
+    SpaceAround
 }

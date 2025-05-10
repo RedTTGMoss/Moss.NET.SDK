@@ -17,10 +17,9 @@ public enum ImageFormat
 
 public class EpubWriter
 {
-    private readonly string? opfPath = "EPUB/package.opf";
-    private readonly string? ncxPath = "EPUB/toc.ncx";
-
     private readonly EpubFormat format;
+    private readonly string? ncxPath = "EPUB/toc.ncx";
+    private readonly string? opfPath = "EPUB/package.opf";
     private readonly EpubResources resources;
 
     public EpubWriter()

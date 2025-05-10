@@ -10,6 +10,7 @@ namespace Totletheyn.DataSources.Crypto;
 public class CryptoDataSource : IDataSource
 {
     public string Name => "crypto";
+
     public void ApplyData(YogaNode node, PdfPageBuilder page, XElement element)
     {
         if (node is not ContainerNode container)
@@ -23,9 +24,10 @@ public class CryptoDataSource : IDataSource
         var template = new RestTemplate();
         template.Headers.Add("User-Agent", "Mozilla/5.0 (compatible; AcmeInc/1.0)");
 
-        var coins = (string[])["bitcoin", "ethereum", "worldcoin-wld"];
+        var coins = (string[]) ["bitcoin", "ethereum", "worldcoin-wld"];
         var currency = "eur";
-        var url = $"https://api.coingecko.com/api/v3/coins/markets?ids={string.Join(',', coins)}&vs_currency={currency}&include_24hr_change=true";
+        var url =
+            $"https://api.coingecko.com/api/v3/coins/markets?ids={string.Join(',', coins)}&vs_currency={currency}&include_24hr_change=true";
         var response = template.GetString(url);
         var cyptos = JsonSerializer.Deserialize<CryptoPrice[]>(response);
 

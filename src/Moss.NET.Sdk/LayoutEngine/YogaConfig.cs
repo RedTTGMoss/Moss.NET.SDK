@@ -10,49 +10,6 @@ namespace Moss.NET.Sdk.LayoutEngine;
 
 public class YogaConfig
 {
-    private bool[] _experimentalFeatures = new bool[] { false };
-    private bool _useWebDefaults;
-    private bool _useLegacyStretchBehaviour;
-    private bool _shouldDiffLayoutWithoutLegacyStretchBehaviour;
-    private double _pointScaleFactor = 1.0F;
-    private YogaNodeCloned _onNodeCloned;
-
-    public bool[] ExperimentalFeatures
-    {
-        get { return _experimentalFeatures; }
-        set { _experimentalFeatures = value; }
-    }
-
-    public bool UseWebDefaults
-    {
-        get { return _useWebDefaults; }
-        set { _useWebDefaults = value; }
-    }
-
-    public bool UseLegacyStretchBehaviour
-    {
-        get { return _useLegacyStretchBehaviour; }
-        set { _useLegacyStretchBehaviour = value; }
-    }
-
-    public bool ShouldDiffLayoutWithoutLegacyStretchBehaviour
-    {
-        get { return _shouldDiffLayoutWithoutLegacyStretchBehaviour; }
-        set { _shouldDiffLayoutWithoutLegacyStretchBehaviour = value; }
-    }
-
-    public double PointScaleFactor
-    {
-        get { return _pointScaleFactor; }
-        set { _pointScaleFactor = value; }
-    }
-
-    public YogaNodeCloned OnNodeCloned
-    {
-        get { return _onNodeCloned; }
-        set { _onNodeCloned = value; }
-    }
-
     public YogaConfig()
     {
     }
@@ -69,6 +26,18 @@ public class YogaConfig
         OnNodeCloned = oldConfig.OnNodeCloned;
     }
 
+    public bool[] ExperimentalFeatures { get; set; } = new[] { false };
+
+    public bool UseWebDefaults { get; set; }
+
+    public bool UseLegacyStretchBehaviour { get; set; }
+
+    public bool ShouldDiffLayoutWithoutLegacyStretchBehaviour { get; set; }
+
+    public double PointScaleFactor { get; set; } = 1.0F;
+
+    public YogaNodeCloned OnNodeCloned { get; set; }
+
     public bool IsExperimentalFeatureEnabled(YogaExperimentalFeature feature)
     {
         return ExperimentalFeatures[(int)feature];
@@ -78,4 +47,4 @@ public class YogaConfig
     {
         return new YogaConfig(this);
     }
-};
+}

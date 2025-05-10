@@ -28,8 +28,8 @@ public class TextNode(YogaConfig config, Layout parentLayout) : YogaNode(config,
         {
             if (value)
             {
-                Width = new YogaValue() { Unit = YogaUnit.Auto, Value = 1 };
-                Height = new YogaValue() { Unit = YogaUnit.Auto, Value = 1 };
+                Width = new YogaValue { Unit = YogaUnit.Auto, Value = 1 };
+                Height = new YogaValue { Unit = YogaUnit.Auto, Value = 1 };
             }
             else
             {
@@ -41,10 +41,7 @@ public class TextNode(YogaConfig config, Layout parentLayout) : YogaNode(config,
 
     public override void ReCalculate(PdfPageBuilder page)
     {
-        if (string.IsNullOrEmpty(Text?.ToString()))
-        {
-            return;
-        }
+        if (string.IsNullOrEmpty(Text?.ToString())) return;
 
         var text = GetActualString();
 
@@ -53,7 +50,8 @@ public class TextNode(YogaConfig config, Layout parentLayout) : YogaNode(config,
         var rightMost = measuredText.Max(g => g.GlyphRectangle.Right);
         var textWidth = rightMost - leftMost;
 
-        var textHeight = measuredText.Max(glyph => glyph.GlyphRectangle.Top) - measuredText.Min(glyph => glyph.GlyphRectangle.Bottom);
+        var textHeight = measuredText.Max(glyph => glyph.GlyphRectangle.Top) -
+                         measuredText.Min(glyph => glyph.GlyphRectangle.Bottom);
 
         if (Width is { Unit: YogaUnit.Auto, Value: 1 })
             Width = textWidth;
@@ -64,15 +62,9 @@ public class TextNode(YogaConfig config, Layout parentLayout) : YogaNode(config,
 
     private string GetActualString()
     {
-        if (TextFormat is not null)
-        {
-            return string.Format(TextFormat, Text);
-        }
+        if (TextFormat is not null) return string.Format(TextFormat, Text);
 
-        if (Text is null)
-        {
-            return "";
-        }
+        if (Text is null) return "";
 
         return Text?.ToString();
     }
@@ -139,23 +131,19 @@ public class TextNode(YogaConfig config, Layout parentLayout) : YogaNode(config,
             var lineOffset = i * lineHeight * LineSpacing;
             page.AddText(lines[i], FontSize, new PdfPoint(absoluteX, y - lineOffset), font);
 
-            if (IsBold)
-            {
-                DrawBoldText(page, absoluteX, lines, i, y, lineHeight * LineSpacing, font);
-            }
+            if (IsBold) DrawBoldText(page, absoluteX, lines, i, y, lineHeight * LineSpacing, font);
         }
 
         page.ResetColor();
     }
 
-    private void DrawBoldText(PdfPageBuilder page, double absoluteX, List<string> lines, int i, double y, double lineHeight,
+    private void DrawBoldText(PdfPageBuilder page, double absoluteX, List<string> lines, int i, double y,
+        double lineHeight,
         PdfDocumentBuilder.AddedFont font)
     {
         double[] offsets = [0, 0.3, -0.3, 0.3, -0.3];
         foreach (var dx in offsets)
-        {
             page.AddText(lines[i], FontSize, new PdfPoint(absoluteX + dx, y - i * lineHeight + LineSpacing), font);
-        }
     }
 
     internal override void SetAttribute(string name, string value)

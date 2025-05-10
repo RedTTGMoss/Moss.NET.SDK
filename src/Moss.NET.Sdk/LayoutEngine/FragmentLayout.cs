@@ -2,7 +2,7 @@
 
 public class FragmentLayout : Layout
 {
-    protected FragmentLayout() : base(new(), null)
+    protected FragmentLayout() : base(new YogaConfig(), null)
     {
     }
 }

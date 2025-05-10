@@ -13,5 +13,4 @@ namespace Totletheyn.DataSources.Weather;
 [JsonSerializable(typeof(WeatherCode))]
 public partial class WeatherJsonContext : JsonSerializerContext
 {
-    
 }

@@ -11,22 +11,20 @@ namespace Totletheyn.DataSources.Weather;
 
 public class WeatherDataSource : IDataSource
 {
-    public string Name => "weather";
-
     private const string ApiUrl =
         "https://api.open-meteo.com/v1/forecast?latitude=49.1113&longitude=9.7391&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl,precipitation_probability,weathercode&current=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl,precipitation_probability,weathercode&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_sum,windspeed_10m_max,windgusts_10m_max&forecast_days=3";
+
+    public string Name => "weather";
+
     public void ApplyData(YogaNode node, PdfPageBuilder page, XElement element)
     {
         var template = new RestTemplate();
         var response = template.GetString(ApiUrl);
         var model = JsonSerializer.Deserialize<WeatherApiResponse>(response);
-        
+
         var items = node.FindNodes("forecastItem").ToArray();
 
-        for (int itemIndex = 0; itemIndex < items.Length; itemIndex++)
-        {
-            SetWeatherTileData(items, itemIndex, model);
-        }
+        for (var itemIndex = 0; itemIndex < items.Length; itemIndex++) SetWeatherTileData(items, itemIndex, model);
     }
 
     private void SetWeatherTileData(YogaNode[] items, int itemIndex, WeatherApiResponse? model)
@@ -41,18 +39,19 @@ public class WeatherDataSource : IDataSource
         var temperatureMin = model.Daily.Temperature_2m_min[itemIndex];
         var temperatureMax = model.Daily.Temperature_2m_max[itemIndex];
 
-        itemNode.FindNode<TextNode>("temperature max")!.Text = $"{temperatureMax:0.0} {model.Daily_units.Temperature_2m_max}";
-        itemNode.FindNode<TextNode>("temperature min")!.Text = $"{temperatureMin:0.0} {model.Daily_units.Temperature_2m_min}";
+        itemNode.FindNode<TextNode>("temperature max")!.Text =
+            $"{temperatureMax:0.0} {model.Daily_units.Temperature_2m_max}";
+        itemNode.FindNode<TextNode>("temperature min")!.Text =
+            $"{temperatureMin:0.0} {model.Daily_units.Temperature_2m_min}";
 
         double dailyPrecipitationProbability = 0;
-        for (int i = 0; i < 24; i++)
-        {
+        for (var i = 0; i < 24; i++)
             dailyPrecipitationProbability += model.Hourly.Precipitation_probability[itemIndex * 24 + i];
-        }
 
         dailyPrecipitationProbability /= 24;
 
-        itemNode.FindNode<TextNode>("precipitation value")!.Text = $"{dailyPrecipitationProbability:0.0} {model.Hourly_units.Precipitation_probability}";
+        itemNode.FindNode<TextNode>("precipitation value")!.Text =
+            $"{dailyPrecipitationProbability:0.0} {model.Hourly_units.Precipitation_probability}";
 
         var windSpeed = model.Daily.Windspeed_10m_max[itemIndex];
         itemNode.FindNode<TextNode>("wind value")!.Text = $"{windSpeed:0.0} {model.Daily_units.Windspeed_10m_max}";
@@ -70,10 +69,8 @@ public class WeatherDataSource : IDataSource
         var endIndex = startIndex + 24;
 
         var weatherCodes = new List<int>();
-        for (int i = startIndex; i < endIndex && i < model.Hourly.Weathercode.Count; i++)
-        {
+        for (var i = startIndex; i < endIndex && i < model.Hourly.Weathercode.Count; i++)
             weatherCodes.Add(model.Hourly.Weathercode[i]);
-        }
 
         var groupedWeatherCodes = weatherCodes.GroupBy(x => x);
         var dominantWeatherCode = groupedWeatherCodes.OrderByDescending(x => x.Count()).FirstOrDefault()?.Key ?? 0;

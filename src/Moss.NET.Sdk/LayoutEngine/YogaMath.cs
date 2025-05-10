@@ -31,7 +31,7 @@ public static class YogaMath
         if (a != null && b != null)
             return Math.Max(a.Value, b.Value);
 
-        return (a == null) ? b : a;
+        return a == null ? b : a;
     }
 
     public static double? Min(double? a, double? b)
@@ -42,7 +42,8 @@ public static class YogaMath
         return a == null ? b : a;
     }
 
-    public static double? RoundValueToPixelGrid(double? value, double? pointScaleFactor, bool forceCeil, bool forceFloor)
+    public static double? RoundValueToPixelGrid(double? value, double? pointScaleFactor, bool forceCeil,
+        bool forceFloor)
     {
         var scaledValue = value * pointScaleFactor;
 
@@ -50,7 +51,6 @@ public static class YogaMath
         // - fractial`.
         var fractial = scaledValue % 1.0f;
         if (fractial < 0)
-        {
             // This branch is for handling negative numbers for `value`.
             //
             // Regarding `floor` and `ceil`. Note that for a number x, `floor(x) <= x <=
@@ -67,32 +67,22 @@ public static class YogaMath
             //   - Add 1 to the fraction: fractial2 = fractial + 1 = -0.2 + 1 = 0.8
             //   - Finding the `floor`: -2.2 - fractial2 = -2.2 - 0.8 = -3
             ++fractial;
-        }
 
         if (doublesEqual(fractial, 0))
-        {
             // First we check if the value is already rounded
             scaledValue = scaledValue - fractial;
-        }
         else if (doublesEqual(fractial, 1.0f))
-        {
             scaledValue = scaledValue - fractial + 1.0f;
-        }
         else if (forceCeil)
-        {
             // Next we check if we need to use forced rounding
             scaledValue = scaledValue - fractial + 1.0f;
-        }
         else if (forceFloor)
-        {
             scaledValue = scaledValue - fractial;
-        }
         else
-        {
             // Finally we just round the value
-            scaledValue = scaledValue - fractial + ((fractial != null) && (fractial > 0.5f || doublesEqual(fractial, 0.5f)) ? 1.0f : 0.0f);
-        }
-        return ((scaledValue == null) || pointScaleFactor == null) ? default(double?) : scaledValue / pointScaleFactor;
+            scaledValue = scaledValue - fractial +
+                          (fractial != null && (fractial > 0.5f || doublesEqual(fractial, 0.5f)) ? 1.0f : 0.0f);
+        return scaledValue == null || pointScaleFactor == null ? default : scaledValue / pointScaleFactor;
     }
 
     public static bool doublesEqual(double? a, double? b)

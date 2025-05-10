@@ -17,10 +17,7 @@ public class TableNode : YogaNode
         get => HeaderRow.Padding;
         set
         {
-            foreach (var rows in this)
-            {
-                rows.Padding = value;
-            }
+            foreach (var rows in this) rows.Padding = value;
         }
     }
 
@@ -59,37 +56,23 @@ public class TableNode : YogaNode
         base.ReCalculate(page);
 
         if (HeaderRow.Display == YogaDisplay.None)
-        {
             foreach (var cell in HeaderRow)
-            {
                 cell.GetChild(0).Display = YogaDisplay.None;
-            }
-        }
     }
 
     public void AlternateColor(Color first, Color second)
     {
         var startIndex = 1;
-        if (HeaderRow.Display == YogaDisplay.None)
-        {
-            startIndex = 0;
-        }
+        if (HeaderRow.Display == YogaDisplay.None) startIndex = 0;
 
-        for (int i = startIndex; i < Count; i++)
-        {
+        for (var i = startIndex; i < Count; i++)
             if (this[i] is TableRowNode tableRow)
-            {
                 tableRow.Background = i % 2 == 0 ? first : second;
-            }
-        }
     }
 
     public TextNode GetColumn(int index)
     {
-        if (HeaderRow[index] is TableCellNode cell)
-        {
-            return (cell.GetChild(0) as TextNode)!;
-        }
+        if (HeaderRow[index] is TableCellNode cell) return (cell.GetChild(0) as TextNode)!;
 
         throw new ArgumentOutOfRangeException(nameof(index), "Column index out of range");
     }

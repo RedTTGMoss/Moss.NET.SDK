@@ -19,73 +19,52 @@ public partial class YogaNode : IEnumerable<YogaNode>
     public const double DefaultFlexShrink = 0.0f;
     public const double WebDefaultFlexShrink = 1.0f;
 
-    private static int _instanceCount = 0;
-
-    private YogaPrint _print;
-    private bool _hasNewLayout;
-    private YogaNodeType _nodeType;
-    private YogaMeasure _measure;
-    private YogaBaseline _baseline;
-    private bool _isReferenceBaseline;
-    private YogaDirtied _dirtied;
-    private YogaStyle _style;
-    private YogaLayout _layout;
-    private int _lineIndex;
-    private YogaNode _owner;
+    private static int _instanceCount;
     private List<YogaNode> _children;
-    private YogaNode _nextChild;
-    private YogaConfig _config;
     private bool _isDirty;
+    private bool _isReferenceBaseline;
+    private YogaLayout _layout;
+    private YogaMeasure _measure;
+
     private YogaArray<YogaValue> _resolvedDimensions; // [2]
-    public Layout ParentLayout { get; set; }
-    public Color? Background { get; set; }
-    public BoxShadow? BoxShadow { get; set; }
-
-    public PdfRectangle Bounds { get; private set; }
-
-    public string ID { get; set; }
-
-    /// <summary>
-    /// The gap between each children
-    /// </summary>
-    public YogaValue Gap { get; set; }
+    private YogaStyle _style;
 
     public YogaNode()
     {
-        _print = null;
-        _hasNewLayout = true;
-        _nodeType = YogaNodeType.Default;
+        PrintFunction = null;
+        HasNewLayout = true;
+        NodeType = YogaNodeType.Default;
         _measure = null;
-        _baseline = null;
-        _dirtied = null;
+        Baseline = null;
+        Dirtied = null;
         _style = new YogaStyle();
         _layout = new YogaLayout();
-        _lineIndex = 0;
-        _owner = null;
+        LineIndex = 0;
+        Owner = null;
         _children = new List<YogaNode>();
-        _nextChild = null;
-        _config = new YogaConfig();
+        NextChild = null;
+        Config = new YogaConfig();
         _isDirty = false;
-        _resolvedDimensions = new YogaArray<YogaValue>(new YogaValue[] { YogaValue.Unset, YogaValue.Unset });
+        _resolvedDimensions = new YogaArray<YogaValue>(YogaValue.Unset, YogaValue.Unset);
 
         Interlocked.Increment(ref _instanceCount);
     }
 
     public YogaNode(YogaNode node)
     {
-        _print = node._print;
-        _hasNewLayout = node._hasNewLayout;
-        _nodeType = node._nodeType;
+        PrintFunction = node.PrintFunction;
+        HasNewLayout = node.HasNewLayout;
+        NodeType = node.NodeType;
         _measure = node._measure;
-        _baseline = node._baseline;
-        _dirtied = node._dirtied;
+        Baseline = node.Baseline;
+        Dirtied = node.Dirtied;
         _style = node._style;
         _layout = node._layout;
-        _lineIndex = node._lineIndex;
-        _owner = node._owner;
+        LineIndex = node.LineIndex;
+        Owner = node.Owner;
         _children = new List<YogaNode>(node._children);
-        _nextChild = node._nextChild;
-        _config = node._config;
+        NextChild = node.NextChild;
+        Config = node.Config;
         _isDirty = node._isDirty;
         _resolvedDimensions = YogaArray.From(node._resolvedDimensions);
 
@@ -95,7 +74,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
     public YogaNode(YogaNode node, YogaNode owner)
         : this(node)
     {
-        _owner = owner;
+        Owner = owner;
     }
 
     public YogaNode(
@@ -115,19 +94,19 @@ public partial class YogaNode : IEnumerable<YogaNode>
         bool isDirty,
         YogaValue[] resolvedDimensions)
     {
-        _print = print;
-        _hasNewLayout = hasNewLayout;
-        _nodeType = nodeType;
+        PrintFunction = print;
+        HasNewLayout = hasNewLayout;
+        NodeType = nodeType;
         _measure = measure;
-        _baseline = baseline;
-        _dirtied = dirtied;
+        Baseline = baseline;
+        Dirtied = dirtied;
         _style = style;
         _layout = layout;
-        _lineIndex = lineIndex;
-        _owner = owner;
+        LineIndex = lineIndex;
+        Owner = owner;
         _children = new List<YogaNode>(children);
-        _nextChild = nextChild;
-        _config = config;
+        NextChild = nextChild;
+        Config = config;
         _isDirty = isDirty;
         _resolvedDimensions = YogaArray.From(resolvedDimensions);
 
@@ -136,9 +115,9 @@ public partial class YogaNode : IEnumerable<YogaNode>
 
     public YogaNode(YogaConfig config, Layout layout) : this()
     {
-        _config = config ?? new YogaConfig();
+        Config = config ?? new YogaConfig();
 
-        if (_config.UseWebDefaults)
+        if (Config.UseWebDefaults)
         {
             Style.FlexDirection = YogaFlexDirection.Row;
             Style.AlignContent = YogaAlign.Stretch;
@@ -147,54 +126,44 @@ public partial class YogaNode : IEnumerable<YogaNode>
         ParentLayout = layout;
     }
 
-    ~YogaNode()
-    {
-        Interlocked.Decrement(ref _instanceCount);
-    }
+    public Layout ParentLayout { get; set; }
+    public Color? Background { get; set; }
+    public BoxShadow? BoxShadow { get; set; }
 
-    // Getters
+    public PdfRectangle Bounds { get; private set; }
 
-    public static int GetInstanceCount()
-    {
-        return _instanceCount;
-    }
+    public string ID { get; set; }
+
+    /// <summary>
+    ///     The gap between each children
+    /// </summary>
+    public YogaValue Gap { get; set; }
 
     public Color? BorderColor { get; set; }
     public BorderStyle BorderStyle { get; set; } = BorderStyle.Solid;
     public string? Name { get; set; }
 
-    public YogaPrint PrintFunction
-    {
-        get { return _print; }
-        set { _print = value; }
-    }
+    public YogaPrint PrintFunction { get; set; }
 
-    public bool HasNewLayout
-    {
-        get { return _hasNewLayout; }
-        set { _hasNewLayout = value; }
-    }
+    public bool HasNewLayout { get; set; }
 
-    public YogaNodeType NodeType
-    {
-        get { return _nodeType; }
-        set { _nodeType = value; }
-    }
+    public YogaNodeType NodeType { get; set; }
 
     public YogaMeasure Measure
     {
-        get { return _measure; }
+        get => _measure;
         set
         {
             if (_children.Count > 0)
-                throw new InvalidOperationException("Cannot set measure function: Nodes with measure functions cannot have children.");
+                throw new InvalidOperationException(
+                    "Cannot set measure function: Nodes with measure functions cannot have children.");
 
             if (value == null)
             {
                 _measure = null;
                 // TODO: t18095186 Move nodeType to opt-in function and mark appropriate
                 // places in Litho
-                _nodeType = YogaNodeType.Default;
+                NodeType = YogaNodeType.Default;
             }
             else
             {
@@ -208,81 +177,75 @@ public partial class YogaNode : IEnumerable<YogaNode>
         }
     }
 
-    public YogaBaseline Baseline
-    {
-        get { return _baseline; }
-        set { _baseline = value; }
-    }
+    public YogaBaseline Baseline { get; set; }
 
-    public YogaDirtied Dirtied
-    {
-        get { return _dirtied; }
-        set { _dirtied = value; }
-    }
+    public YogaDirtied Dirtied { get; set; }
 
     public YogaStyle Style
     {
-        get { return _style; }
-        set { _style.CopyFrom(value); }
+        get => _style;
+        set => _style.CopyFrom(value);
     }
 
     public YogaLayout Layout
     {
-        get { return _layout; }
-        set { _layout.CopyFrom(value); }
+        get => _layout;
+        set => _layout.CopyFrom(value);
     }
 
-    public int LineIndex
-    {
-        get { return _lineIndex; }
-        set { _lineIndex = value; }
-    }
+    public int LineIndex { get; set; }
 
-    public YogaNode Owner
-    {
-        get { return _owner; }
-        set { _owner = value; }
-    }
+    public YogaNode Owner { get; set; }
 
-    public YogaNode Parent { get { return _owner; } }
+    public YogaNode Parent => Owner;
 
     public List<YogaNode> Children
     {
-        get { return _children; }
-        set { _children = new List<YogaNode>(value ?? Enumerable.Empty<YogaNode>()); }
+        get => _children;
+        set => _children = new List<YogaNode>(value ?? Enumerable.Empty<YogaNode>());
     }
 
-    public YogaNode GetChild(int index) { return _children[index]; }
+    public YogaNode NextChild { get; set; }
 
-    public YogaNode NextChild
-    {
-        get { return _nextChild; }
-        set { _nextChild = value; }
-    }
-
-    public YogaConfig Config
-    {
-        get { return _config; }
-        set { _config = value; }
-    }
+    public YogaConfig Config { get; set; }
 
     public bool IsDirty
     {
-        get { return _isDirty; }
+        get => _isDirty;
         set
         {
             if (value == _isDirty)
                 return;
 
             _isDirty = value;
-            if (value && _dirtied != null)
-                _dirtied(this);
+            if (value && Dirtied != null)
+                Dirtied(this);
         }
     }
 
-    public YogaArray<YogaValue> ResolvedDimensions { get { return _resolvedDimensions; } }
+    public YogaArray<YogaValue> ResolvedDimensions => _resolvedDimensions;
 
-    public YogaValue GetResolvedDimension(YogaDimension index) { return _resolvedDimensions[index]; }
+    ~YogaNode()
+    {
+        Interlocked.Decrement(ref _instanceCount);
+    }
+
+    // Getters
+
+    public static int GetInstanceCount()
+    {
+        return _instanceCount;
+    }
+
+    public YogaNode GetChild(int index)
+    {
+        return _children[index];
+    }
+
+    public YogaValue GetResolvedDimension(YogaDimension index)
+    {
+        return _resolvedDimensions[index];
+    }
 
     // Methods related to positions, margin, padding and border
     public double? GetLeadingPosition(YogaFlexDirection axis, double? axisSize)
@@ -315,18 +278,22 @@ public partial class YogaNode : IEnumerable<YogaNode>
 
     public double? GetRelativePosition(YogaFlexDirection axis, double? axisSize)
     {
-        return IsLeadingPositionDefined(axis) ? GetLeadingPosition(axis, axisSize) : -GetTrailingPosition(axis, axisSize);
+        return IsLeadingPositionDefined(axis)
+            ? GetLeadingPosition(axis, axisSize)
+            : -GetTrailingPosition(axis, axisSize);
     }
 
     public bool IsLeadingPositionDefined(YogaFlexDirection axis)
     {
-        return (axis.IsRow() && ComputedEdgeValue(_style.Position, YogaEdge.Start, YogaValue.Unset).Unit != YogaUnit.Undefined)
+        return (axis.IsRow() && ComputedEdgeValue(_style.Position, YogaEdge.Start, YogaValue.Unset).Unit !=
+                   YogaUnit.Undefined)
                || ComputedEdgeValue(_style.Position, Leading[axis], YogaValue.Unset).Unit != YogaUnit.Undefined;
     }
 
     public bool IsTrailingPositionDefined(YogaFlexDirection axis)
     {
-        return (axis.IsRow() && ComputedEdgeValue(_style.Position, YogaEdge.End, YogaValue.Unset).Unit != YogaUnit.Undefined)
+        return (axis.IsRow() && ComputedEdgeValue(_style.Position, YogaEdge.End, YogaValue.Unset).Unit !=
+                   YogaUnit.Undefined)
                || ComputedEdgeValue(_style.Position, Trailing[axis], YogaValue.Unset).Unit != YogaUnit.Undefined;
     }
 
@@ -373,9 +340,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
             && _style.Border[YogaEdge.Start].Unit != YogaUnit.Undefined
             && _style.Border[YogaEdge.Start].Value != null
             && _style.Border[YogaEdge.Start].Value >= 0.0f)
-        {
             return _style.Border[YogaEdge.Start].Value.Value;
-        }
 
         var computedEdgeValue = ComputedEdgeValue(_style.Border, Leading[axis], YogaValue.Zero).Value;
         return YogaMath.Max(computedEdgeValue, 0.0F);
@@ -387,9 +352,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
             && _style.Border[YogaEdge.End].Unit != YogaUnit.Undefined
             && _style.Border[YogaEdge.End].Value != null
             && _style.Border[YogaEdge.End].Value >= 0.0f)
-        {
             return _style.Border[YogaEdge.End].Value.Value;
-        }
 
         var computedEdgeValue = ComputedEdgeValue(_style.Border, Trailing[flexDirection], YogaValue.Zero).Value;
         return YogaMath.Max(computedEdgeValue, 0.0f);
@@ -402,9 +365,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
             && _style.Padding[YogaEdge.Start].Unit != YogaUnit.Undefined
             && paddingEdgeStart != null
             && paddingEdgeStart >= 0.0f)
-        {
             return paddingEdgeStart.Value;
-        }
 
         var resolvedValue = ComputedEdgeValue(_style.Padding, Leading[axis], YogaValue.Zero).Resolve(widthSize);
         return YogaMath.Max(resolvedValue, 0.0f);
@@ -417,9 +378,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
             && _style.Padding[YogaEdge.End].Unit != YogaUnit.Undefined
             && paddingEdgeEnd != null
             && paddingEdgeEnd >= 0.0f)
-        {
             return paddingEdgeEnd.Value;
-        }
 
         var resolvedValue = ComputedEdgeValue(_style.Padding, Trailing[axis], YogaValue.Zero).Resolve(widthSize);
         return YogaMath.Max(resolvedValue, 0.0f);
@@ -438,7 +397,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
     public double ResolveFlexGrow()
     {
         // Root nodes flexGrow should always be 0
-        if (_owner == null)
+        if (Owner == null)
             return 0.0f;
 
         if (_style.FlexGrow != null)
@@ -452,16 +411,16 @@ public partial class YogaNode : IEnumerable<YogaNode>
 
     public double ResolveFlexShrink()
     {
-        if (_owner == null)
+        if (Owner == null)
             return 0.0f;
 
         if (_style.FlexShrink != null)
             return _style.FlexShrink.Value;
 
-        if (!_config.UseWebDefaults && _style.Flex != null && _style.Flex.Value < 0.0f)
+        if (!Config.UseWebDefaults && _style.Flex != null && _style.Flex.Value < 0.0f)
             return -_style.Flex.Value;
 
-        return _config.UseWebDefaults ? WebDefaultFlexShrink : DefaultFlexShrink;
+        return Config.UseWebDefaults ? WebDefaultFlexShrink : DefaultFlexShrink;
     }
 
     public YogaValue ResolveFlexBasis()
@@ -471,22 +430,24 @@ public partial class YogaNode : IEnumerable<YogaNode>
             return flexBasis;
 
         if (_style.Flex != null && _style.Flex.Value > 0.0f)
-            return _config.UseWebDefaults ? YogaValue.Auto : YogaValue.Zero;
+            return Config.UseWebDefaults ? YogaValue.Auto : YogaValue.Zero;
 
         return YogaValue.Auto;
     }
 
-    public override string ToString() => Name;
+    public override string ToString()
+    {
+        return Name;
+    }
 
     public void ResolveDimension()
     {
         for (var dim = (int)YogaDimension.Width; dim < 2; dim++)
-        {
-            if (_style.MaxDimensions[dim].Unit != YogaUnit.Undefined && _style.MaxDimensions[dim].Equals(_style.MinDimensions[dim]))
+            if (_style.MaxDimensions[dim].Unit != YogaUnit.Undefined &&
+                _style.MaxDimensions[dim].Equals(_style.MinDimensions[dim]))
                 _resolvedDimensions[dim] = _style.MaxDimensions[dim];
             else
                 _resolvedDimensions[dim] = _style.Dimensions[dim];
-        }
     }
 
     public YogaDirection ResolveDirection(YogaDirection ownerDirection)
@@ -499,7 +460,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
 
     public bool IsNodeFlexible()
     {
-        return ((_style.PositionType == YogaPositionType.Relative) && (ResolveFlexGrow() != 0 || ResolveFlexShrink() != 0));
+        return _style.PositionType == YogaPositionType.Relative && (ResolveFlexGrow() != 0 || ResolveFlexShrink() != 0);
     }
 
     public bool DidUseLegacyFlag()
@@ -509,10 +470,8 @@ public partial class YogaNode : IEnumerable<YogaNode>
             return true;
 
         foreach (var child in _children)
-        {
             if (child._layout.DidUseLegacyFlag)
                 return true;
-        }
 
         return false;
     }
@@ -552,22 +511,22 @@ public partial class YogaNode : IEnumerable<YogaNode>
     {
         /* Root nodes should be always layouted as LTR, so we don't return negative
          * values. */
-        var directionRespectingRoot = _owner != null ? direction : YogaDirection.LeftToRight;
+        var directionRespectingRoot = Owner != null ? direction : YogaDirection.LeftToRight;
         var mainAxis = _style.FlexDirection.ResolveFlexDirection(directionRespectingRoot);
         var crossAxis = mainAxis.FlexDirectionCross(directionRespectingRoot);
 
         var relativePositionMain = GetRelativePosition(mainAxis, mainSize);
         var relativePositionCross = GetRelativePosition(crossAxis, crossSize);
 
-        SetLayoutPosition((GetLeadingMargin(mainAxis, ownerWidth) + relativePositionMain), Leading[mainAxis]);
-        SetLayoutPosition((GetTrailingMargin(mainAxis, ownerWidth) + relativePositionMain), Trailing[mainAxis]);
-        SetLayoutPosition((GetLeadingMargin(crossAxis, ownerWidth) + relativePositionCross), Leading[crossAxis]);
-        SetLayoutPosition((GetTrailingMargin(crossAxis, ownerWidth) + relativePositionCross), Trailing[crossAxis]);
+        SetLayoutPosition(GetLeadingMargin(mainAxis, ownerWidth) + relativePositionMain, Leading[mainAxis]);
+        SetLayoutPosition(GetTrailingMargin(mainAxis, ownerWidth) + relativePositionMain, Trailing[mainAxis]);
+        SetLayoutPosition(GetLeadingMargin(crossAxis, ownerWidth) + relativePositionCross, Leading[crossAxis]);
+        SetLayoutPosition(GetTrailingMargin(crossAxis, ownerWidth) + relativePositionCross, Trailing[crossAxis]);
     }
 
     public void SetAndPropogateUseLegacyFlag(bool useLegacyFlag)
     {
-        _config.UseLegacyStretchBehaviour = useLegacyFlag;
+        Config.UseLegacyStretchBehaviour = useLegacyFlag;
         foreach (var item in _children)
             item.Config.UseLegacyStretchBehaviour = useLegacyFlag;
     }
@@ -582,7 +541,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
     public void Clear()
     {
         foreach (var item in _children)
-            item._owner = null;
+            item.Owner = null;
 
         _children.Clear();
         _isDirty = true;
@@ -663,9 +622,9 @@ public partial class YogaNode : IEnumerable<YogaNode>
         {
             IsDirty = true;
 
-            Layout.ComputedFlexBasis = default(double?);
-            if (_owner != null)
-                _owner.MarkDirty();
+            Layout.ComputedFlexBasis = default;
+            if (Owner != null)
+                Owner.MarkDirty();
         }
     }
 
@@ -703,7 +662,8 @@ public partial class YogaNode : IEnumerable<YogaNode>
     private void SetChildTrailingPosition(YogaNode child, YogaFlexDirection axis)
     {
         var size = child.Layout.MeasuredDimensions[Dimension[axis]];
-        child.SetLayoutPosition(Layout.MeasuredDimensions[Dimension[axis]] - size - child.Layout.Position[Position[axis]], Trailing[axis]);
+        child.SetLayoutPosition(
+            Layout.MeasuredDimensions[Dimension[axis]] - size - child.Layout.Position[Position[axis]], Trailing[axis]);
     }
 
     private void CloneChildrenIfNeeded()
@@ -714,21 +674,19 @@ public partial class YogaNode : IEnumerable<YogaNode>
 
         var firstChild = _children[0];
         if (firstChild.Owner == this)
-        {
             // If the first child has this node as its owner, we assume that it is
             // already unique. We can do this because if we have it as a child, that
             // means that its owner was at some point cloned which made that subtree
             // immutable. We also assume that all its sibling are cloned as well.
             return;
-        }
 
-        var cloneNodeCallback = _config.OnNodeCloned;
+        var cloneNodeCallback = Config.OnNodeCloned;
         for (var i = 0; i < childCount; ++i)
         {
             var oldChild = _children[i];
             var newChild = new YogaNode(oldChild)
             {
-                _owner = null,
+                Owner = null,
                 ParentLayout = ParentLayout
             };
 
@@ -744,17 +702,17 @@ public partial class YogaNode : IEnumerable<YogaNode>
         return value.Unit == YogaUnit.Auto ? 0F : value.Resolve(ownerSize);
     }
 
-    public bool Is(string name) => Name == name;
+    public bool Is(string name)
+    {
+        return Name == name;
+    }
 
     public IEnumerable<YogaNode> Descendants()
     {
         foreach (var child in Children)
         {
             yield return child;
-            foreach (var descendant in child.Descendants())
-            {
-                yield return descendant;
-            }
+            foreach (var descendant in child.Descendants()) yield return descendant;
         }
     }
 
@@ -762,15 +720,9 @@ public partial class YogaNode : IEnumerable<YogaNode>
     {
         foreach (var child in Children)
         {
-            if (child.Name == name)
-            {
-                yield return child;
-            }
+            if (child.Name == name) yield return child;
 
-            foreach (var descendant in child.Descendants(name))
-            {
-                yield return descendant;
-            }
+            foreach (var descendant in child.Descendants(name)) yield return descendant;
         }
     }
 
@@ -780,10 +732,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
         foreach (var child in Children.OfType<T>())
         {
             yield return child;
-            foreach (var descendant in child.Descendants<T>())
-            {
-                yield return descendant;
-            }
+            foreach (var descendant in child.Descendants<T>()) yield return descendant;
         }
     }
 
@@ -793,15 +742,12 @@ public partial class YogaNode : IEnumerable<YogaNode>
         foreach (var child in Children.OfType<T>().Where(c => c.Name == name))
         {
             yield return child;
-            foreach (var descendant in child.Descendants<T>(name))
-            {
-                yield return descendant;
-            }
+            foreach (var descendant in child.Descendants<T>(name)) yield return descendant;
         }
     }
 
     /// <summary>
-    /// Finds a node in the layout tree by a query.
+    ///     Finds a node in the layout tree by a query.
     /// </summary>
     /// <param name="query"></param>
     /// <returns></returns>
@@ -815,17 +761,11 @@ public partial class YogaNode : IEnumerable<YogaNode>
         {
             currentNode = currentNode.Children.FirstOrDefault(child =>
             {
-                if (part.StartsWith('#'))
-                {
-                    return child.ID == part[1..];
-                }
+                if (part.StartsWith('#')) return child.ID == part[1..];
 
                 return child.Name == part;
             });
-            if (currentNode == null)
-            {
-                return null;
-            }
+            if (currentNode == null) return null;
         }
 
         return currentNode;
@@ -837,26 +777,21 @@ public partial class YogaNode : IEnumerable<YogaNode>
         var currentNodes = new List<YogaNode> { this };
 
         foreach (var part in parts)
-        {
             currentNodes = currentNodes
                 .SelectMany(node => node.Children)
                 .Where(child =>
                 {
-                    if (part.StartsWith('#'))
-                    {
-                        return child.ID == part[1..];
-                    }
+                    if (part.StartsWith('#')) return child.ID == part[1..];
 
                     return child.Name == part;
                 })
                 .ToList();
-        }
 
         return currentNodes;
     }
 
     /// <summary>
-    /// Finds a node in the layout tree by a query.
+    ///     Finds a node in the layout tree by a query.
     /// </summary>
     /// <param name="query"></param>
     /// <returns></returns>
@@ -887,7 +822,8 @@ public partial class YogaNode : IEnumerable<YogaNode>
         if (edge is YogaEdge.Top or YogaEdge.Bottom && edges[YogaEdge.Vertical].Unit != YogaUnit.Undefined)
             return edges[YogaEdge.Vertical];
 
-        if (edge is YogaEdge.Left or YogaEdge.Right or YogaEdge.Start or YogaEdge.End && edges[YogaEdge.Horizontal].Unit != YogaUnit.Undefined)
+        if (edge is YogaEdge.Left or YogaEdge.Right or YogaEdge.Start or YogaEdge.End &&
+            edges[YogaEdge.Horizontal].Unit != YogaUnit.Undefined)
             return edges[YogaEdge.Horizontal];
 
         if (edges[YogaEdge.All].Unit != YogaUnit.Undefined)
@@ -912,16 +848,10 @@ public partial class YogaNode : IEnumerable<YogaNode>
     {
         Bounds = GetContentBounds(absoluteX, absoluteY, page);
 
-        if (Display == YogaDisplay.None)
-        {
-            return;
-        }
+        if (Display == YogaDisplay.None) return;
 
         // draw box shadow
-        if (BoxShadow != null)
-        {
-            DrawBoxShadow(page, absoluteX, absoluteY);
-        }
+        if (BoxShadow != null) DrawBoxShadow(page, absoluteX, absoluteY);
 
         if (Background != null)
         {
@@ -932,10 +862,7 @@ public partial class YogaNode : IEnumerable<YogaNode>
             page.ResetColor();
         }
 
-        if (BorderColor != null)
-        {
-            DrawBorder(page, absoluteX, absoluteY);
-        }
+        if (BorderColor != null) DrawBorder(page, absoluteX, absoluteY);
     }
 
     private void DrawBorder(PdfPageBuilder page, double absoluteX, double absoluteY)
@@ -944,17 +871,11 @@ public partial class YogaNode : IEnumerable<YogaNode>
         var boxPos = new PdfPoint(absoluteX, page.PageSize.Height - absoluteY - LayoutHeight);
 
         if (BorderStyle == BorderStyle.Dotted)
-        {
             DrawDottedBorder(page, boxPos);
-        }
         else if (BorderStyle == BorderStyle.Dashed)
-        {
             DrawDashedBorder(page, boxPos);
-        }
         else
-        {
-            page.DrawRectangle(boxPos, LayoutWidth, LayoutHeight, 1);
-        }
+            page.DrawRectangle(boxPos, LayoutWidth, LayoutHeight);
 
         page.ResetColor();
     }
@@ -966,43 +887,31 @@ public partial class YogaNode : IEnumerable<YogaNode>
 
         // Top
         for (double x = 0; x < LayoutWidth; x += dashLength + gapLength)
-        {
             page.DrawLine(
                 new PdfPoint(boxPos.X + x, boxPos.Y),
-                new PdfPoint(Math.Min(boxPos.X + x + dashLength, boxPos.X + LayoutWidth), boxPos.Y),
-                1
+                new PdfPoint(Math.Min(boxPos.X + x + dashLength, boxPos.X + LayoutWidth), boxPos.Y)
             );
-        }
 
         // Bottom
         for (double x = 0; x < LayoutWidth; x += dashLength + gapLength)
-        {
             page.DrawLine(
                 new PdfPoint(boxPos.X + x, boxPos.Y + LayoutHeight),
-                new PdfPoint(Math.Min(boxPos.X + x + dashLength, boxPos.X + LayoutWidth), boxPos.Y + LayoutHeight),
-                1
+                new PdfPoint(Math.Min(boxPos.X + x + dashLength, boxPos.X + LayoutWidth), boxPos.Y + LayoutHeight)
             );
-        }
 
         // Left
         for (double y = 0; y < LayoutHeight; y += dashLength + gapLength)
-        {
             page.DrawLine(
                 new PdfPoint(boxPos.X, boxPos.Y + y),
-                new PdfPoint(boxPos.X, Math.Min(boxPos.Y + y + dashLength, boxPos.Y + LayoutHeight)),
-                1
+                new PdfPoint(boxPos.X, Math.Min(boxPos.Y + y + dashLength, boxPos.Y + LayoutHeight))
             );
-        }
 
         // Right
         for (double y = 0; y < LayoutHeight; y += dashLength + gapLength)
-        {
             page.DrawLine(
                 new PdfPoint(boxPos.X + LayoutWidth, boxPos.Y + y),
-                new PdfPoint(boxPos.X + LayoutWidth, Math.Min(boxPos.Y + y + dashLength, boxPos.Y + LayoutHeight)),
-                1
+                new PdfPoint(boxPos.X + LayoutWidth, Math.Min(boxPos.Y + y + dashLength, boxPos.Y + LayoutHeight))
             );
-        }
     }
 
     private void DrawDottedBorder(PdfPageBuilder page, PdfPoint boxPos)
@@ -1011,23 +920,23 @@ public partial class YogaNode : IEnumerable<YogaNode>
         var spacing = 3.0;
         // Top
         for (double x = 0; x < LayoutWidth; x += spacing)
-            page.DrawCircle(new PdfPoint(boxPos.X + x, boxPos.Y), radius, 1);
+            page.DrawCircle(new PdfPoint(boxPos.X + x, boxPos.Y), radius);
         // Bottom
         for (double x = 0; x < LayoutWidth; x += spacing)
-            page.DrawCircle(new PdfPoint(boxPos.X + x, boxPos.Y + LayoutHeight), radius, 1);
+            page.DrawCircle(new PdfPoint(boxPos.X + x, boxPos.Y + LayoutHeight), radius);
         // Left
         for (double y = 0; y < LayoutHeight; y += spacing)
-            page.DrawCircle(new PdfPoint(boxPos.X, boxPos.Y + y), radius, 1);
+            page.DrawCircle(new PdfPoint(boxPos.X, boxPos.Y + y), radius);
         // Right
         for (double y = 0; y < LayoutHeight; y += spacing)
-            page.DrawCircle(new PdfPoint(boxPos.X + LayoutWidth, boxPos.Y + y), radius, 1);
+            page.DrawCircle(new PdfPoint(boxPos.X + LayoutWidth, boxPos.Y + y), radius);
     }
 
     private void DrawBoxShadow(PdfPageBuilder page, double absoluteX, double absoluteY)
     {
-        for (int i = 0; i < 5; i++)
+        for (var i = 0; i < 5; i++)
         {
-            double offset = BoxShadow!.Offset * (i + 1) / 5.0;
+            var offset = BoxShadow!.Offset * (i + 1) / 5.0;
 
             var r = (byte)Math.Min(BoxShadow.Color.r + i * 20, 255);
             var g = (byte)Math.Min(BoxShadow.Color.g + i * 20, 255);
@@ -1055,33 +964,24 @@ public partial class YogaNode : IEnumerable<YogaNode>
 
     public virtual void ReCalculate(PdfPageBuilder page)
     {
-        if (Gap.Unit != YogaUnit.Undefined)
-        {
-            SetChildGaps();
-        }
+        if (Gap.Unit != YogaUnit.Undefined) SetChildGaps();
     }
 
     private void SetChildGaps()
     {
-        for (int i = 0; i < Children.Count - 1; i++)
+        for (var i = 0; i < Children.Count - 1; i++)
         {
             var child = Children[i];
 
             if (FlexDirection == YogaFlexDirection.Column)
-            {
                 child.MarginBottom = Gap;
-            }
-            else if(FlexDirection == YogaFlexDirection.Row)
-            {
-                child.MarginRight = Gap;
-            }
+            else if (FlexDirection == YogaFlexDirection.Row) child.MarginRight = Gap;
         }
     }
 
     public void SetAttributes(XElement element)
     {
         foreach (var attr in element.Attributes())
-        {
             switch (attr.Name.LocalName.ToLower())
             {
                 case "height":
@@ -1171,11 +1071,9 @@ public partial class YogaNode : IEnumerable<YogaNode>
                     SetAttribute(attr.Name.LocalName.ToLower(), attr.Value);
                     break;
             }
-        }
     }
 
     internal virtual void SetAttribute(string name, string value)
     {
-
     }
 }

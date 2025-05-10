@@ -12,146 +12,146 @@ public partial class YogaNode
 {
     public YogaValue Left
     {
-        get { return _style.Position[YogaEdge.Left]; }
-        set { SetStylePosition(YogaEdge.Left, value); }
+        get => _style.Position[YogaEdge.Left];
+        set => SetStylePosition(YogaEdge.Left, value);
     }
 
     public YogaValue Top
     {
-        get { return _style.Position[YogaEdge.Top]; }
-        set { SetStylePosition(YogaEdge.Top, value); }
+        get => _style.Position[YogaEdge.Top];
+        set => SetStylePosition(YogaEdge.Top, value);
     }
 
     public YogaValue Right
     {
-        get { return _style.Position[YogaEdge.Right]; }
-        set { SetStylePosition(YogaEdge.Right, value); }
+        get => _style.Position[YogaEdge.Right];
+        set => SetStylePosition(YogaEdge.Right, value);
     }
 
     public YogaValue Bottom
     {
-        get { return _style.Position[YogaEdge.Bottom]; }
-        set { SetStylePosition(YogaEdge.Bottom, value); }
+        get => _style.Position[YogaEdge.Bottom];
+        set => SetStylePosition(YogaEdge.Bottom, value);
     }
 
     public YogaValue Start
     {
-        get { return _style.Position[YogaEdge.Start]; }
-        set { SetStylePosition(YogaEdge.Start, value); }
+        get => _style.Position[YogaEdge.Start];
+        set => SetStylePosition(YogaEdge.Start, value);
     }
 
     public YogaValue End
     {
-        get { return _style.Position[YogaEdge.End]; }
-        set { SetStylePosition(YogaEdge.End, value); }
+        get => _style.Position[YogaEdge.End];
+        set => SetStylePosition(YogaEdge.End, value);
     }
 
     public YogaValue MarginLeft
     {
-        get { return _style.Margin[YogaEdge.Left]; }
-        set { SetStyleMargin(YogaEdge.Left, value); }
+        get => _style.Margin[YogaEdge.Left];
+        set => SetStyleMargin(YogaEdge.Left, value);
     }
 
     public YogaValue MarginTop
     {
-        get { return _style.Margin[YogaEdge.Top]; }
-        set { SetStyleMargin(YogaEdge.Top, value); }
+        get => _style.Margin[YogaEdge.Top];
+        set => SetStyleMargin(YogaEdge.Top, value);
     }
 
     public YogaValue MarginRight
     {
-        get { return _style.Margin[YogaEdge.Right]; }
-        set { SetStyleMargin(YogaEdge.Right, value); }
+        get => _style.Margin[YogaEdge.Right];
+        set => SetStyleMargin(YogaEdge.Right, value);
     }
 
     public YogaValue MarginBottom
     {
-        get { return _style.Margin[YogaEdge.Bottom]; }
-        set { SetStyleMargin(YogaEdge.Bottom, value); }
+        get => _style.Margin[YogaEdge.Bottom];
+        set => SetStyleMargin(YogaEdge.Bottom, value);
     }
 
     public YogaValue MarginStart
     {
-        get { return _style.Margin[YogaEdge.Start]; }
-        set { SetStyleMargin(YogaEdge.Start, value); }
+        get => _style.Margin[YogaEdge.Start];
+        set => SetStyleMargin(YogaEdge.Start, value);
     }
 
     public YogaValue MarginEnd
     {
-        get { return _style.Margin[YogaEdge.End]; }
-        set { SetStyleMargin(YogaEdge.End, value); }
+        get => _style.Margin[YogaEdge.End];
+        set => SetStyleMargin(YogaEdge.End, value);
     }
 
     public YogaValue MarginHorizontal
     {
-        get { return _style.Margin[YogaEdge.Horizontal]; }
-        set { SetStyleMargin(YogaEdge.Horizontal, value); }
+        get => _style.Margin[YogaEdge.Horizontal];
+        set => SetStyleMargin(YogaEdge.Horizontal, value);
     }
 
     public YogaValue MarginVertical
     {
-        get { return _style.Margin[YogaEdge.Vertical]; }
-        set { SetStyleMargin(YogaEdge.Vertical, value); }
+        get => _style.Margin[YogaEdge.Vertical];
+        set => SetStyleMargin(YogaEdge.Vertical, value);
     }
 
     public YogaValue Margin
     {
-        get { return _style.Margin[YogaEdge.All]; }
-        set { SetStyleMargin(YogaEdge.All, value); }
+        get => _style.Margin[YogaEdge.All];
+        set => SetStyleMargin(YogaEdge.All, value);
     }
 
     public YogaValue PaddingLeft
     {
-        get { return _style.Padding[YogaEdge.Left]; }
-        set { SetStylePadding(YogaEdge.Left, value); }
+        get => _style.Padding[YogaEdge.Left];
+        set => SetStylePadding(YogaEdge.Left, value);
     }
 
     public YogaValue PaddingTop
     {
-        get { return _style.Padding[YogaEdge.Top]; }
-        set { SetStylePadding(YogaEdge.Top, value); }
+        get => _style.Padding[YogaEdge.Top];
+        set => SetStylePadding(YogaEdge.Top, value);
     }
 
     public YogaValue PaddingRight
     {
-        get { return _style.Padding[YogaEdge.Right]; }
-        set { SetStylePadding(YogaEdge.Right, value); }
+        get => _style.Padding[YogaEdge.Right];
+        set => SetStylePadding(YogaEdge.Right, value);
     }
 
     public YogaValue PaddingBottom
     {
-        get { return _style.Padding[YogaEdge.Bottom]; }
-        set { SetStylePadding(YogaEdge.Bottom, value); }
+        get => _style.Padding[YogaEdge.Bottom];
+        set => SetStylePadding(YogaEdge.Bottom, value);
     }
 
     public YogaValue PaddingStart
     {
-        get { return _style.Padding[YogaEdge.Start]; }
-        set { SetStylePadding(YogaEdge.Start, value); }
+        get => _style.Padding[YogaEdge.Start];
+        set => SetStylePadding(YogaEdge.Start, value);
     }
 
     public YogaValue PaddingEnd
     {
-        get { return _style.Padding[YogaEdge.End]; }
-        set { SetStylePadding(YogaEdge.End, value); }
+        get => _style.Padding[YogaEdge.End];
+        set => SetStylePadding(YogaEdge.End, value);
     }
 
     public YogaValue PaddingHorizontal
     {
-        get { return _style.Padding[YogaEdge.Horizontal]; }
-        set { SetStylePadding(YogaEdge.Horizontal, value); }
+        get => _style.Padding[YogaEdge.Horizontal];
+        set => SetStylePadding(YogaEdge.Horizontal, value);
     }
 
     public YogaValue PaddingVertical
     {
-        get { return _style.Padding[YogaEdge.Vertical]; }
-        set { SetStylePadding(YogaEdge.Vertical, value); }
+        get => _style.Padding[YogaEdge.Vertical];
+        set => SetStylePadding(YogaEdge.Vertical, value);
     }
 
     public YogaValue Padding
     {
-        get { return _style.Padding[YogaEdge.All]; }
-        set { SetStylePadding(YogaEdge.All, value); }
+        get => _style.Padding[YogaEdge.All];
+        set => SetStylePadding(YogaEdge.All, value);
     }
 
     public double? BorderLeftWidth
@@ -169,10 +169,10 @@ public partial class YogaNode
         {
             var edge = YogaEdge.Left;
             var current = _style.Border[edge];
-            var next = new YogaValue()
+            var next = new YogaValue
             {
                 Unit = value == null ? YogaUnit.Undefined : YogaUnit.Point,
-                Value = value,
+                Value = value
             };
 
             if (current.Unit != next.Unit || (next.Unit != YogaUnit.Undefined && current.Value != next.Value))
@@ -198,10 +198,10 @@ public partial class YogaNode
         {
             var edge = YogaEdge.Top;
             var current = _style.Border[edge];
-            var next = new YogaValue()
+            var next = new YogaValue
             {
                 Unit = value == null ? YogaUnit.Undefined : YogaUnit.Point,
-                Value = value,
+                Value = value
             };
 
             if (current.Unit != next.Unit || (next.Unit != YogaUnit.Undefined && current.Value != next.Value))
@@ -227,10 +227,10 @@ public partial class YogaNode
         {
             var edge = YogaEdge.Right;
             var current = _style.Border[edge];
-            var next = new YogaValue()
+            var next = new YogaValue
             {
                 Unit = value == null ? YogaUnit.Undefined : YogaUnit.Point,
-                Value = value,
+                Value = value
             };
 
             if (current.Unit != next.Unit || (next.Unit != YogaUnit.Undefined && current.Value != next.Value))
@@ -256,10 +256,10 @@ public partial class YogaNode
         {
             var edge = YogaEdge.Bottom;
             var current = _style.Border[edge];
-            var next = new YogaValue()
+            var next = new YogaValue
             {
                 Unit = value == null ? YogaUnit.Undefined : YogaUnit.Point,
-                Value = value,
+                Value = value
             };
 
             if (current.Unit != next.Unit || (next.Unit != YogaUnit.Undefined && current.Value != next.Value))
@@ -285,10 +285,10 @@ public partial class YogaNode
         {
             var edge = YogaEdge.Start;
             var current = _style.Border[edge];
-            var next = new YogaValue()
+            var next = new YogaValue
             {
                 Unit = value == null ? YogaUnit.Undefined : YogaUnit.Point,
-                Value = value,
+                Value = value
             };
 
             if (current.Unit != next.Unit || (next.Unit != YogaUnit.Undefined && current.Value != next.Value))
@@ -314,10 +314,10 @@ public partial class YogaNode
         {
             var edge = YogaEdge.End;
             var current = _style.Border[edge];
-            var next = new YogaValue()
+            var next = new YogaValue
             {
                 Unit = value == null ? YogaUnit.Undefined : YogaUnit.Point,
-                Value = value,
+                Value = value
             };
 
             if (current.Unit != next.Unit || (next.Unit != YogaUnit.Undefined && current.Value != next.Value))
@@ -343,10 +343,10 @@ public partial class YogaNode
         {
             var edge = YogaEdge.All;
             var current = _style.Border[edge];
-            var next = new YogaValue()
+            var next = new YogaValue
             {
                 Unit = value == null ? YogaUnit.Undefined : YogaUnit.Point,
-                Value = value,
+                Value = value
             };
 
             if (current.Unit != next.Unit || (next.Unit != YogaUnit.Undefined && current.Value != next.Value))
@@ -357,65 +357,29 @@ public partial class YogaNode
         }
     }
 
-    public double? LayoutMarginLeft
-    {
-        get { return GetLayoutMargin(YogaEdge.Left); }
-    }
+    public double? LayoutMarginLeft => GetLayoutMargin(YogaEdge.Left);
 
-    public double? LayoutMarginTop
-    {
-        get { return GetLayoutMargin(YogaEdge.Top); }
-    }
+    public double? LayoutMarginTop => GetLayoutMargin(YogaEdge.Top);
 
-    public double? LayoutMarginRight
-    {
-        get { return GetLayoutMargin(YogaEdge.Right); }
-    }
+    public double? LayoutMarginRight => GetLayoutMargin(YogaEdge.Right);
 
-    public double? LayoutMarginBottom
-    {
-        get { return GetLayoutMargin(YogaEdge.Bottom); }
-    }
+    public double? LayoutMarginBottom => GetLayoutMargin(YogaEdge.Bottom);
 
-    public double? LayoutMarginStart
-    {
-        get { return GetLayoutMargin(YogaEdge.Start); }
-    }
+    public double? LayoutMarginStart => GetLayoutMargin(YogaEdge.Start);
 
-    public double? LayoutMarginEnd
-    {
-        get { return GetLayoutMargin(YogaEdge.End); }
-    }
+    public double? LayoutMarginEnd => GetLayoutMargin(YogaEdge.End);
 
-    public double LayoutPaddingLeft
-    {
-        get { return GetLayoutPadding(YogaEdge.Left); }
-    }
+    public double LayoutPaddingLeft => GetLayoutPadding(YogaEdge.Left);
 
-    public double LayoutPaddingTop
-    {
-        get { return GetLayoutPadding(YogaEdge.Top); }
-    }
+    public double LayoutPaddingTop => GetLayoutPadding(YogaEdge.Top);
 
-    public double LayoutPaddingRight
-    {
-        get { return GetLayoutPadding(YogaEdge.Right); }
-    }
+    public double LayoutPaddingRight => GetLayoutPadding(YogaEdge.Right);
 
-    public double LayoutPaddingBottom
-    {
-        get { return GetLayoutPadding(YogaEdge.Bottom); }
-    }
+    public double LayoutPaddingBottom => GetLayoutPadding(YogaEdge.Bottom);
 
-    public double LayoutPaddingStart
-    {
-        get { return GetLayoutPadding(YogaEdge.Start); }
-    }
+    public double LayoutPaddingStart => GetLayoutPadding(YogaEdge.Start);
 
-    public double LayoutPaddingEnd
-    {
-        get { return GetLayoutPadding(YogaEdge.End); }
-    }
+    public double LayoutPaddingEnd => GetLayoutPadding(YogaEdge.End);
 
     private void SetStylePosition(YogaEdge edge, YogaValue value)
     {

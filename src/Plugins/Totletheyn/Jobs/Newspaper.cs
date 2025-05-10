@@ -15,14 +15,10 @@ namespace Totletheyn.Jobs;
 
 public class Newspaper
 {
-    private List<Feed> Feeds { get; } = [];
-
     private readonly PdfDocumentBuilder _builder = new();
-    private readonly int Issue;
 
     private readonly List<Layout> _layouts = [];
-
-    public string Title => _builder.DocumentInformation.Title;
+    private readonly int Issue;
 
     public Newspaper(int issue, string? author)
     {
@@ -53,30 +49,29 @@ public class Newspaper
         _layouts.Add(coverLayout);
     }
 
+    private List<Feed> Feeds { get; } = [];
+
+    public string Title => _builder.DocumentInformation.Title;
+
     private static void AddBookmarks(params Layout[] layouts)
     {
         var nodes = new List<DocumentBookmarkNode>();
 
         foreach (var layout in layouts)
-        {
             nodes.Add(new DocumentBookmarkNode(layout.Name, 0,
                 new ExplicitDestination(layout.Page!.PageNumber, ExplicitDestinationType.FitPage,
                     ExplicitDestinationCoordinates.Empty),
                 [])
             );
-        }
 
-        Layout.Builder.Bookmarks = new(nodes);
+        Layout.Builder.Bookmarks = new Bookmarks(nodes);
     }
 
     public byte[] Render()
     {
         AddNewsToCover();
 
-        foreach (var layout in _layouts)
-        {
-            layout.Apply();
-        }
+        foreach (var layout in _layouts) layout.Apply();
 
         AddBookmarks(_layouts.ToArray());
 
@@ -102,11 +97,11 @@ public class Newspaper
                     break;
 
                 var titleNode = articles[articleIndex].FindNode<TextNode>("title");
-                if(titleNode is not null)
+                if (titleNode is not null)
                     titleNode.Text = item.Title;
 
                 var summaryNode = articles[articleIndex].FindNode<TextNode>("summary")!;
-                if(titleNode is not null)
+                if (titleNode is not null)
                     summaryNode.Text = item.Content;
                 articleIndex++;
             }

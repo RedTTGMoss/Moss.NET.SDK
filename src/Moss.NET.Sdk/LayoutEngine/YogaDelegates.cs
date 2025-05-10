@@ -8,8 +8,13 @@
 
 namespace Moss.NET.Sdk.LayoutEngine;
 
-public delegate YogaSize YogaMeasure(YogaNode node, double? width, YogaMeasureMode widthMode, double? height, YogaMeasureMode heightMode);
+public delegate YogaSize YogaMeasure(YogaNode node, double? width, YogaMeasureMode widthMode, double? height,
+    YogaMeasureMode heightMode);
+
 public delegate double YogaBaseline(YogaNode node, double? width, double? height);
+
 public delegate void YogaDirtied(YogaNode node);
+
 public delegate void YogaPrint(YogaNode node);
+
 public delegate void YogaNodeCloned(YogaNode oldNode, YogaNode newNode, YogaNode owner, int childIndex);

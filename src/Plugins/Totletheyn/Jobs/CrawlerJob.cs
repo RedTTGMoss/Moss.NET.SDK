@@ -11,10 +11,10 @@ namespace Totletheyn.Jobs;
 
 public class CrawlerJob : Job
 {
-    private readonly RestTemplate _template = new();
+    private static readonly LoggerInstance Logger = Log.GetLogger<CrawlerJob>();
     private readonly Activator<ICrawler> _activator = new();
     private readonly List<ICrawler> _crawlers = [];
-    private static readonly LoggerInstance Logger = Log.GetLogger<CrawlerJob>();
+    private readonly RestTemplate _template = new();
     private string _inboxId;
 
     public override void Init()
@@ -26,15 +26,13 @@ public class CrawlerJob : Job
 
         _inboxId = MossConfig.Get<string>("inbox");
 
-        if (Options.providers is null){
+        if (Options.providers is null)
+        {
             Logger.Error("No providers specified");
             return;
         }
 
-        foreach (var crawler in Options.providers)
-        {
-            _crawlers.Add(_activator.Create(crawler));
-        }
+        foreach (var crawler in Options.providers) _crawlers.Add(_activator.Create(crawler));
 
         Logger.Info("Crawlers initialized: ");
     }
@@ -69,8 +67,6 @@ public class CrawlerJob : Job
             var pdf = new PdfNotebook(issue.Title, content);
             pdf.MoveTo(_inboxId);
             //pdf.Upload();
-
-
         }
     }
 }

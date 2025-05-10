@@ -7,23 +7,19 @@ namespace Moss.NET.Sdk.LayoutEngine;
 
 public class Layout
 {
-    private YogaNode root;
-    private YogaConfig config;
-    public readonly PdfPageBuilder? Page;
     public static PdfDocumentBuilder Builder;
     private static readonly Dictionary<string, PdfDocumentBuilder.AddedFont> Fonts = new();
     public static PathResolver PathResolver = new();
-    public string Name { get; set; }
+    private readonly YogaConfig config;
+    public readonly PdfPageBuilder? Page;
+    private readonly YogaNode root;
 
     protected Layout(YogaConfig config, PdfPageBuilder? page, PdfRectangle pageSize = default)
     {
         this.config = config;
         Page = page;
 
-        if (page != null)
-        {
-            pageSize = page.PageSize;
-        }
+        if (page != null) pageSize = page.PageSize;
 
         root = new YogaNode(config, this)
         {
@@ -39,22 +35,27 @@ public class Layout
         //todo: add standard font from moss
     }
 
-    public YogaNode GetRoot() => root;
+    public string Name { get; set; }
+
+    public YogaNode GetRoot()
+    {
+        return root;
+    }
 
     public static Layout Create(PdfPageBuilder page)
     {
-        return new Layout(new(), page);
+        return new Layout(new YogaConfig(), page);
     }
 
     public static Layout Create(Device device, bool isLandscape = true)
     {
         var dimension = device.GetDimension(isLandscape);
-        return new Layout(new(), Builder.AddPage(dimension.width, dimension.height));
+        return new Layout(new YogaConfig(), Builder.AddPage(dimension.width, dimension.height));
     }
 
     public static Layout CreateTemplate()
     {
-        return new Layout(new(), null);
+        return new Layout(new YogaConfig(), null);
     }
 
     public YogaNode CreateNode(string? name = null)
@@ -131,13 +132,14 @@ public class Layout
 
     public HorizontalLineNode CreateHorizontalLine(string? name = null)
     {
-        return new HorizontalLineNode(config, this){
+        return new HorizontalLineNode(config, this)
+        {
             Name = name
         };
     }
 
     /// <summary>
-    /// Finds a node in the layout tree by a query.
+    ///     Finds a node in the layout tree by a query.
     /// </summary>
     /// <param name="query"></param>
     /// <returns></returns>
@@ -150,8 +152,8 @@ public class Layout
 
     public static void AddFont(string name, string path)
     {
-       var font = Builder.AddTrueTypeFont(PathResolver.ReadBytes(path));
-       Fonts[name] = font;
+        var font = Builder.AddTrueTypeFont(PathResolver.ReadBytes(path));
+        Fonts[name] = font;
     }
 
     public void EnableDebugLines()
@@ -168,18 +170,12 @@ public class Layout
             (byte)random.Next(0, 256)
         );
 
-        foreach (var child in node.Children)
-        {
-            SetDebugLines(child, random);
-        }
+        foreach (var child in node.Children) SetDebugLines(child, random);
     }
 
     public PdfDocumentBuilder.AddedFont GetFont(string fontFamily)
     {
-        if (Fonts.TryGetValue(fontFamily, out var font))
-        {
-            return font;
-        }
+        if (Fonts.TryGetValue(fontFamily, out var font)) return font;
 
         //todo: use standard font instead of exception
         throw new ArgumentException($"Font '{fontFamily}' not found.");

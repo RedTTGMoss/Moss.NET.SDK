@@ -13,5 +13,5 @@ public enum YogaFlexDirection
     Column,
     ColumnReverse,
     Row,
-    RowReverse,
+    RowReverse
 }

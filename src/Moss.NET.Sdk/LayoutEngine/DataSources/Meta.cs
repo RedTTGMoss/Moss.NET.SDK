@@ -7,19 +7,15 @@ namespace Moss.NET.Sdk.LayoutEngine.DataSources;
 public class Meta : IDataSource
 {
     public string Name => "meta";
+
     public void ApplyData(YogaNode node, PdfPageBuilder page, XElement element)
     {
         var metaAttribute = element.Attribute("meta")?.Value ?? string.Empty;
 
-        if (string.IsNullOrEmpty(metaAttribute))
-        {
-            throw new ArgumentException("meta cannot be null or empty");
-        }
+        if (string.IsNullOrEmpty(metaAttribute)) throw new ArgumentException("meta cannot be null or empty");
 
         if (node is not TextNode textNode)
-        {
             throw new ArgumentException("meta information can only be applied to text nodes");
-        }
 
         textNode.Text = metaAttribute switch
         {

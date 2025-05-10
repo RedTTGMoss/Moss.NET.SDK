@@ -6,15 +6,15 @@ using PolyType;
 namespace Moss.NET.Sdk.Scheduler;
 
 [GenerateShape]
-partial class JobsCollection : List<ScheduledTask>;
+internal partial class JobsCollection : List<ScheduledTask>;
 
 public static class TaskScheduler
 {
     private static HoconObject _config = null!;
-    private static JobsCollection Jobs = [];
+    private static readonly JobsCollection Jobs = [];
     public static readonly Activator<Job> Activator = new();
-    public static bool IsEnabled => MossExtension.Config!.GetBoolean("scheduler.enabled", true);
     private static readonly LoggerInstance Logger = Log.GetLogger(nameof(TaskScheduler));
+    public static bool IsEnabled => MossExtension.Config!.GetBoolean("scheduler.enabled", true);
 
     public static void ScheduleTask(ScheduledTask task)
     {

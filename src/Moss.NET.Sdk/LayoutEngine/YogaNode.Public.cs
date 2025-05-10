@@ -12,15 +12,13 @@ namespace Moss.NET.Sdk.LayoutEngine;
 
 public partial class YogaNode
 {
-    private object _data;
+    public bool IsMeasureDefined => _measure != null;
 
-    public bool IsMeasureDefined { get { return _measure != null; } }
-
-    public bool IsBaselineDefined { get { return _baseline != null; } }
+    public bool IsBaselineDefined => Baseline != null;
 
     public bool IsReferenceBaseline
     {
-        get { return _isReferenceBaseline; }
+        get => _isReferenceBaseline;
         set
         {
             if (_isReferenceBaseline != value)
@@ -31,17 +29,9 @@ public partial class YogaNode
         }
     }
 
-    public void CopyStyle(YogaNode srcNode)
-    {
-        _style.CopyFrom(srcNode.Style);
-    }
-
     public YogaDirection StyleDirection
     {
-        get
-        {
-            return _style.Direction;
-        }
+        get => _style.Direction;
 
         set
         {
@@ -55,10 +45,7 @@ public partial class YogaNode
 
     public YogaFlexDirection FlexDirection
     {
-        get
-        {
-            return _style.FlexDirection;
-        }
+        get => _style.FlexDirection;
 
         set
         {
@@ -72,10 +59,7 @@ public partial class YogaNode
 
     public YogaJustify JustifyContent
     {
-        get
-        {
-            return _style.JustifyContent;
-        }
+        get => _style.JustifyContent;
 
         set
         {
@@ -89,10 +73,7 @@ public partial class YogaNode
 
     public YogaDisplay Display
     {
-        get
-        {
-            return _style.Display;
-        }
+        get => _style.Display;
 
         set
         {
@@ -106,10 +87,7 @@ public partial class YogaNode
 
     public YogaAlign AlignItems
     {
-        get
-        {
-            return _style.AlignItems;
-        }
+        get => _style.AlignItems;
 
         set
         {
@@ -123,10 +101,7 @@ public partial class YogaNode
 
     public YogaAlign AlignSelf
     {
-        get
-        {
-            return _style.AlignSelf;
-        }
+        get => _style.AlignSelf;
 
         set
         {
@@ -140,10 +115,7 @@ public partial class YogaNode
 
     public YogaAlign AlignContent
     {
-        get
-        {
-            return _style.AlignContent;
-        }
+        get => _style.AlignContent;
 
         set
         {
@@ -157,10 +129,7 @@ public partial class YogaNode
 
     public YogaPositionType PositionType
     {
-        get
-        {
-            return _style.PositionType;
-        }
+        get => _style.PositionType;
 
         set
         {
@@ -174,10 +143,7 @@ public partial class YogaNode
 
     public YogaWrap Wrap
     {
-        get
-        {
-            return _style.FlexWrap;
-        }
+        get => _style.FlexWrap;
 
         set
         {
@@ -206,10 +172,7 @@ public partial class YogaNode
 
     public double? FlexGrow
     {
-        get
-        {
-            return _style.FlexGrow;
-        }
+        get => _style.FlexGrow;
 
         set
         {
@@ -226,10 +189,7 @@ public partial class YogaNode
 
     public double? FlexShrink
     {
-        get
-        {
-            return _style.FlexShrink;
-        }
+        get => _style.FlexShrink;
 
         set
         {
@@ -246,10 +206,7 @@ public partial class YogaNode
 
     public YogaValue FlexBasis
     {
-        get
-        {
-            return _style.FlexBasis;
-        }
+        get => _style.FlexBasis;
 
         set
         {
@@ -264,10 +221,7 @@ public partial class YogaNode
 
     public YogaValue Width
     {
-        get
-        {
-            return _style.Dimensions[YogaDimension.Width];
-        }
+        get => _style.Dimensions[YogaDimension.Width];
 
         set
         {
@@ -282,10 +236,7 @@ public partial class YogaNode
 
     public YogaValue Height
     {
-        get
-        {
-            return _style.Dimensions[YogaDimension.Height];
-        }
+        get => _style.Dimensions[YogaDimension.Height];
 
         set
         {
@@ -300,10 +251,7 @@ public partial class YogaNode
 
     public YogaValue MaxWidth
     {
-        get
-        {
-            return _style.MaxDimensions[YogaDimension.Width];
-        }
+        get => _style.MaxDimensions[YogaDimension.Width];
 
         set
         {
@@ -318,10 +266,7 @@ public partial class YogaNode
 
     public YogaValue MaxHeight
     {
-        get
-        {
-            return _style.MaxDimensions[YogaDimension.Height];
-        }
+        get => _style.MaxDimensions[YogaDimension.Height];
 
         set
         {
@@ -336,10 +281,7 @@ public partial class YogaNode
 
     public YogaValue MinWidth
     {
-        get
-        {
-            return _style.MinDimensions[YogaDimension.Width];
-        }
+        get => _style.MinDimensions[YogaDimension.Width];
 
         set
         {
@@ -354,10 +296,7 @@ public partial class YogaNode
 
     public YogaValue MinHeight
     {
-        get
-        {
-            return _style.MinDimensions[YogaDimension.Height];
-        }
+        get => _style.MinDimensions[YogaDimension.Height];
 
         set
         {
@@ -372,10 +311,7 @@ public partial class YogaNode
 
     public double? AspectRatio
     {
-        get
-        {
-            return _style.AspectRatio;
-        }
+        get => _style.AspectRatio;
 
         set
         {
@@ -387,37 +323,19 @@ public partial class YogaNode
         }
     }
 
-    public double LayoutX
-    {
-        get { return _layout.Position[YogaEdge.Left] ?? 0; }
-    }
+    public double LayoutX => _layout.Position[YogaEdge.Left] ?? 0;
 
-    public double LayoutY
-    {
-        get { return _layout.Position[YogaEdge.Top] ?? 0; }
-    }
+    public double LayoutY => _layout.Position[YogaEdge.Top] ?? 0;
 
-    public double LayoutWidth
-    {
-        get { return _layout.Dimensions[YogaDimension.Width] ?? 0; }
-    }
+    public double LayoutWidth => _layout.Dimensions[YogaDimension.Width] ?? 0;
 
-    public double LayoutHeight
-    {
-        get { return _layout.Dimensions[YogaDimension.Height] ?? 0; }
-    }
+    public double LayoutHeight => _layout.Dimensions[YogaDimension.Height] ?? 0;
 
-    public YogaDirection LayoutDirection
-    {
-        get { return _layout.Direction; }
-    }
+    public YogaDirection LayoutDirection => _layout.Direction;
 
     public YogaOverflow Overflow
     {
-        get
-        {
-            return _style.Overflow;
-        }
+        get => _style.Overflow;
 
         set
         {
@@ -429,25 +347,30 @@ public partial class YogaNode
         }
     }
 
-    public object Data
+    public object Data { get; set; }
+
+    public YogaNode this[int index] => _children[index];
+
+    public int Count => _children != null ? _children.Count : 0;
+
+    public IEnumerator<YogaNode> GetEnumerator()
     {
-        get { return _data; }
-        set { _data = value; }
+        return _children.GetEnumerator();
     }
 
-    public YogaNode this[int index]
+    IEnumerator IEnumerable.GetEnumerator()
     {
-        get { return _children[index]; }
+        return GetEnumerator();
     }
 
-    public int Count
+    public void CopyStyle(YogaNode srcNode)
     {
-        get { return _children != null ? _children.Count : 0; }
+        _style.CopyFrom(srcNode.Style);
     }
 
     public void MarkLayoutSeen()
     {
-        _hasNewLayout = false;
+        HasNewLayout = false;
     }
 
     public void SetMeasureFunction(YogaMeasure measure)
@@ -465,40 +388,30 @@ public partial class YogaNode
         if (_children.Count > 0)
             throw new InvalidOperationException("Cannot reset a node which still has children attached");
 
-        if (_owner != null)
+        if (Owner != null)
             throw new InvalidOperationException("Cannot reset a node still attached to a owner");
 
         Clear();
 
-        _print = null;
-        _hasNewLayout = true;
-        _nodeType = YogaNodeType.Default;
+        PrintFunction = null;
+        HasNewLayout = true;
+        NodeType = YogaNodeType.Default;
         _measure = null;
-        _baseline = null;
-        _dirtied = null;
+        Baseline = null;
+        Dirtied = null;
         _style = new YogaStyle();
         _layout = new YogaLayout();
-        _lineIndex = 0;
-        _owner = null;
+        LineIndex = 0;
+        Owner = null;
         _children = new List<YogaNode>();
-        _nextChild = null;
+        NextChild = null;
         _isDirty = false;
-        _resolvedDimensions = new YogaArray<YogaValue>(new YogaValue[] { YogaValue.Unset, YogaValue.Unset });
+        _resolvedDimensions = new YogaArray<YogaValue>(YogaValue.Unset, YogaValue.Unset);
 
-        if (_config.UseWebDefaults)
+        if (Config.UseWebDefaults)
         {
             Style.FlexDirection = YogaFlexDirection.Row;
             Style.AlignContent = YogaAlign.Stretch;
         }
-    }
-
-    public IEnumerator<YogaNode> GetEnumerator()
-    {
-        return _children.GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
     }
 }

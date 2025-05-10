@@ -4,5 +4,5 @@ public enum TextDecoration
 {
     None,
     Underline,
-    Strikethrough,
+    Strikethrough
 }

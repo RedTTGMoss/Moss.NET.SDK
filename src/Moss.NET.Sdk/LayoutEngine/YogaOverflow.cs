@@ -12,5 +12,5 @@ public enum YogaOverflow
 {
     Visible,
     Hidden,
-    Scroll,
+    Scroll
 }

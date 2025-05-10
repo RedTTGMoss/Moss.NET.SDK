@@ -1,6 +1,6 @@
-﻿using Moss.NET.Sdk.LayoutEngine.Nodes;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using Moss.NET.Sdk.LayoutEngine.DataSources;
+using Moss.NET.Sdk.LayoutEngine.Nodes;
 
 namespace Moss.NET.Sdk.LayoutEngine;
 
@@ -12,7 +12,7 @@ public static class LayoutLoader
     };
 
     public static void AddDataSource<T>()
-        where T:IDataSource, new()
+        where T : IDataSource, new()
     {
         var component = new T();
         DataSources[component.Name] = component;
@@ -27,26 +27,17 @@ public static class LayoutLoader
         var layout = Layout.Create(device, isLandscape);
         layout.Name = name;
 
-        if (xml.Root.Attribute("name") != null)
-        {
-            layout.Name = xml.Root.Attribute("name")!.Value;
-        }
+        if (xml.Root.Attribute("name") != null) layout.Name = xml.Root.Attribute("name")!.Value;
 
         layout.GetRoot().SetAttributes(xml.Root);
 
         foreach (var child in xml.Root.Elements())
         {
             var node = ParseNode(layout, child);
-            if (node != null)
-            {
-                layout.Add(node);
-            }
+            if (node != null) layout.Add(node);
         }
 
-        if (xml.Root.Attribute("debug")?.Value == "true")
-        {
-            layout.EnableDebugLines();
-        }
+        if (xml.Root.Attribute("debug")?.Value == "true") layout.EnableDebugLines();
 
         return layout;
     }
@@ -71,16 +62,10 @@ public static class LayoutLoader
         foreach (var child in xml.Root!.Elements())
         {
             var node = ParseNode(layout, child);
-            if (node != null)
-            {
-                layout.Add(node);
-            }
+            if (node != null) layout.Add(node);
         }
 
-        if (xml.Root.Attribute("debug")?.Value == "true")
-        {
-            layout.EnableDebugLines();
-        }
+        if (xml.Root.Attribute("debug")?.Value == "true") layout.EnableDebugLines();
         layout.GetRoot().Name = xml.Root.Name.LocalName;
 
         return layout.GetRoot();
@@ -103,9 +88,7 @@ public static class LayoutLoader
     {
         if (element.Attribute("datasource") is not null
             && DataSources.TryGetValue(element.Attribute("datasource")!.Value, out var dataSource))
-        {
             dataSource.ApplyData(node, layout.Page!, element);
-        }
     }
 
     private static bool CreateNode(Layout layout, XElement element, out YogaNode? node)
@@ -118,10 +101,7 @@ public static class LayoutLoader
             case "text":
                 node = layout.CreateTextNode(element.Attribute("text")?.Value ?? string.Empty,
                     element.Attribute("name")?.Value);
-                if (!string.IsNullOrEmpty(element.Value))
-                {
-                    ((TextNode)node).Text = element.Value;
-                }
+                if (!string.IsNullOrEmpty(element.Value)) ((TextNode)node).Text = element.Value;
 
                 break;
             case "hr":
@@ -145,18 +125,12 @@ public static class LayoutLoader
                     node = layout.CreateTextNode(t.Value,
                         element.Attribute("name")?.Value);
 
-                    if (element.Attribute("name") is null)
-                    {
-                        node.Name = element.Name.LocalName;
-                    }
+                    if (element.Attribute("name") is null) node.Name = element.Name.LocalName;
                     break;
                 }
 
                 var name = element.Attribute("name")?.Value;
-                if (name is null)
-                {
-                    name = element.Name.LocalName;
-                }
+                if (name is null) name = element.Name.LocalName;
 
                 node = layout.CreateNode(name);
 
@@ -174,13 +148,9 @@ public static class LayoutLoader
             if (childNode != null)
             {
                 if (node is ContainerNode container)
-                {
                     container.Content.Add(childNode);
-                }
                 else
-                {
                     node.Add(childNode);
-                }
             }
         }
     }

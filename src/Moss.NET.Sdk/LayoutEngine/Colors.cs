@@ -27,7 +27,7 @@ public static class Colors
     public static readonly Color MediumSeaGreen = new(60, 179, 113);
     public static readonly Color MediumPurple = new(123, 104, 238);
     public static readonly Color SandyBrown = new(244, 164, 96);
-    public static readonly Color Creme = new Color(244, 244, 244);
+    public static readonly Color Creme = new(244, 244, 244);
     public static readonly Color LightGray = new(211, 211, 211);
     public static readonly Color DarkGray = new(169, 169, 169);
     public static readonly Color LightCoral = new(240, 128, 128);
@@ -38,30 +38,22 @@ public static class Colors
 
     public static Color Parse(string color)
     {
-        if (color.StartsWith('#'))
-        {
-            return FromHex(color);
-        }
+        if (color.StartsWith('#')) return FromHex(color);
 
         return FromName(color);
     }
 
     public static Color FromHex(string hex)
     {
-        if (hex.StartsWith("#"))
-        {
-            hex = hex.Substring(1);
-        }
+        if (hex.StartsWith("#")) hex = hex.Substring(1);
 
         if (hex.Length != 6 && hex.Length != 8)
-        {
             throw new ArgumentException("Hex-Farbe muss 6 oder 8 Zeichen lang sein.");
-        }
 
-        byte r = Convert.ToByte(hex.Substring(0, 2), 16);
-        byte g = Convert.ToByte(hex.Substring(2, 2), 16);
-        byte b = Convert.ToByte(hex.Substring(4, 2), 16);
-        byte a = hex.Length == 8 ? Convert.ToByte(hex.Substring(6, 2), 16) : (byte)255;
+        var r = Convert.ToByte(hex.Substring(0, 2), 16);
+        var g = Convert.ToByte(hex.Substring(2, 2), 16);
+        var b = Convert.ToByte(hex.Substring(4, 2), 16);
+        var a = hex.Length == 8 ? Convert.ToByte(hex.Substring(6, 2), 16) : (byte)255;
 
         return new Color(r, g, b);
     }

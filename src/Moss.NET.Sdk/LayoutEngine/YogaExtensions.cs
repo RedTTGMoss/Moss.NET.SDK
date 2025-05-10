@@ -46,7 +46,7 @@ public static class YogaExtensions
         {
             if (flexDirection == YogaFlexDirection.Row)
                 return YogaFlexDirection.RowReverse;
-            else if (flexDirection == YogaFlexDirection.RowReverse)
+            if (flexDirection == YogaFlexDirection.RowReverse)
                 return YogaFlexDirection.Row;
         }
 

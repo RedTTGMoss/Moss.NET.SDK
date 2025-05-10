@@ -8,15 +8,12 @@ namespace Totletheyn.DataSources;
 
 public class JokeDataSource : IDataSource
 {
-    const string URL = "https://icanhazdadjoke.com/";
+    private const string URL = "https://icanhazdadjoke.com/";
     public string Name => "joke";
 
     public void ApplyData(YogaNode node, PdfPageBuilder page, XElement element)
     {
-        if (node is not ContainerNode container)
-        {
-            throw new ArgumentException("node is not a ContainerNode");
-        }
+        if (node is not ContainerNode container) throw new ArgumentException("node is not a ContainerNode");
 
         var template = new RestTemplate();
         template.Headers.Add("Accept", "text/plain");

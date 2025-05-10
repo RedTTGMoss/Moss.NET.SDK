@@ -1,6 +1,5 @@
 ﻿using System.Runtime.InteropServices;
 using Extism;
-using Moss.NET.Sdk.Scheduler;
 using TaskScheduler = Moss.NET.Sdk.Scheduler.TaskScheduler;
 
 namespace Moss.NET.Sdk.FFI;

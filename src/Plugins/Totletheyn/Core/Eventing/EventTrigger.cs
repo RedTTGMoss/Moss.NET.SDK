@@ -32,5 +32,4 @@ public class EventTrigger
 
         return eventTrigger;
     }
-
 }

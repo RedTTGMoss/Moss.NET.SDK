@@ -16,9 +16,9 @@ public class MossExtension
 {
     private static MossExtension? _instance;
     private IMeterListener? _meterListener;
+    public ICache Cache = new DefaultPersistendCache();
 
     public Meter? Meter;
-    public ICache Cache = new DefaultPersistendCache();
 
     public static MossExtension? Instance
     {

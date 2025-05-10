@@ -12,5 +12,5 @@ public enum YogaDirection
 {
     Inherit,
     LeftToRight,
-    RightToLeft,
+    RightToLeft
 }

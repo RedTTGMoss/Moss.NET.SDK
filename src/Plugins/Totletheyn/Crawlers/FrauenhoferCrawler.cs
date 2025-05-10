@@ -1,19 +1,18 @@
 using System;
-using Totletheyn.Core;
-using Moss.NET.Sdk.Core;
+using System.Collections.Generic;
+using System.Linq;
 using HtmlAgilityPack;
 using HtmlAgilityPack.CssSelectors.NetCore;
-using System.Linq;
-using System.Collections.Generic;
+using Totletheyn.Core;
 
 namespace Totletheyn.Crawlers;
 
 public class FrauenhoferCrawler : ICrawler
 {
     public const string Name = "frauenhofer";
+    private readonly HtmlDocument _document = new();
 
     private readonly RestTemplate _template = new();
-    private readonly HtmlDocument _document = new();
 
     public FrauenhoferCrawler()
     {
@@ -36,10 +35,7 @@ public class FrauenhoferCrawler : ICrawler
         var links = _document.QuerySelectorAll(".file-pdf > a").Select(_ => _.Attributes["href"].Value).ToList();
 
         var issues = new List<Issue>();
-        for (int i = 0; i < titles.Count; i++)
-        {
-            issues.Add(new Issue(titles[i], links[i], DateTime.Now));
-        }
+        for (var i = 0; i < titles.Count; i++) issues.Add(new Issue(titles[i], links[i], DateTime.Now));
 
         return issues.TakeLast(1);
     }

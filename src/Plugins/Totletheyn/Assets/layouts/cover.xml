@@ -1,34 +1,45 @@
 ﻿<layout device="rmpp" background="creme" isLandscape="true" name="Cover" margin="5" debug="true">
     <header name="header" height="120" margintop="10" flexgrow="0">
-        <headline fontSize="70" fontFamily="Jaini" alignSelf="center" autosize="true" positiontype="relative" marginBottom="5">Daily E-Book Times</headline>
+        <headline fontSize="70" fontFamily="Jaini" alignSelf="center" autosize="true" positiontype="relative"
+                  marginBottom="5">Daily E-Book Times
+        </headline>
 
-        <hr marginleft="10" marginright="10" />
+        <hr marginleft="10" marginright="10"/>
         <section name="headerInfo" flexdirection="row" justifycontent="spacebetween" alignitems="center" margin="10">
-            <text fontfamily="Jaini" fontsize="15" alignself="flexstart" datasource="meta" meta="title">Issue #{0}</text>
-            <text fontfamily="Jaini" fontsize="15" alignself="center" autosize="true" datasource="meta" meta="creation-date">Thursday, April 15, 2025</text>
-            <img name="rss" src="images/rss.png" width="9" height="9" alignself="center" />
+            <text fontfamily="Jaini" fontsize="15" alignself="flexstart" datasource="meta" meta="title">Issue #{0}
+            </text>
+            <text fontfamily="Jaini" fontsize="15" alignself="center" autosize="true" datasource="meta"
+                  meta="creation-date">Thursday, April 15, 2025
+            </text>
+            <img name="rss" src="images/rss.png" width="9" height="9" alignself="center"/>
         </section>
-        <hr marginleft="10" marginright="10" />
+        <hr marginleft="10" marginright="10"/>
     </header>
 
     <content flexdirection="row" flexGrow="1" margin="10" marginbottom="1">
-        <column id="left" flexgrow="1" background="White" marginright="10" bordercolor="gray" boxshadow="gray 2" gap="10">
-            <fragment src="layouts/fragments/article.xml" />
-            <fragment src="layouts/fragments/article.xml" />
+        <column id="left" flexgrow="1" background="White" marginright="10" bordercolor="gray" boxshadow="gray 2"
+                gap="10">
+            <fragment src="layouts/fragments/article.xml"/>
+            <fragment src="layouts/fragments/article.xml"/>
         </column>
 
         <middle flexgrow="1" marginleft="5" marginright="5" gap="3">
-            <container alignself="center" datasource="nasa" />
+            <container alignself="center" datasource="nasa"/>
 
             <column id="middle" background="White" bordercolor="gray" boxshadow="gray 2" flexgrow="1">
-                <fragment src="layouts/fragments/article.xml" />
-                <fragment src="layouts/fragments/article.xml" />
+                <fragment src="layouts/fragments/article.xml"/>
+                <fragment src="layouts/fragments/article.xml"/>
             </column>
         </middle>
     </content>
 
-    <footer height="10" margintop="5" marginleft="10" marginright="10" display="flex" flexdirection="row" justifyContent="spacebetween">
-        <text id="footerText" fontsize="7" fontfamily="NoticiaText" autosize="true" flexgrow="0" >Generated with Totletheyn on Moss</text>
-        <text id="citation" fontSize="7" fontfamily="NoticiaText" autosize="true" flexgrow="0" alignself="flexend" alignitems="center">Icons © flaticon.com</text>
+    <footer height="10" margintop="5" marginleft="10" marginright="10" display="flex" flexdirection="row"
+            justifyContent="spacebetween">
+        <text id="footerText" fontsize="7" fontfamily="NoticiaText" autosize="true" flexgrow="0">Generated with
+            Totletheyn on Moss
+        </text>
+        <text id="citation" fontSize="7" fontfamily="NoticiaText" autosize="true" flexgrow="0" alignself="flexend"
+              alignitems="center">Icons © flaticon.com
+        </text>
     </footer>
 </layout>

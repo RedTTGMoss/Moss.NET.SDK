@@ -17,12 +17,7 @@ public class HorizontalLineNode(YogaConfig config, Layout parentLayout) : YogaNo
     internal override void SetAttribute(string name, string value)
     {
         if (name == "lineColor")
-        {
             LineColor = Colors.Parse(value);
-        }
-        else if (name == "thickness")
-        {
-            LineThickness = double.Parse(value, CultureInfo.InvariantCulture);
-        }
+        else if (name == "thickness") LineThickness = double.Parse(value, CultureInfo.InvariantCulture);
     }
 }

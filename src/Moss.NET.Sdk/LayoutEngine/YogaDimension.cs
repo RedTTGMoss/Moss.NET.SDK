@@ -11,5 +11,5 @@ namespace Moss.NET.Sdk.LayoutEngine;
 public enum YogaDimension
 {
     Width,
-    Height,
+    Height
 }

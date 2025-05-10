@@ -16,10 +16,7 @@ public class RestTemplate
 
     public HttpResponse Execute(HttpRequest request)
     {
-        foreach (var header in Headers)
-        {
-            request.Headers.Add(header.Key, header.Value);
-        }
+        foreach (var header in Headers) request.Headers.Add(header.Key, header.Value);
 
         _pipeline.Execute(request);
 

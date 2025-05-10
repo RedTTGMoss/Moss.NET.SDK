@@ -10,7 +10,7 @@ namespace Moss.NET.Sdk.LayoutEngine;
 
 public sealed class YogaStyle
 {
-    private static readonly YogaValue[] DefaultEdgeValuesUnit = new YogaValue[]
+    private static readonly YogaValue[] DefaultEdgeValuesUnit = new[]
     {
         YogaValue.Unset,
         YogaValue.Unset,
@@ -20,34 +20,34 @@ public sealed class YogaStyle
         YogaValue.Unset,
         YogaValue.Unset,
         YogaValue.Unset,
-        YogaValue.Unset,
+        YogaValue.Unset
     };
 
-    private static readonly YogaValue[] DefaultDimensionValuesAutoUnit = new YogaValue[] { YogaValue.Auto, YogaValue.Auto };
-    private static readonly YogaValue[] DefaultDimensionValuesUnit = new YogaValue[] { YogaValue.Unset, YogaValue.Unset };
-
-    public YogaDirection Direction;
-    public YogaFlexDirection FlexDirection;
-    public YogaJustify JustifyContent;
+    private static readonly YogaValue[] DefaultDimensionValuesAutoUnit = new[] { YogaValue.Auto, YogaValue.Auto };
+    private static readonly YogaValue[] DefaultDimensionValuesUnit = new[] { YogaValue.Unset, YogaValue.Unset };
     public YogaAlign AlignContent;
     public YogaAlign AlignItems;
     public YogaAlign AlignSelf;
-    public YogaPositionType PositionType;
-    public YogaWrap FlexWrap;
-    public YogaOverflow Overflow;
+    public double? AspectRatio;
+    public YogaArray<YogaValue> Border; // YGEdgeCount
+    public YogaArray<YogaValue> Dimensions; // 2
+
+    public YogaDirection Direction;
     public YogaDisplay Display;
     public double? Flex;
+    public YogaValue FlexBasis;
+    public YogaFlexDirection FlexDirection;
     public double? FlexGrow;
     public double? FlexShrink;
-    public YogaValue FlexBasis;
-    public YogaArray<YogaValue> Margin;         // YGEdgeCount
-    public YogaArray<YogaValue> Position;       // YGEdgeCount
-    public YogaArray<YogaValue> Padding;        // YGEdgeCount
-    public YogaArray<YogaValue> Border;         // YGEdgeCount
-    public YogaArray<YogaValue> Dimensions;     // 2
-    public YogaArray<YogaValue> MinDimensions;  // 2
-    public YogaArray<YogaValue> MaxDimensions;  // 2
-    public double? AspectRatio;
+    public YogaWrap FlexWrap;
+    public YogaJustify JustifyContent;
+    public YogaArray<YogaValue> Margin; // YGEdgeCount
+    public YogaArray<YogaValue> MaxDimensions; // 2
+    public YogaArray<YogaValue> MinDimensions; // 2
+    public YogaOverflow Overflow;
+    public YogaArray<YogaValue> Padding; // YGEdgeCount
+    public YogaArray<YogaValue> Position; // YGEdgeCount
+    public YogaPositionType PositionType;
 
     public YogaStyle()
     {
@@ -104,10 +104,10 @@ public sealed class YogaStyle
     // Yoga specific properties, not compatible with flexbox specification
     public static bool operator ==(YogaStyle self, YogaStyle style)
     {
-        if (object.ReferenceEquals(self, style))
+        if (ReferenceEquals(self, style))
             return true;
 
-        if (object.ReferenceEquals(self, null) || object.ReferenceEquals(style, null))
+        if (ReferenceEquals(self, null) || ReferenceEquals(style, null))
             return false;
 
         var areNondoubleValuesEqual =
@@ -175,4 +175,4 @@ public sealed class YogaStyle
                MaxDimensions.GetHashCode() +
                AspectRatio.GetHashCode();
     }
-};
+}

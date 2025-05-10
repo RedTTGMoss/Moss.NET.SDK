@@ -10,13 +10,13 @@ namespace Moss.NET.Sdk.LayoutEngine;
 
 public sealed class YogaCachedMeasurement
 {
-    public double? AvailableWidth;
     public double? AvailableHeight;
-    public YogaMeasureMode WidthMeasureMode;
-    public YogaMeasureMode HeightMeasureMode;
+    public double? AvailableWidth;
+    public double? ComputedHeight;
 
     public double? ComputedWidth;
-    public double? ComputedHeight;
+    public YogaMeasureMode HeightMeasureMode;
+    public YogaMeasureMode WidthMeasureMode;
 
     public YogaCachedMeasurement()
     {
@@ -30,13 +30,14 @@ public sealed class YogaCachedMeasurement
 
     public static bool operator ==(YogaCachedMeasurement self, YogaCachedMeasurement measurement)
     {
-        if (object.ReferenceEquals(self, measurement))
+        if (ReferenceEquals(self, measurement))
             return true;
 
-        if (object.ReferenceEquals(self, null) || object.ReferenceEquals(measurement, null))
+        if (ReferenceEquals(self, null) || ReferenceEquals(measurement, null))
             return false;
 
-        var isEqual = self.WidthMeasureMode == measurement.WidthMeasureMode && self.HeightMeasureMode == measurement.HeightMeasureMode;
+        var isEqual = self.WidthMeasureMode == measurement.WidthMeasureMode &&
+                      self.HeightMeasureMode == measurement.HeightMeasureMode;
 
         isEqual = isEqual && self.AvailableWidth == measurement.AvailableWidth;
         isEqual = isEqual && self.AvailableHeight == measurement.AvailableHeight;
@@ -85,6 +86,5 @@ public sealed class YogaCachedMeasurement
                HeightMeasureMode.GetHashCode() +
                ComputedWidth.GetHashCode() +
                ComputedHeight.GetHashCode();
-
     }
-};
+}

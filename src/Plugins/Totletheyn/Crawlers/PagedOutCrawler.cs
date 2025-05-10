@@ -13,16 +13,10 @@ public class PagedOutCrawler : ICrawler
 
     public bool IsNewIssueAvailable(Issue lastIssue)
     {
-        if (lastIssue == null)
-        {
-            return true;
-        }
+        if (lastIssue == null) return true;
 
         var item = _feed.Items.LastOrDefault(x => x.Title == lastIssue.Title);
-        if (item == null)
-        {
-            return true;
-        }
+        if (item == null) return true;
 
         return item.PublishingDate > lastIssue.PublishingDate;
     }
@@ -30,11 +24,9 @@ public class PagedOutCrawler : ICrawler
     public IEnumerable<Issue> GetNewIssues(Issue? lastIssue)
     {
         if (lastIssue is null)
-        {
             return _feed.Items
                 .Select(_ => new Issue(_.Title, _.Link, _.PublishingDate ?? DateTime.Now))
                 .ToList();
-        }
 
         var lastItem = _feed.Items.FirstOrDefault(x => x.Title == lastIssue.Title);
         return _feed.Items

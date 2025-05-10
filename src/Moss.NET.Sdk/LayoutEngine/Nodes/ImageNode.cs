@@ -1,19 +1,20 @@
-﻿using UglyToad.PdfPig.Core;
-using UglyToad.PdfPig.Writer;
+﻿using UglyToad.PdfPig.Writer;
 
 namespace Moss.NET.Sdk.LayoutEngine.Nodes;
 
-public enum ImageFormat {Png, Jpeg,
+public enum ImageFormat
+{
+    Png,
+    Jpeg,
     Unknown
 }
 
 public class ImageNode(YogaConfig config, Layout parentLayout) : YogaNode(config, parentLayout)
 {
-    public required string Src { get; set; }
-    public bool AutoSize { get; set; }
-
     private byte[] _data;
     private ImageFormat ImageFormat;
+    public required string Src { get; set; }
+    public bool AutoSize { get; set; }
 
     public override void ReCalculate(PdfPageBuilder page)
     {
@@ -22,43 +23,28 @@ public class ImageNode(YogaConfig config, Layout parentLayout) : YogaNode(config
 
         DetectImageFormat();
 
-        if (AutoSize)
-        {
-            AdjustSize();
-        }
+        if (AutoSize) AdjustSize();
     }
 
     private void DetectImageFormat()
     {
         if (GetMagicNumber(4).SequenceEqual(new byte[] { 0x89, 0x50, 0x4E, 0x47 })) // PNG
-        {
             ImageFormat = ImageFormat.Png;
-        }
         else if (GetMagicNumber(2).SequenceEqual(new byte[] { 0xFF, 0xD8 })) // JPEG
-        {
             ImageFormat = ImageFormat.Jpeg;
-        }
         else
-        {
             ImageFormat = ImageFormat.Unknown;
-        }
     }
 
     private void AdjustSize()
     {
         (int width, int height) dimension;
         if (ImageFormat == ImageFormat.Png)
-        {
             dimension = ReadPngDimension();
-        }
         else if (ImageFormat == ImageFormat.Jpeg)
-        {
             dimension = ReadJpegDimension();
-        }
         else
-        {
             return;
-        }
 
         Width = dimension.width;
         Height = dimension.height;
@@ -66,27 +52,18 @@ public class ImageNode(YogaConfig config, Layout parentLayout) : YogaNode(config
 
     public override void Draw(PdfPageBuilder page, double absoluteX, double absoluteY)
     {
-        if (Display == YogaDisplay.None)
-        {
-            return;
-        }
+        if (Display == YogaDisplay.None) return;
 
         base.Draw(page, absoluteX, absoluteY);
 
         PdfPageBuilder.AddedImage img;
 
         if (ImageFormat == ImageFormat.Png)
-        {
             img = page.AddPng(new MemoryStream(_data), Bounds);
-        }
         else if (ImageFormat == ImageFormat.Jpeg)
-        {
             img = page.AddJpeg(new MemoryStream(_data), Bounds);
-        }
         else
-        {
             return;
-        }
 
         page.AddImage(img, Bounds);
     }
@@ -152,15 +129,13 @@ public class ImageNode(YogaConfig config, Layout parentLayout) : YogaNode(config
             do
             {
                 markerStart = stream.ReadByte();
-            }
-            while (markerStart != 0xFF && stream.Position < stream.Length);
+            } while (markerStart != 0xFF && stream.Position < stream.Length);
 
             int markerType;
             do
             {
                 markerType = stream.ReadByte();
-            }
-            while (markerType == 0xFF && stream.Position < stream.Length);
+            } while (markerType == 0xFF && stream.Position < stream.Length);
 
             if (markerType >= 0xC0 && markerType <= 0xCF &&
                 markerType != 0xC4 && markerType != 0xC8 && markerType != 0xCC)
@@ -175,17 +150,13 @@ public class ImageNode(YogaConfig config, Layout parentLayout) : YogaNode(config
 
                 return (width, height);
             }
-            else if (markerType is 0xD9 or 0xDA)
-            {
-                break;
-            }
-            else
-            {
-                var len = (stream.ReadByte() << 8) + stream.ReadByte();
-                if (len < 2)
-                    throw new InvalidOperationException("Invalid JPEG-Segment.");
-                stream.Seek(len - 2, SeekOrigin.Current);
-            }
+
+            if (markerType is 0xD9 or 0xDA) break;
+
+            var len = (stream.ReadByte() << 8) + stream.ReadByte();
+            if (len < 2)
+                throw new InvalidOperationException("Invalid JPEG-Segment.");
+            stream.Seek(len - 2, SeekOrigin.Current);
         }
 
         throw new InvalidOperationException("SOF-Marker not found");
