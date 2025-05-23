@@ -11,7 +11,7 @@
     <ItemGroup>
         <PackageReference Include="Extism.runtime.win-x64" Version="1.9.1"/>
         <PackageReference Include="Extism.Pdk" Version="1.1.1"/>
-        <PackageReference Update="FSharp.Core" Version="9.0.202" />
+        <PackageReference Update="FSharp.Core" Version="9.0.300" />
     </ItemGroup>
 
     <ItemGroup>
