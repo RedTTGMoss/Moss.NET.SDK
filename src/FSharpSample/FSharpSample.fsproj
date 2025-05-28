@@ -36,6 +36,10 @@
         </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Moss.NET.Sdk\Moss.NET.Sdk.csproj" />
+    </ItemGroup>
+
     <Target Name="Bundle" AfterTargets="PostBuildEvent">
         <Copy SourceFiles="@(Asset)" DestinationFolder="$(OutputPath)AppBundle\Assets\%(RecursiveDir)" SkipUnchangedFiles="true" />
         <Copy SourceFiles="@(None)" DestinationFolder="$(OutputPath)AppBundle\%(RecursiveDir)" SkipUnchangedFiles="true" />
